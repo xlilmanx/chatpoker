@@ -63,9 +63,11 @@ class MessageList extends Component{
 
 class MessageForm extends Component{
 
-  getInitialState() {
-      return {text: ''};
-  },
+constructor(props) {
+    super(props);
+    this.state = {text: ''};
+  }
+
 
   handleSubmit(e) {
       e.preventDefault();
@@ -75,11 +77,11 @@ class MessageForm extends Component{
       }
       this.props.onMessageSubmit(message); 
       this.setState({ text: '' });
-  },
+  }
 
   changeHandler(e) {
       this.setState({ text : e.target.value });
-  },
+  }
 
   render() {
       return(
@@ -97,20 +99,23 @@ class MessageForm extends Component{
 }
 
 class ChangeNameForm extends Component{
-  getInitialState() {
-      return {newName: ''};
-  },
+	
+	constructor(props) {
+    super(props);
+    this.state = {newName: ''};
+  }
+
 
   onKey(e) {
       this.setState({ newName : e.target.value });
-  },
+  }
 
   handleSubmit(e) {
       e.preventDefault();
       var newName = this.state.newName;
       this.props.onChangeName(newName);    
       this.setState({ newName: '' });
-  },
+  }
 
   render() {
       return(
@@ -130,9 +135,11 @@ class ChangeNameForm extends Component{
 
 class ChatApp extends Component{
 
-  getInitialState() {
-      return {users: [], messages:[], text: ''};
-  },
+	constructor(props) {
+    super(props);
+    this.state = {users: [], messages:[], text: ''};
+  }
+
 
   componentDidMount() {
       socket.on('init', this._initialize);
@@ -140,18 +147,18 @@ class ChatApp extends Component{
       socket.on('user:join', this._userJoined);
       socket.on('user:left', this._userLeft);
       socket.on('change:name', this._userChangedName);
-  },
+  }
 
   _initialize(data) {
       var {users, name} = data;
       this.setState({users, user: name});
-  },
+  }
 
   _messageRecieve(message) {
       var {messages} = this.state;
       messages.push(message);
       this.setState({messages});
-  },
+  }
 
   _userJoined(data) {
       var {users, messages} = this.state;
@@ -162,7 +169,7 @@ class ChatApp extends Component{
           text : name +' Joined'
       });
       this.setState({users, messages});
-  },
+  }
 
   _userLeft(data) {
       var {users, messages} = this.state;
@@ -174,7 +181,7 @@ class ChatApp extends Component{
           text : name +' Left'
       });
       this.setState({users, messages});
-  },
+  }
 
   _userChangedName(data) {
       var {oldName, newName} = data;
@@ -186,14 +193,14 @@ class ChatApp extends Component{
           text : 'Change Name : ' + oldName + ' ==> '+ newName
       });
       this.setState({users, messages});
-  },
+  }
 
   handleMessageSubmit(message) {
       var {messages} = this.state;
       messages.push(message);
       this.setState({messages});
       socket.emit('send:message', message);
-  },
+  }
 
   handleChangeName(newName) {
       var oldName = this.state.user;
@@ -206,7 +213,7 @@ class ChatApp extends Component{
           users.splice(index, 1, newName);
           this.setState({users, user: newName});
       });
-  },
+  }
 
   render() {
       return (
