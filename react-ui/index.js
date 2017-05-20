@@ -4,7 +4,7 @@ var io = require('socket.io')(http);
 var useronline = 0;
 
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/react-ui/public/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 io.on('connection', function (socket) {
