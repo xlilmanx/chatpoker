@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import ChatApp from './Chat.js';
 
 
 class Deck extends React.Component {
