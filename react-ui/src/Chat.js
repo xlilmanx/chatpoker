@@ -3,7 +3,7 @@ import io from 'socket.io-client'
 
 var socket = io();
 
-class UsersList extends Component{
+class UsersList extends React.Component{
   render() {
       return (
           <div className='users'>
@@ -26,7 +26,7 @@ class UsersList extends Component{
 
 
 
-class Message extends Component{
+class Message extends React.Component{
   render() {
       return (
           <div className="message">
@@ -39,7 +39,7 @@ class Message extends Component{
 
 
 
-class MessageList extends Component{
+class MessageList extends React.Component{
   render() {
       return (
           <div className='messages'>
@@ -61,7 +61,7 @@ class MessageList extends Component{
 }
 
 
-class MessageForm extends Component{
+class MessageForm extends React.Component{
 
 constructor(props) {
     super(props);
@@ -98,7 +98,7 @@ constructor(props) {
   }
 }
 
-class ChangeNameForm extends Component{
+class ChangeNameForm extends React.Component{
 	
 	constructor(props) {
     super(props);
@@ -133,7 +133,7 @@ class ChangeNameForm extends Component{
 }
 
 
-class ChatApp extends Component{
+class ChatApp extends React.Component{
 
 	constructor(props) {
     super(props);
