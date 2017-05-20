@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
 
-var socket = io();
+var socket = io.connect();
 
 class UsersList extends React.Component{
   render() {
