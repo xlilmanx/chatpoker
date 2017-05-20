@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 
 
 import io from 'socket.io-client'
-
-var socket = io.connect();
+var socket = io.connect(process.env.PORT);
 
 class UsersList extends React.Component{
   render() {
