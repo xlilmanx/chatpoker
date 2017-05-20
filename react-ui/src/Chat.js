@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client'
+
+var React = require('react');
+var socket = io.connect();
 
 var UsersList = React.createClass({
   render() {
