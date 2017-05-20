@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-
-
 import io from 'socket.io-client'
+
 var socket = io();
 
 class UsersList extends React.Component{
