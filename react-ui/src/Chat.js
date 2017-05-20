@@ -66,6 +66,7 @@ class MessageForm extends React.Component{
 constructor(props) {
     super(props);
     this.state = {text: ''};
+	this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
@@ -139,6 +140,8 @@ class ChatApp extends React.Component{
 	constructor(props) {
     super(props);
     this.state = {users: [], messages:[], text: ''};
+	this._initialize = this._initialize.bind(this);
+	this._messageRecieve = this._messageRecieve.bind(this);
   }
 
 
