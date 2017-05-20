@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 
 import io from 'socket.io-client'
 
-var socket = io();
+var socket = io.connect();
 
 class UserList extends Component{
   render() {
