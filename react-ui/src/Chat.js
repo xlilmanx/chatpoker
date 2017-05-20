@@ -3,7 +3,7 @@ import io from 'socket.io-client'
 
 var socket = io();
 
-class UserList extends Component{
+class UsersList extends Component{
   render() {
       return (
           <div className='users'>
