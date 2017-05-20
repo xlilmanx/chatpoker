@@ -1,1 +1,1 @@
-web: node react-ui/public/index.js
+web: node ./react-ui/public/index.js
