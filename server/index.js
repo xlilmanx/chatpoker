@@ -2,12 +2,14 @@ const express = require('express');
 const path = require('path');
 
 
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-var useronline = 0;
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+var useronline = 0;
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
@@ -48,7 +50,3 @@ io.on('connection', function (socket) {
   });
 });
 
-
-http.listen(process.env.PORT || 8080, function () {
-  console.log('listening on *:5000');
-});
