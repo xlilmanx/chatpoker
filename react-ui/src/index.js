@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 
 
 
-import React, { Component } from 'react';
+
 import io from 'socket.io-client'
 
 var socket = io();
