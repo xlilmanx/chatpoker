@@ -38,6 +38,6 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(PORT, function () {
+app.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });
