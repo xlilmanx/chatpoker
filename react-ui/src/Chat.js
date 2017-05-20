@@ -103,6 +103,7 @@ class ChangeNameForm extends React.Component{
 	constructor(props) {
     super(props);
     this.state = {newName: ''};
+	this.onKey = this.onKey.bind(this);
   }
 
 
