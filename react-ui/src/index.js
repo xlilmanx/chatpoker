@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-Class Chat extends React.Component {
+class Chat extends React.Component {
 	componentDidMount() {
     var app = require('express')();
 var http = require('http').Server(app);
