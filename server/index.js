@@ -4,7 +4,7 @@ var http = require('http');
 
 const app = express();
 var server = http.Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(server);
 const PORT = process.env.PORT || 5000;
 
 // Priority serve any static files.
