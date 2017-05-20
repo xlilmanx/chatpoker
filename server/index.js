@@ -23,6 +23,7 @@ app.get('*', function(request, response) {
 
 io.on('connection', function (socket) {
   io.emit('chat message', 'a user connected');
+  console.log('asdf');
   useronline = useronline + 1;
   io.emit('userupdate', useronline);
 
