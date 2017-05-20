@@ -1,11 +1,11 @@
-const express = require('express');
-const path = require('path');
+var express = require('express');
+var path = require('path');
 var http = require('http');
 
-const app = express();
+var app = express();
 var server = http.Server(app);
 var io = require('socket.io')(server);
-const PORT = process.env.PORT || 5000;
+var PORT = process.env.PORT || 5000;
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
