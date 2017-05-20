@@ -105,7 +105,7 @@ class ChangeNameForm extends React.Component{
     super(props);
     this.state = {newName: ''};
 	this.onKey = this.onKey.bind(this);
-	this.handleSubmt = this.handleSubmit.bind(this);
+	this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
