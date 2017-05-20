@@ -105,6 +105,7 @@ class ChangeNameForm extends React.Component{
     super(props);
     this.state = {newName: ''};
 	this.onKey = this.onKey.bind(this);
+	this.handleSubmt = this.handleSubmit.bind(this);
   }
 
 
@@ -125,7 +126,7 @@ class ChangeNameForm extends React.Component{
               <h3> Change Name </h3>
               <form onSubmit={this.handleSubmit}>
                   <input
-                      onChange={this.onKey.bind(this)}
+                      onChange={this.onKey}
                       value={this.state.newName}
                   />
               </form>  
