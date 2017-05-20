@@ -116,7 +116,7 @@ ReactDOM.render(
   document.getElementById('wrapper')
 );
 
-React.render(<ChatApp/>, document.getElementById('app'));
+ReactDOM.render(<ChatApp/>, document.getElementById('app'));
 
 /*
 todo: auto check win conditions. rewrites: card is a object with {num,suit}
