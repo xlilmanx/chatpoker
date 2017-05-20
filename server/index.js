@@ -1,10 +1,24 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var useronline = 0;
+const express = require('express');
+const path = require('path');
+var http = require('http');
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + './react-ui/public/index.html');
+const app = express();
+var server = http.Server(app);
+var io = require('socket.io')(http);
+const PORT = process.env.PORT || 5000;
+
+// Priority serve any static files.
+app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
+
+// Answer API requests.
+app.get('/api', function (req, res) {
+  res.set('Content-Type', 'application/json');
+  res.send('{"message":"Hello from the custom server!"}');
+});
+
+// All remaining requests return the React app, so it can handle routing.
+app.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
 io.on('connection', function (socket) {
@@ -23,7 +37,6 @@ io.on('connection', function (socket) {
   });
 });
 
-
-http.listen(process.env.PORT || 8080, function () {
-  console.log('listening on *:5000');
+app.listen(PORT, function () {
+  console.log(`Listening on port ${PORT}`);
 });
