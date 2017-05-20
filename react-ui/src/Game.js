@@ -105,6 +105,8 @@ class Game extends React.Component {
   }
 }
 
+export default Game;
+
 /*
 todo: auto check win conditions. rewrites: card is a object with {num,suit}
 for example checking flush means if exists 5 of same suit on board (7 cards)
