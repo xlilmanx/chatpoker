@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import io from 'socket.io-client'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-var socket = io.connect();
+
+import io from 'socket.io-client'
+var socket = io();
 
 class UsersList extends React.Component{
   render() {
@@ -67,6 +69,7 @@ constructor(props) {
     super(props);
     this.state = {text: ''};
 	this.handleSubmit = this.handleSubmit.bind(this);
+	this.changeHandler = this.changeHandler.bind(this);
   }
 
 
@@ -247,4 +250,3 @@ class ChatApp extends React.Component{
   }
 }
 
-export default ChatApp;
