@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Poker chat</title>
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	font: 13px Helvetica, Arial;
+	overflow-x: hidden;
+	overflow-wrap: normal;
+}
+form {
+	background: #000;
+	padding: 3px;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+form input {
+	border: 0;
+	padding: 10px;
+	width: 90%;
+	margin-right: .5%;
+}
+form button {
+	width: 9%;
+	background: rgb(130, 224, 255);
+	border: none;
+	padding: 10px;
+}
+#messages {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	padding-right: 210px;
+	width: 100%;
+	position: absolute;
+}
+#messages li {
+	padding: 5px 10px;
+	width: 100%;
+}
+#messages li:nth-child(odd) { background: #eee; }
+#userlist {
+	width: 200px;
+	right: 0px;
+	position: absolute;
+}
+.messageclass {
+	width: 100%;
+	white-space: normal;
+	display: inline;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+#useronline {
+	display: inline;
+}
+html{
+  line-height:25px;
+}
+
+.instructions{
+  line-height:13px;
+  font-size:13px;
+  color:dodgerblue;
+}
+
+.card{
+  border:1px solid black;
+  padding:3px;
+}
+
+.btn{
+  margin:5px;
+}
+</style>
+</head>
+
+<body>
+<div id="wrapper">
+  
+</div>
+
+<div class="messageclass">
+	<ul id="messages">
+	</ul>
+	<div id="userlist">
+		<input id="name" name="Text1" type="text"> <br>Users Online:
+		<p id="useronline">0</p>
+	</div>
+</div>
+<form id="messageform" action="">
+	<input id="m" autocomplete="off"><button>Send</button>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function () {
+    var socket = io();
+    var user = $('#name').val();
+
+    $('#messageform').submit(function(){
+    
+    user = $('#name').val();
+    if (user === "" || user === "user") {
+    user = "user";
+    } else {
+    user = $('#name').val();
+
+    }
+    
+      socket.emit('chat message', user + ": " + $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+    });
+    
+    socket.on('userupdate', function(useronline){
+    $('#useronline').text(useronline);
+    
+    });
+    
+
+  });
+  
+</script>
+
+
+</body>
+
+</html>

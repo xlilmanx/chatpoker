@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import ChatApp from './Chat';
 
 
 
@@ -115,6 +115,8 @@ ReactDOM.render(
   <Game />,
   document.getElementById('wrapper')
 );
+
+React.render(<ChatApp/>, document.getElementById('app'));
 
 /*
 todo: auto check win conditions. rewrites: card is a object with {num,suit}
