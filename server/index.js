@@ -17,14 +17,14 @@ app.get('/api', function (req, res) {
 });
 
 // All remaining requests return the React app, so it can handle routing.
-/*app.get('*', function(request, response) {
+app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
-});*/
-
+});
+/*
 app.get('/', function (req, res) {
   res.sendFile(__dirname, '../react-ui/public/index.html');
 });
-
+*/
 io.on('connection', function (socket) {
   io.emit('chat message', 'a user connected');
   console.log('asdf');
