@@ -92,6 +92,7 @@ constructor(props) {
                   <input
                       onChange={this.changeHandler}
                       value={this.state.text}
+					  size="30"
                   />
               </form>
           </div>
