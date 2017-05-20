@@ -8,7 +8,7 @@ class UsersList extends React.Component{
       return (
           <div className='users'>
               <h3> Online Users </h3>
-              <ul>
+              <ul className='userslist'>
                   {
                       this.props.users.map((user, i) => {
                           return (
@@ -88,7 +88,6 @@ constructor(props) {
   render() {
       return(
           <div className='message_form'>
-              <h3>Write New Message</h3>
               <form onSubmit={this.handleSubmit}>
                   <input
                       onChange={this.changeHandler}
