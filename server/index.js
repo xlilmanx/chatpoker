@@ -29,7 +29,7 @@ app.listen(PORT, function () {
 
 
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/react-ui/public/index.html');
 });
 
 io.on('connection', function (socket) {
