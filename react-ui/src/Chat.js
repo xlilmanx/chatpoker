@@ -1,9 +1,9 @@
+import React, { Component } from 'react';
+import io from 'socket.io-client'
 
+var socket = io();
 
-var React = require('react');
-var socket = io.connect();
-
-var UsersList = React.createClass({
+class UserList extends Component{
   render() {
       return (
           <div className='users'>
@@ -22,19 +22,11 @@ var UsersList = React.createClass({
           </div>
       );
   }
-});
+}
 
 
 
-3
-4
-5
-6
-7
-8
-9
-10
-var Message = React.createClass({
+class Message extends Component{
   render() {
       return (
           <div className="message">
@@ -43,11 +35,11 @@ var Message = React.createClass({
           </div>
       );
   }
-});
+}
 
 
 
-var MessageList = React.createClass({
+class MessageList extends Component{
   render() {
       return (
           <div className='messages'>
@@ -66,10 +58,10 @@ var MessageList = React.createClass({
           </div>
       );
   }
-});
+}
 
 
-var MessageForm = React.createClass({
+class MessageForm extends Component{
 
   getInitialState() {
       return {text: ''};
@@ -102,9 +94,9 @@ var MessageForm = React.createClass({
           </div>
       );
   }
-});
+}
 
-var ChangeNameForm = React.createClass({
+class ChangeNameForm extends Component{
   getInitialState() {
       return {newName: ''};
   },
@@ -133,10 +125,10 @@ var ChangeNameForm = React.createClass({
           </div>
       );
   }
-});
+}
 
 
-var ChatApp = React.createClass({
+class ChatApp extends Component{
 
   getInitialState() {
       return {users: [], messages:[], text: ''};
@@ -235,6 +227,6 @@ var ChatApp = React.createClass({
           </div>
       );
   }
-});
+}
 
 export default ChatApp;
