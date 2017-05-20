@@ -146,8 +146,8 @@ class ChatApp extends React.Component{
 	this._userJoined = this._userJoined.bind(this);
 	this._userLeft = this._userLeft.bind(this);
 	this._userChangedName = this._userChangedName.bind(this);
-	this._handleMessageSubmit = this._handleMessageSubmit.bind(this);
-	this._handleChangeName = this._handleChangeName.bind(this);
+	this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+	this.handleChangeName = this.handleChangeName.bind(this);
 
   }
 
