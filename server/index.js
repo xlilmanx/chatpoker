@@ -2,13 +2,12 @@ const express = require('express');
 const path = require('path');
 
 
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 
-const http = Server(app);
-const io = socket(http) ;
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 var useronline = 0;
 
 // Priority serve any static files.
