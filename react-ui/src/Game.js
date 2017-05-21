@@ -80,9 +80,9 @@ class Game extends React.Component {
            deck: deckarr
          });
      */
-    hand = data[0];
-    deck = data[1];
-    field = data[2];
+    this.state.hand = data[0];
+    this.state.deck = data[1];
+    this.state.field = data[2];
 
 
   }
@@ -101,9 +101,9 @@ class Game extends React.Component {
           deck: deckarr
         });
      */
-    hand = data[0];
-    deck = data[1];
-    field = data[2];
+    this.state.hand = data[0];
+    this.state.deck = data[1];
+    this.state.field = data[2];
   }
 
 
@@ -121,10 +121,10 @@ class Game extends React.Component {
 
 
   render() {
-    var handhtml = this.state.hand.map(function (card) {
+/*    var handhtml = this.state.hand.map(function (card) {
       return <span className="card" key={card}>{card}</span>;
     });
-
+*/
     var fieldhtml = this.state.field.map(function (card) {
       return <span className="card" key={card}>{card}</span>;
     });
