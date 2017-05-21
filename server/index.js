@@ -177,18 +177,19 @@ io.on('connection', function (socket) {
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
 
-/*    function removePlayer() {
+    /*    function removePlayer() {
+    
+          //    playerhand["id"] = id;
+          //    playerhand["hand"] = hand;
+          //    allhand.push(playerhand);
+        
+    
+        }
+     
 
-      //    playerhand["id"] = id;
-      //    playerhand["hand"] = hand;
-      //    allhand.push(playerhand);
-
-
-    }
-    */
+    returnarry = returnarray.splice(playerid - 1, 1);
+    io.emit('gameconnect', returnarray);   */
     playercount = playercount - 1;
-    returnarry = returnarray.splice( playerid-1, 1 );
-    io.emit('gameconnect', returnarray);
     socket.broadcast.emit('user:left', {
       name: name
     });
