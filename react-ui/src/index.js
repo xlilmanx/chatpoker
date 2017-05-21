@@ -105,9 +105,9 @@ class MainWrapper extends React.Component {
                 <ChatApp
                     socket={socket}
                     users={this.state.users}
-                    onChangeName={this.handleChangeName}
+                    handleChangeName={this.handleChangeName}
                     messages={this.state.messages}
-                    onMessageSubmit={this.handleMessageSubmit}
+                    handleMessageSubmit={this.handleMessageSubmit}
                     user={this.state.user} />
             </div>
 
