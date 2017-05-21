@@ -156,14 +156,16 @@ class Game extends React.Component {
           return <span className="card" key={card}>{card}</span>;
         });
     */
-    var fieldhtml = this.state.field.map(function (card) {
-      return <span className="card" key={card}>{card}</span>;
-    });
-
-    var deckhtml = this.state.deck.map(function (card) {
-      return <span className="card" key={card}>{card}</span>;
-    });
-
+    if (this.state.field != null) {
+      var fieldhtml = this.state.field.map(function (card) {
+        return <span className="card" key={card}>{card}</span>;
+      });
+    }
+    if (this.state.deck != null) {
+      var deckhtml = this.state.deck.map(function (card) {
+        return <span className="card" key={card}>{card}</span>;
+      });
+    }
     return (
       <div className="game">
         <div className="instructions">
