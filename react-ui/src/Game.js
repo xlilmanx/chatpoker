@@ -1,102 +1,113 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client'
+
+var socket = io();
 
 class Deck extends React.Component {
-  constructor(){
+  constructor() {
     super();
-    this.state={
+    this.state = {
       value: null,
     };
   }
   render() {
     return (
-        <div className="deck">
-          Deck: <br />{this.props.deckhtml}
-        </div>
+      <div className="deck">
+        Deck: <br />{this.props.deckhtml}
+      </div>
     );
   }
 }
 
 class Game extends React.Component {
-  constructor(){
+  constructor() {
     super();
-    this.state={
+    this.state = {
       hand: [],
       field: [],
-      deck: ["Ac","Ad","Ah","As","2c","2d","2h","2s","3c","3d","3h","3s","4c","4d","4h","4s",
-             "5c","5d","5h","5s","6c","6d","6h","6s","7c","7d","7h","7s","8c","8d","8h","8s",
-             "9c","9d","9h","9s","10c","10d","10h","10s","Jc","Jd","Jh","Js",
-             "Qc","Qd","Qh","Qs","Kc","Kd","Kh","Ks"]
+      deck: ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
+        "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+        "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js",
+        "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"]
     };
   }
-  
-  dealHand(){
-    var deckarr = ["Ac","Ad","Ah","As","2c","2d","2h","2s","3c","3d","3h","3s","4c","4d","4h","4s",
-                   "5c","5d","5h","5s","6c","6d","6h","6s","7c","7d","7h","7s","8c","8d","8h","8s",
-                  "9c","9d","9h","9s","10c","10d","10h","10s","Jc","Jd","Jh","Js","Qc","Qd","Qh","Qs",
-                   "Kc","Kd","Kh","Ks"];
-    var num1 = Math.floor(Math.random()*(deckarr.length-1));
+
+  componentDidMount() {
+        socket.on('dealhand', this.dealHand);
+        socket.on('dealfield', this.dealfield);
+    }
+
+  dealHand() {
+    var deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
+      "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+      "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+      "Kc", "Kd", "Kh", "Ks"];
+    var num1 = Math.floor(Math.random() * (deckarr.length - 1));
     var card1 = deckarr[num1];
-    deckarr.splice(num1,1);
-	  var num2 = Math.floor(Math.random()*(deckarr.length-1));
+    deckarr.splice(num1, 1);
+    var num2 = Math.floor(Math.random() * (deckarr.length - 1));
     var card2 = deckarr[num2];
-    deckarr.splice(num2,1);
-    
-    var hand = [card1,card2];
-    
+    deckarr.splice(num2, 1);
+
+    var hand = [card1, card2];
+
     this.setState({
       hand: hand,
       field: [],
       deck: deckarr
     })
+
+    socket.emit('dealhand');
   }
-  
-  dealField(){
+
+  dealField() {
     var deckarr = this.state.deck;
-    var num1 = Math.floor(Math.random()*(deckarr.length-1));
+    var num1 = Math.floor(Math.random() * (deckarr.length - 1));
     var card1 = deckarr[num1];
-    deckarr.splice(num1,1);
-    
+    deckarr.splice(num1, 1);
+
     var fieldarr = this.state.field;
-    fieldarr.push(card1); 
-    
+    fieldarr.push(card1);
+
     this.setState({
       field: fieldarr,
       deck: deckarr
     })
+    socket.emit('dealfield');
   }
-  
+
   render() {
-     var handhtml = this.state.hand.map(function(card) {
-        return <span className="card" key={card}>{card}</span>;
-     });
-    
-    var fieldhtml = this.state.field.map(function(card) {
-        return <span className="card" key={card}>{card}</span>;
-     });
-   
-    var deckhtml = this.state.deck.map(function(card) {
-        return <span className="card" key={card}>{card}</span>;
-     });
-    
+    var handhtml = this.state.hand.map(function (card) {
+      return <span className="card" key={card}>{card}</span>;
+    });
+
+    var fieldhtml = this.state.field.map(function (card) {
+      return <span className="card" key={card}>{card}</span>;
+    });
+
+    var deckhtml = this.state.deck.map(function (card) {
+      return <span className="card" key={card}>{card}</span>;
+    });
+
     return (
       <div className="game">
         <div className="instructions">
           To play: press "Deal Hand / Restart" button to get your initial hand. Then press "Deal Field" to add a card to the community. You need to press 3 times for flop, then 1 more time each for turn and river. After 5 cards, then press "Deal Hand / Restart".
         </div>
-        <div className = "field">
+        <div className="field">
           <div>Field: </div>
           {fieldhtml}
         </div>
-        
-        <br/>
+
+        <br />
         <div className="hand">
           Hand: {handhtml}
         </div>
         <button className="btn" onClick={() => this.dealHand()}>Deal Hand / Restart</button>
         <button className="btn" onClick={() => this.dealField()}>Deal Field</button>
-        <br/><br/>
-        <Deck deckhtml = {deckhtml}/>
-        
+        <br /><br />
+        <Deck deckhtml={deckhtml} />
+
         <div className="cardsleft">
           Cards Left in Deck: {this.state.deck.length}
         </div>

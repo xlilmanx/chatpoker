@@ -18,7 +18,7 @@ app.get('/api', function (req, res) {
 });
 
 // All remaining requests return the React app, so it can handle routing.
-app.get('*', function(request, response) {
+app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 /*
@@ -27,21 +27,33 @@ app.get('/', function (req, res) {
 });
 */
 io.on('connection', function (socket) {
-  io.emit('chat message', 'a user connected');
-  console.log('asdf');
-  useronline = useronline + 1;
-  io.emit('userupdate', useronline);
 
-  socket.on('disconnect', function () {
-    io.emit('chat message', 'a user disconnected');
-    useronline = useronline - 1;
-  io.emit('userupdate', useronline);
+  // game stuff
 
+  socket.on('dealhand', function () {
+    io.emit('dealhand');
   });
+
+  socket.on('dealfield', function () {
+    io.emit('dealfield');
+  });
+
+
+  /*         old stuff
+    io.emit('chat message', 'a user connected');
+    console.log('asdf');
+    useronline = useronline + 1;
+    io.emit('userupdate', useronline);
+  
+    socket.on('disconnect', function () {
+      io.emit('chat message', 'a user disconnected');
+      useronline = useronline - 1;
+    io.emit('userupdate', useronline);
+});  */
   socket.on('chat message', function (msg) {
     io.emit('chat message', msg);
   });
-  
+
   var name = userNames.getGuestName();
 
   // send the new user their name and a list of users
@@ -70,7 +82,7 @@ io.on('connection', function (socket) {
       userNames.free(oldName);
 
       name = data.name;
-      
+
       socket.broadcast.emit('change:name', {
         oldName: oldName,
         newName: name
@@ -89,7 +101,7 @@ io.on('connection', function (socket) {
     });
     userNames.free(name);
   });
-  
+
 });
 
 server.listen(PORT, function () {
@@ -148,5 +160,5 @@ var userNames = (function () {
 
 // export function for listening to the socket
 module.exports = function (socket) {
-  
+
 };

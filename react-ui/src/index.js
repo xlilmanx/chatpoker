@@ -5,10 +5,7 @@ import Game from './Game.js';
 
 
 
-ReactDOM.render(
-  <Game />,
-  document.getElementById('wrapper')
-);
+ReactDOM.render(<Game />, document.getElementById('wrapper'));
 
-ReactDOM.render(<ChatApp/>, document.getElementById('app'));
+ReactDOM.render(<ChatApp />, document.getElementById('app'));
 
