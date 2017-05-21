@@ -10,7 +10,7 @@ class Deck extends React.Component {
   render() {
     return (
         <div className="deck">
-          Deck: {this.props.deckhtml}
+          Deck: <br />{this.props.deckhtml}
         </div>
     );
   }
