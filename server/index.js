@@ -62,6 +62,7 @@ io.on('connection', function (socket) {
   //    playerhand["hand"] = hand;
   //    allhand.push(playerhand);
   playercount = playercount + 1;
+  io.emit('gameconnect', returnarray);
 
 
   socket.on('dealhand', function () {

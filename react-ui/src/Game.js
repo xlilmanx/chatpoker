@@ -55,9 +55,25 @@ class Game extends React.Component {
   componentDidMount() {
     this.props.socket.on('dealhand', this.dealHand);
     this.props.socket.on('dealfield', this.dealField);
+    this.props.socket.on('gameconnect', this.gameConnect);
 
   }
 
+  gameConnect(data) {
+
+    if (data[0].length == 0) {
+
+    } else {
+
+      this.setState({
+        hand: data[0],
+        field: data[2],
+        deck: data[1]
+      });
+
+    }
+
+  }
 
 
   dealHand(data) {
