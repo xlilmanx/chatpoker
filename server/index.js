@@ -146,13 +146,8 @@ io.on('connection', function (socket) {
       if (userid[1] != null) {
         var hand2 = userid[1];
       }
-      if (userid[2] != null) {
-        var hand3 = userid[2];
-      }
-      if (userid[3] != null) {
-        var hand4 = userid[3];
-      }
-      var allplayerhands = [hand1, hand2, hand3, hand4];
+
+      var allplayerhands = [hand1, hand2];
       var results = Ranker.orderHands(allplayerhands, field);
       console.log(handstring);
       console.log(results);
