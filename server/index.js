@@ -140,7 +140,7 @@ io.on('connection', function (socket) {
         }
       }
 
-      var results = Ranker.orderHands(eval(handstring), field);
+      var results = Ranker.orderHands(handstring, field);
       console.log(handstring);
       console.log(results);
 
@@ -214,7 +214,7 @@ io.on('connection', function (socket) {
       if (c.id == socket.id) {
         userid.splice(i, 1);
 
-        if (returnarray[0].length != null) {
+        if (returnarray[0][i] != null) {
           returnarray[0].splice(i, 1);
         }
         break;
