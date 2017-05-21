@@ -126,8 +126,9 @@ class MainWrapper extends React.Component {
 
 
 
-ReactDOM.render(<ChatApp />, document.getElementById('app'));
-ReactDOM.render(<Game />, document.getElementById('wrapper'));
+ReactDOM.render(<MainWrapper />, document.getElementById('app'));
+{//ReactDOM.render(<Game />, document.getElementById('wrapper'));
+}
 
 
 
