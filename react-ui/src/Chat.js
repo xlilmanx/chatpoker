@@ -239,12 +239,14 @@ class ChatApp extends React.Component{
       return (
           <div>
 		  <div className='right-panel'>
+			  
+              <UsersList
+                  users={this.state.users}
+              />
 			  <ChangeNameForm
                   onChangeName={this.handleChangeName}
               /> 
-              <UsersList
-                  users={this.state.users}
-              /></div>
+			  </div>
 
               <MessageList
                   messages={this.state.messages}
