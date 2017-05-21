@@ -61,7 +61,7 @@ class Game extends React.Component {
 
   gameConnect(data) {
 
-    if (data[0].length == 0) {
+    if (data.length == 0) {
 
     } else {
 
