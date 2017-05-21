@@ -146,7 +146,7 @@ io.on('connection', function (socket) {
       var board = ['Th', '9h', 'Tc', '6c', 'Jh'];
       var allplayerhands = [hand1, hand2, hand3];
 
-      var results = Ranker.orderHands(allplayerhands, field);
+      var results = Ranker.orderHands(allplayerhands, board);
       console.log(handstring);
       console.log(results);
 
