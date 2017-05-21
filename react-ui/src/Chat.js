@@ -233,6 +233,9 @@ class ChatApp extends React.Component{
               <UsersList
                   users={this.state.users}
               />
+			                <ChangeNameForm
+                  onChangeName={this.handleChangeName}
+              />
               <MessageList
                   messages={this.state.messages}
               />
@@ -240,9 +243,7 @@ class ChatApp extends React.Component{
                   onMessageSubmit={this.handleMessageSubmit}
                   user={this.state.user}
               />
-              <ChangeNameForm
-                  onChangeName={this.handleChangeName}
-              />
+
           </div>
       );
   }
