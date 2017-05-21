@@ -43,7 +43,6 @@ var field = [];
 //var playerhand = { id: "", hand: "" }
 var allhand = [];
 var returnarray = [];
-returnarray[0] = [];
 var playercount = 0;
 var deckarr = [];
 var fieldarr = [];
