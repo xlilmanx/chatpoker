@@ -140,7 +140,7 @@ io.on('connection', function (socket) {
         }
       }
 
-      var results = Ranker.orderHands(handstring.valueOf(), field);
+      var results = Ranker.orderHands(eval(handstring), field);
       console.log(handstring);
       console.log(results);
 
