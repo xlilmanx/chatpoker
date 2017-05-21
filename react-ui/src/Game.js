@@ -6,10 +6,10 @@ class GameUsers extends React.Component {
     return (
       <div className='gameuser'>
         {
-          this.props.users.map((users, i) => {
+          this.props.users.map((user, i) => {
             return (
               <div key={i}>
-                {hand}
+     
                 <br />
                 {user}
               </div>
