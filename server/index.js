@@ -61,7 +61,9 @@ io.on('connection', function (socket) {
   //    playerhand["id"] = id;
   //    playerhand["hand"] = hand;
   //    allhand.push(playerhand);
+
   playercount = playercount + 1;
+  var playerid = playercount;
   io.emit('gameconnect', returnarray);
 
 
@@ -175,15 +177,18 @@ io.on('connection', function (socket) {
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
 
-    function removePlayer() {
+/*    function removePlayer() {
 
       //    playerhand["id"] = id;
       //    playerhand["hand"] = hand;
       //    allhand.push(playerhand);
-      playercount = playercount - 1;
+
 
     }
-
+    */
+    playercount = playercount - 1;
+    returnarry = returnarray.splice( playerid-1, 1 );
+    io.emit('gameconnect', returnarray);
     socket.broadcast.emit('user:left', {
       name: name
     });
