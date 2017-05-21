@@ -141,28 +141,46 @@ io.on('connection', function (socket) {
           }
     */
 
-      var hand1 = { id: 1, cards: userid[0].cards };
-      var hand2 = { id: 2, cards: userid[1].cards };
-      var hand3 = { id: 3, cards: userid[2].cards };
-      var hand4 = { id: 4, cards: userid[3].cards };
-      var hand5 = { id: 5, cards: userid[4].cards };
-      var hand6 = { id: 6, cards: userid[5].cards };
-      var hand7 = { id: 7, cards: userid[6].cards };
-      var hand8 = { id: 8, cards: userid[7].cards };
-      var allplayerhands = [hand1, hand2, hand3];
+      var allplayerhands = [];
 
-      for (i = 0; i < allplayerhands.length; i++) {
-
-        var updatedplayerhands = [];
-        if (allplayerhands[i].cards != null) {
-
-          updatedplayerhands.push(allplayerhands[i]);
-
-        }
-
+      if (userid[0].cards != null) {
+        var hand1 = { id: 1, cards: userid[0].cards };
+        allplayerhands.push(hand1);
+      }
+      if (userid[1].cards != null) {
+        var hand2 = { id: 2, cards: userid[1].cards };
+        allplayerhands.push(hand2);
+      }
+      if (userid[2].cards != null) {
+        var hand3 = { id: 3, cards: userid[2].cards };
+        allplayerhands.push(hand3);
+      }
+      if (userid[3].cards != null) {
+        var hand4 = { id: 4, cards: userid[3].cards };
+        allplayerhands.push(hand4);
+      }
+      if (userid[4].cards != null) {
+        var hand5 = { id: 5, cards: userid[4].cards };
+        allplayerhands.push(hand5);
+      }
+      if (userid[5].cards != null) {
+        var hand6 = { id: 6, cards: userid[5].cards };
+        allplayerhands.push(hand6);
+      }
+      if (userid[6].cards != null) {
+        var hand7 = { id: 7, cards: userid[6].cards };
+        allplayerhands.push(hand7);
+      }
+      if (userid[7].cards != null) {
+        var hand8 = { id: 8, cards: userid[7].cards };
+        allplayerhands.push(hand8);
       }
 
-      var results = Ranker.orderHands(updatedplayerhands, field);
+
+
+
+
+      var results = Ranker.orderHands(allplayerhands, field);
       console.log(handstring);
       console.log(results);
 
@@ -236,7 +254,7 @@ io.on('connection', function (socket) {
       if (c.id == socket.id) {
         userid.splice(i, 1);
 
-        if (returnarray[0][i] != null) {
+        if (returnarray[0][] != null) {
           returnarray[0].splice(i, 1);
         }
         break;
