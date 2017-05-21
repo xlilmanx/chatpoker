@@ -140,14 +140,12 @@ io.on('connection', function (socket) {
             }
           }
     */
-      if (userid[0] != null) {
-        var hand1 = userid[0];
-      }
-      if (userid[1] != null) {
-        var hand2 = userid[1];
-      }
+      var hand1 = { id: 1, cards: ['Ac', '5c'] }; // tie
+      var hand2 = { id: 2, cards: ['Ad', '8d'] }; // tie
+      var hand3 = { id: 3, cards: ['Kh', 'Jc'] }; // win
+      var board = ['Th', '9h', 'Tc', '6c', 'Jh'];
+      var allplayerhands = [hand1, hand2, hand3];
 
-      var allplayerhands = [hand1, hand2];
       var results = Ranker.orderHands(allplayerhands, field);
       console.log(handstring);
       console.log(results);
