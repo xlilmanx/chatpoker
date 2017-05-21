@@ -142,38 +142,53 @@ io.on('connection', function (socket) {
     */
 
       var allplayerhands = [];
-
-      if (userid[0].cards != null) {
-        var hand1 = { id: 1, cards: userid[0].cards };
-        allplayerhands.push(hand1);
+      if (userid[0] != null) {
+        if (userid[0].cards != null) {
+          var hand1 = { id: 1, cards: userid[0].cards };
+          allplayerhands.push(hand1);
+        }
       }
-      if (userid[1].cards != null) {
-        var hand2 = { id: 2, cards: userid[1].cards };
-        allplayerhands.push(hand2);
+      if (userid[1] != null) {
+        if (userid[1].cards != null) {
+          var hand2 = { id: 2, cards: userid[1].cards };
+          allplayerhands.push(hand2);
+        }
       }
-      if (userid[2].cards != null) {
-        var hand3 = { id: 3, cards: userid[2].cards };
-        allplayerhands.push(hand3);
+      if (userid[2] != null) {
+        if (userid[2].cards != null) {
+          var hand3 = { id: 3, cards: userid[2].cards };
+          allplayerhands.push(hand3);
+        }
       }
-      if (userid[3].cards != null) {
-        var hand4 = { id: 4, cards: userid[3].cards };
-        allplayerhands.push(hand4);
+      if (userid[3] != null) {
+        if (userid[3].cards != null) {
+          var hand4 = { id: 4, cards: userid[3].cards };
+          allplayerhands.push(hand4);
+        }
       }
-      if (userid[4].cards != null) {
-        var hand5 = { id: 5, cards: userid[4].cards };
-        allplayerhands.push(hand5);
+      if (userid[4] != null) {
+        if (userid[4].cards != null) {
+          var hand5 = { id: 5, cards: userid[4].cards };
+          allplayerhands.push(hand5);
+        }
       }
-      if (userid[5].cards != null) {
-        var hand6 = { id: 6, cards: userid[5].cards };
-        allplayerhands.push(hand6);
+      if (userid[5] != null) {
+        if (userid[5].cards != null) {
+          var hand6 = { id: 6, cards: userid[5].cards };
+          allplayerhands.push(hand6);
+        }
       }
-      if (userid[6].cards != null) {
-        var hand7 = { id: 7, cards: userid[6].cards };
-        allplayerhands.push(hand7);
+      if (userid[6] != null) {
+        if (userid[6].cards != null) {
+          var hand7 = { id: 7, cards: userid[6].cards };
+          allplayerhands.push(hand7);
+        }
       }
-      if (userid[7].cards != null) {
-        var hand8 = { id: 8, cards: userid[7].cards };
-        allplayerhands.push(hand8);
+      if (userid[7] != null) {
+        if (userid[7].cards != null) {
+          var hand8 = { id: 8, cards: userid[7].cards };
+          allplayerhands.push(hand8);
+        }
       }
 
 
