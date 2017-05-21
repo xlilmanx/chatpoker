@@ -135,7 +135,7 @@ io.on('connection', function (socket) {
 
       }
 
-      var results = Ranker.orderHands(handstring, field);
+      var results = Ranker.orderHands(handstring.valueOf(), field);
 
       console.log(results);
 
