@@ -103,7 +103,7 @@ class MainWrapper extends React.Component {
                 <Game
                     socket={socket}
                     users={this.state.users} />
-                <Chat
+                <ChatApp
                     socket={socket}
                     users={this.state.users}
                     onChangeName={this.handleChangeName}
@@ -127,8 +127,8 @@ class MainWrapper extends React.Component {
 
 
 ReactDOM.render(<MainWrapper />, document.getElementById('app'));
-{//ReactDOM.render(<Game />, document.getElementById('wrapper'));
-}
+//ReactDOM.render(<Game />, document.getElementById('wrapper'));
+
 
 
 
