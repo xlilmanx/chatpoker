@@ -77,7 +77,6 @@ class Game extends React.Component {
       field: fieldarr,
       deck: deckarr
     });
-    socket.emit('dealfield');
   }
 
   handleDealHand() {
