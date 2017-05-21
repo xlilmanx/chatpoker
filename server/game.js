@@ -84,8 +84,8 @@ function dealField() {
 
 
 module.exports = {
-    addPlayer,
-    removePlayer,
-    dealHand,
-    dealField
+    addPlayer: addPlayer,
+    removePlayer: removePlayer,
+    dealHand: dealHand,
+    dealField: dealField
 }
