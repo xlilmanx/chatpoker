@@ -61,7 +61,6 @@ io.on('connection', function (socket) {
   //    playerhand["hand"] = hand;
   //    allhand.push(playerhand);
   playercount = playercount + 1;
-  console.log(playercount);
   var playercountid = playercount;
   io.emit('gameconnect', returnarray);
 
@@ -178,7 +177,8 @@ io.on('connection', function (socket) {
 
     playercount = playercount - 1;
     var removeid = playercountid - 1;
-    returnarray[0].splice(removeid, 1)
+    returnarray[0].splice(removeid, 1);
+    console.log(returnarray[0]);
     io.emit('gameconnect', returnarray);
     socket.broadcast.emit('user:left', {
       name: name
