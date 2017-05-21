@@ -5,11 +5,11 @@ var chat = require('./Chat.js');
 class GameUsers extends React.Component {
   render() {
     return (
-      <div className='gameuser'>
+      <div className='gameuserlist'>
         {
           this.props.users.map((user, i) => {
             return (
-              <div key={i}>
+              <div key={i} className='gameuser'>
      
                 <br />
                 {user}
