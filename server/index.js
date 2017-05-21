@@ -75,7 +75,7 @@ io.on('connection', function (socket) {
       "Kc", "Kd", "Kh", "Ks"];
     allhand = [];
 
-    for (i = 1; i < playercount; i++) {
+    for (i = 0; i < playercount; i++) {
 
       num1 = Math.floor(Math.random() * (deckarr.length - 1));
       card1 = deckarr[num1];
