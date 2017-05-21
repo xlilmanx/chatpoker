@@ -92,7 +92,7 @@ io.on('connection', function (socket) {
       var c = userid[i];
 
       if (c.id == socket.id) {
-        userid.cards.push(hand);
+        c.cards = hand;
         break;
       }
 
