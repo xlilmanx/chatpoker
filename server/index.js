@@ -89,12 +89,9 @@ io.on('connection', function (socket) {
 
       hand = [card1, card2];
 
-      var c = userid[i];
 
-      if (c.id == socket.id) {
-        c.cards = hand;
-        break;
-      }
+      var c = userid[i];
+      c.cards = hand;
 
 
       allhand.push(hand);
