@@ -197,13 +197,15 @@ io.on('connection', function (socket) {
         }
 
 
-
-
-
         var results = Ranker.orderHands(allplayerhands, field);
         console.log(handstring);
         console.log(results);
         gameinprogress = false;
+
+        io.emit('send:message', {
+          user: "APPLICATION BOT",
+          text: userid[results[0].id-1].id + " has won!"
+        });
       }
     }
   });
