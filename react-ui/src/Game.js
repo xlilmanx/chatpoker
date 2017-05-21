@@ -57,7 +57,7 @@ class Game extends React.Component {
       hand: hand,
       field: [],
       deck: deckarr
-    })
+    });
 
 
   }
@@ -74,7 +74,7 @@ class Game extends React.Component {
     this.setState({
       field: fieldarr,
       deck: deckarr
-    })
+    });
     socket.emit('dealfield');
   }
 
