@@ -106,6 +106,7 @@ io.on('connection', function (socket) {
       returnarray[1] = deck;
       returnarray[2] = field;
       io.emit('dealhand', returnarray);
+      gameinprogress = true;
 
     }
   });
