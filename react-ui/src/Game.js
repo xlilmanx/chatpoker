@@ -30,14 +30,16 @@ class Game extends React.Component {
         "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js",
         "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"]
     };
+    this.dealHand = this.dealHand.bind(this);
+    this.dealField = this.dealField.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
   }
 
   componentDidMount() {
-        socket.on('dealhand', this.dealHand);
-        socket.on('dealfield', this.dealField);
-    }
+    socket.on('dealhand', this.dealHand);
+    socket.on('dealfield', this.dealField);
+  }
 
   dealHand() {
     var deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
@@ -84,7 +86,7 @@ class Game extends React.Component {
 
   }
 
-    handleDealField() {
+  handleDealField() {
 
     socket.emit('dealfield');
 
