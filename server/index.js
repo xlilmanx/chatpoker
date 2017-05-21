@@ -68,7 +68,9 @@ io.on('connection', function (socket) {
   var clientInfo = new Object();
   clientInfo.id = socket.id;
   clientInfo.cards = [];
+  clientInfo.name = "";
   userid.push(clientInfo);
+  var clientNumber = userid.length - 1;
   io.emit('gameconnect', returnarray);
 
 
@@ -206,12 +208,12 @@ io.on('connection', function (socket) {
         gameinprogress = false;
         handdealt = false;
 
-        var winnername = results[0][0].id - 1;
-        console.log(winnername);
+        var winnername = userid[results[0][0].id - 1].name;
+
 
         io.emit('send:message', {
           user: "APPLICATION BOT",
-          text: winnername.valueOf() + " has won!"
+          text: winnername + " has won!"
         });
       }
     }
@@ -234,6 +236,7 @@ io.on('connection', function (socket) {
   });
   });  */
   var name = userNames.getGuestName();
+  userid[clientNumber].name = name;
 
   // send the new user their name and a list of users
   socket.emit('init', {
@@ -261,6 +264,7 @@ io.on('connection', function (socket) {
       userNames.free(oldName);
 
       name = data.name;
+      userid[clientNumber].name = name;
 
       socket.broadcast.emit('change:name', {
         oldName: oldName,
@@ -326,6 +330,7 @@ var userNames = (function () {
     do {
       name = 'Guest ' + nextUserId;
       nextUserId += 1;
+      userid[clientNumber].name = name;
     } while (!claim(name));
 
     return name;
