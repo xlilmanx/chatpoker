@@ -29,10 +29,18 @@ class UsersList extends React.Component{
 class Message extends React.Component{
   render() {
       return (
+	  if ({this.props.user} == APPLICATION BOT) {
+		  
+		  <div className="message">
+              <strong>{{this.props.text} </strong>     
+	  </div>
+		  
+	  } else {
+	  
           <div className="message">
-              <strong>{this.props.user} :</strong> 
+              <strong>{this.props.user}: </strong> 
               <span>{this.props.text}</span>        
-          </div>
+	  </div>}
       );
   }
 }
@@ -230,12 +238,13 @@ class ChatApp extends React.Component{
   render() {
       return (
           <div>
+			  <ChangeNameForm
+                  onChangeName={this.handleChangeName}
+              />
               <UsersList
                   users={this.state.users}
               />
-			                <ChangeNameForm
-                  onChangeName={this.handleChangeName}
-              />
+
               <MessageList
                   messages={this.state.messages}
               />
