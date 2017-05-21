@@ -124,9 +124,9 @@ io.on('connection', function (socket) {
     returnarray[2] = field;
     io.emit('dealfield', returnarray);
 
-    /*
+
         if (field.length >= 5) {
-    
+      /*  
           for (i = 0; i < userid.length; i++) {
     
             if (i == 0) {
