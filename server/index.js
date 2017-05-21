@@ -8,6 +8,8 @@ var io = require('socket.io')(server);
 var PORT = process.env.PORT || 5000;
 var useronline = 0;
 
+var game = require('./game.js');
+
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
@@ -29,13 +31,14 @@ app.get('/', function (req, res) {
 io.on('connection', function (socket) {
 
   // game stuff
+  game.addPlayer();
 
   socket.on('dealhand', function () {
-    io.emit('dealhand');
+    io.emit('dealhand', game.dealHand());
   });
 
   socket.on('dealfield', function () {
-    io.emit('dealfield');
+    io.emit('dealfield', game.dealField());
   });
 
 
@@ -96,6 +99,7 @@ io.on('connection', function (socket) {
 
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
+    game.removePlayer();
     socket.broadcast.emit('user:left', {
       name: name
     });

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-var chat = require('./Chat.js');
 
 
 class GameUsers extends React.Component {
@@ -10,7 +9,7 @@ class GameUsers extends React.Component {
           this.props.users.map((user, i) => {
             return (
               <div key={i} className='gameuser'>
-     
+                {this.props.hand[i]}
                 <br />
                 {user}
               </div>
@@ -44,10 +43,7 @@ class Game extends React.Component {
     this.state = {
       hand: [],
       field: [],
-      deck: ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-        "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-        "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js",
-        "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"],
+      deck: [],
       users: []
     };
     this.dealHand = this.dealHand.bind(this);
@@ -63,44 +59,53 @@ class Game extends React.Component {
   }
 
 
-  
-    dealHand() {
-      var deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-        "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-        "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
-        "Kc", "Kd", "Kh", "Ks"];
-      var num1 = Math.floor(Math.random() * (deckarr.length - 1));
-      var card1 = deckarr[num1];
-      deckarr.splice(num1, 1);
-      var num2 = Math.floor(Math.random() * (deckarr.length - 1));
-      var card2 = deckarr[num2];
-      deckarr.splice(num2, 1);
-  
-      var hand = [card1, card2];
-  
-      this.setState({
-        hand: hand,
-        field: [],
-        deck: deckarr
-      });
-  
-  
-    }
-  
-    dealField() {
-      var deckarr = this.state.deck;
-      var num1 = Math.floor(Math.random() * (deckarr.length - 1));
-      var card1 = deckarr[num1];
-      deckarr.splice(num1, 1);
-  
-      var fieldarr = this.state.field;
-      fieldarr.push(card1);
-  
-      this.setState({
-        field: fieldarr,
-        deck: deckarr
-      });
-    }
+
+  dealHand(data) {
+    /*     var deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
+           "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+           "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+           "Kc", "Kd", "Kh", "Ks"];
+         var num1 = Math.floor(Math.random() * (deckarr.length - 1));
+         var card1 = deckarr[num1];
+         deckarr.splice(num1, 1);
+         var num2 = Math.floor(Math.random() * (deckarr.length - 1));
+         var card2 = deckarr[num2];
+         deckarr.splice(num2, 1);
+     
+         var hand = [card1, card2];
+     
+         this.setState({
+           hand: hand,
+           field: [],
+           deck: deckarr
+         });
+     */
+    hand = data[0];
+    deck = data[1];
+    field = data[2];
+
+
+  }
+
+  dealField(data) {
+    /*    var deckarr = this.state.deck;
+        var num1 = Math.floor(Math.random() * (deckarr.length - 1));
+        var card1 = deckarr[num1];
+        deckarr.splice(num1, 1);
+    
+        var fieldarr = this.state.field;
+        fieldarr.push(card1);
+    
+        this.setState({
+          field: fieldarr,
+          deck: deckarr
+        });
+     */
+    hand = data[0];
+    deck = data[1];
+    field = data[2];
+  }
+
 
   handleDealHand() {
 
@@ -139,9 +144,10 @@ class Game extends React.Component {
         </div>
 
         <br />
-            <GameUsers
+        <GameUsers
           users={this.props.users}
-        />      
+          hand={this.state.hand}
+        />
         { /*   <div className="hand">
           Hand: {handhtml}
         </div>

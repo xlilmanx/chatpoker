@@ -8,15 +8,27 @@ var deckref = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h",
     "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"];
 
 var field = [];
-var playerhand = { id: "", hand: "" }
+//var playerhand = { id: "", hand: "" }
 var allhand = [];
+var returnarray = [];
+var playercount = 0;
 
 
-function addPlayer(id, hand) {
+function addPlayer() {
 
-    playerhand["id"] = id;
-    playerhand["hand"] = hand;
-    allhand.push(playerhand);
+    //    playerhand["id"] = id;
+    //    playerhand["hand"] = hand;
+    //    allhand.push(playerhand);
+    playercount = playercount + 1;
+
+}
+
+function removePlayer() {
+
+    //    playerhand["id"] = id;
+    //    playerhand["hand"] = hand;
+    //    allhand.push(playerhand);
+    playercount = playercount - 1;
 
 }
 
@@ -25,8 +37,9 @@ function dealHand() {
         "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
         "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
         "Kc", "Kd", "Kh", "Ks"];
+    allhand = [];
 
-    for (i = 0; i < allhand.length; i++) {
+    for (i = 0; i < playercount.length; i++) {
 
         var num1 = Math.floor(Math.random() * (deckarr.length - 1));
         var card1 = deckarr[num1];
@@ -37,11 +50,15 @@ function dealHand() {
 
         var hand = [card1, card2];
 
-        allhand.push[i]["hand"] = hand;
+        allhand.push(hand);
         deck = deckarr;
     }
 
     field = [];
+    returnarray.push(allhand);
+    returnarray.push(deck);
+    returnarray.push(field);
+    return returnarray;
 
 }
 
@@ -58,6 +75,11 @@ function dealField() {
 
     field = fieldarr;
     deck = deckarr;
+
+    returnarray.push(allhand);
+    returnarray.push(deck);
+    returnarray.push(field);
+    return returnarray;
 
 }
 
