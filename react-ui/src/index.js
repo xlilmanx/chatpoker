@@ -6,7 +6,6 @@ import io from 'socket.io-client'
 
 var socket = io();
 
-
 class MainWrapper extends React.Component {
 
     constructor(props) {
@@ -99,27 +98,25 @@ class MainWrapper extends React.Component {
 
     render() {
         return (
+            <div>
 
-
-            <Chat
-                socket={socket}
-                users={this.state.users}
-                onChangeName={this.handleChangeName}
-                messages={this.state.messages}
-                onMessageSubmit={this.handleMessageSubmit}
-                user={this.state.user}
-            />
-
-            <Game 
-            socket={socket}
-            users={this.state.users}
-            />
-
+                <Game
+                    socket={socket}
+                    users={this.state.users} />
+                <Chat
+                    socket={socket}
+                    users={this.state.users}
+                    onChangeName={this.handleChangeName}
+                    messages={this.state.messages}
+                    onMessageSubmit={this.handleMessageSubmit}
+                    user={this.state.user} />
+            </div>
 
         );
     }
-
 }
+
+
 
 
 
