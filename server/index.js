@@ -70,7 +70,13 @@ io.on('connection', function (socket) {
   clientInfo.cards = [];
   clientInfo.name = "";
   userid.push(clientInfo);
-  var clientNumber = userid.length - 1;
+
+  for (var i = 0; i < userid.length; i++) {
+    if (userid[i].id === socket.id) {
+      clientNumber = i;
+    }
+  }
+
   io.emit('gameconnect', returnarray);
 
 
@@ -236,7 +242,7 @@ io.on('connection', function (socket) {
   });
   });  */
   var name = userNames.getGuestName();
-  userid[clientNumber].name = name;
+
 
   // send the new user their name and a list of users
   socket.emit('init', {
@@ -284,6 +290,7 @@ io.on('connection', function (socket) {
     for (var i = 0; i < userid.length; ++i) {
       var c = userid[i];
 
+
       if (c.id == socket.id) {
         userid.splice(i, 1);
 
@@ -301,6 +308,16 @@ io.on('connection', function (socket) {
       name: name
     });
     userNames.free(name);
+  });
+
+  socket.on('updateclientnumber', function () {
+
+    for (var i = 0; i < userid.length; i++) {
+      if (userid[i].id === socket.id) {
+        clientNumber = i;
+      }
+    }
+
   });
 
 });

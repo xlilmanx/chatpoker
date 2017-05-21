@@ -62,6 +62,7 @@ class MainWrapper extends React.Component {
             text: name + ' Left'
         });
         this.setState({ users, messages });
+        socket.emit('updateclientnumber');
     }
 
     _userChangedName(data) {
