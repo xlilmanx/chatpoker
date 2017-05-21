@@ -4,8 +4,9 @@ import ChatApp from './Chat.js';
 import Game from './Game.js';
 import io from 'socket.io-client'
 
+var socket = io();
 
-ReactDOM.render(<Game />, document.getElementById('wrapper'));
+ReactDOM.render(<Game socket={socket}/>, document.getElementById('wrapper'));
 
-ReactDOM.render(<ChatApp />, document.getElementById('app'));
+ReactDOM.render(<ChatApp socket={socket}/>, document.getElementById('app'));
 

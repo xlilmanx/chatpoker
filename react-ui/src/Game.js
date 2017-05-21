@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import io from './index.js';
 
-var socket = io();
 
 class Deck extends React.Component {
   constructor() {
@@ -37,8 +35,8 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    socket.on('dealhand', this.dealHand);
-    socket.on('dealfield', this.dealField);
+    this.props.socket.on('dealhand', this.dealHand);
+    this.props.socket.on('dealfield', this.dealField);
   }
 
   dealHand() {
@@ -81,13 +79,13 @@ class Game extends React.Component {
 
   handleDealHand() {
 
-    socket.emit('dealhand');
+    this.props.socket.emit('dealhand');
 
   }
 
   handleDealField() {
 
-    socket.emit('dealfield');
+    this.props.socket.emit('dealfield');
 
   }
 

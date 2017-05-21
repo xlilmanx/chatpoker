@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import io from './index.js';
-
-var socket = io();
 
 class UsersList extends React.Component {
     render() {
@@ -163,11 +160,11 @@ class ChatApp extends React.Component {
 
 
     componentDidMount() {
-        socket.on('init', this._initialize);
-        socket.on('send:message', this._messageRecieve);
-        socket.on('user:join', this._userJoined);
-        socket.on('user:left', this._userLeft);
-        socket.on('change:name', this._userChangedName);
+        this.props.socket.on('init', this._initialize);
+        this.props.socket.on('send:message', this._messageRecieve);
+        this.props.socket.on('user:join', this._userJoined);
+        this.props.socket.on('user:left', this._userLeft);
+        this.props.socket.on('change:name', this._userChangedName);
     }
 
     _initialize(data) {
@@ -220,12 +217,12 @@ class ChatApp extends React.Component {
         var { messages } = this.state;
         messages.push(message);
         this.setState({ messages });
-        socket.emit('send:message', message);
+        this.props.socket.emit('send:message', message);
     }
 
     handleChangeName(newName) {
         var oldName = this.state.user;
-        socket.emit('change:name', { name: newName }, (result) => {
+        this.props.socket.emit('change:name', { name: newName }, (result) => {
             if (!result) {
                 return alert('There was an error changing your name');
             }
