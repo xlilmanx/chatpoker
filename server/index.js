@@ -31,14 +31,14 @@ app.get('/', function (req, res) {
 io.on('connection', function (socket) {
 
   // game stuff
-  game.addPlayer();
+  game.addPlayer;
 
   socket.on('dealhand', function () {
-    io.emit('dealhand', game.dealHand());
+    io.emit('dealhand', game.dealHand);
   });
 
   socket.on('dealfield', function () {
-    io.emit('dealfield', game.dealField());
+    io.emit('dealfield', game.dealField);
   });
 
 
@@ -99,7 +99,7 @@ io.on('connection', function (socket) {
 
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
-    game.removePlayer();
+    game.removePlayer;
     socket.broadcast.emit('user:left', {
       name: name
     });
