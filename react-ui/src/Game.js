@@ -9,7 +9,14 @@ class GameUsers extends React.Component {
           this.props.users.map((user, i) => {
             return (
               <div key={i} className='gameuser'>
-                <div className='card'>{this.props.hand[i]}</div>
+
+                {
+                  this.props.hand[i].map((card) => {
+                    return (
+                      <span className="card" key={card}>{card}</span>
+                    );
+                  })}
+
                 <br />
                 {user}
               </div>
@@ -19,6 +26,8 @@ class GameUsers extends React.Component {
     );
   }
 }
+
+
 
 
 class Deck extends React.Component {
