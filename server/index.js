@@ -125,7 +125,7 @@ io.on('connection', function (socket) {
     io.emit('dealfield', returnarray);
 
 
-        if (field.length >= 5) {
+    if (field.length >= 5) {
       /*  
           for (i = 0; i < userid.length; i++) {
     
@@ -140,103 +140,106 @@ io.on('connection', function (socket) {
             }
           }
     */
-
-    var hand1 = userid[0];
-    var hand2 = userid[1];
-    var hand3 = userid[2];
-    var hand4 = userid[3];
-    var hand5 = userid[4];
-    var hand6 = userid[5];
-    var hand7 = userid[6];
-    var hand8 = userid[7];
-    var allplayerhands = [hand1, hand2, hand3, hand4, hand5, hand6, hand7, hand8];
-    var results = Ranker.orderHands(allplayerhands, field);
-    console.log(handstring);
-    console.log(results);
-
-  }
-
-  });
-
-
-/*         old stuff
-  io.emit('chat message', 'a user connected');
-  console.log('asdf');
-  useronline = useronline + 1;
-  io.emit('userupdate', useronline);
- 
-  socket.on('disconnect', function () {
-    io.emit('chat message', 'a user disconnected');
-    useronline = useronline - 1;
-  io.emit('userupdate', useronline);
-
-socket.on('chat message', function (msg) {
-  io.emit('chat message', msg);
-});
-});  */
-var name = userNames.getGuestName();
-
-// send the new user their name and a list of users
-socket.emit('init', {
-  name: name,
-  users: userNames.get()
-});
-
-// notify other clients that a new user has joined
-socket.broadcast.emit('user:join', {
-  name: name
-});
-
-// broadcast a user's message to other users
-socket.on('send:message', function (data) {
-  socket.broadcast.emit('send:message', {
-    user: name,
-    text: data.text
-  });
-});
-
-// validate a user's name change, and broadcast it on success
-socket.on('change:name', function (data, fn) {
-  if (userNames.claim(data.name)) {
-    var oldName = name;
-    userNames.free(oldName);
-
-    name = data.name;
-
-    socket.broadcast.emit('change:name', {
-      oldName: oldName,
-      newName: name
-    });
-
-    fn(true);
-  } else {
-    fn(false);
-  }
-});
-
-// clean up when a user leaves, and broadcast it to other users
-socket.on('disconnect', function () {
-
-
-  for (var i = 0; i < userid.length; ++i) {
-    var c = userid[i];
-
-    if (c.id == socket.id) {
-      userid.splice(i, 1);
-
-      if (returnarray[0][i] != null) {
-        returnarray[0].splice(i, 1);
+      if (userid[0] != null) {
+        var hand1 = userid[0];
       }
-      break;
-    }
-  }
+      if (userid[1] != null) {
+        var hand2 = userid[1];
+      }
+      if (userid[2] != null) {
+        var hand3 = userid[2];
+      }
+      if (userid[3] != null) {
+        var hand4 = userid[3];
+      }
+      var allplayerhands = [hand1, hand2, hand3, hand4];
+      var results = Ranker.orderHands(allplayerhands, field);
+      console.log(handstring);
+      console.log(results);
 
-  io.emit('gameconnect', returnarray);
-  socket.broadcast.emit('user:left', {
+    }
+
+  });
+
+
+  /*         old stuff
+    io.emit('chat message', 'a user connected');
+    console.log('asdf');
+    useronline = useronline + 1;
+    io.emit('userupdate', useronline);
+   
+    socket.on('disconnect', function () {
+      io.emit('chat message', 'a user disconnected');
+      useronline = useronline - 1;
+    io.emit('userupdate', useronline);
+  
+  socket.on('chat message', function (msg) {
+    io.emit('chat message', msg);
+  });
+  });  */
+  var name = userNames.getGuestName();
+
+  // send the new user their name and a list of users
+  socket.emit('init', {
+    name: name,
+    users: userNames.get()
+  });
+
+  // notify other clients that a new user has joined
+  socket.broadcast.emit('user:join', {
     name: name
   });
-  userNames.free(name);
-});
+
+  // broadcast a user's message to other users
+  socket.on('send:message', function (data) {
+    socket.broadcast.emit('send:message', {
+      user: name,
+      text: data.text
+    });
+  });
+
+  // validate a user's name change, and broadcast it on success
+  socket.on('change:name', function (data, fn) {
+    if (userNames.claim(data.name)) {
+      var oldName = name;
+      userNames.free(oldName);
+
+      name = data.name;
+
+      socket.broadcast.emit('change:name', {
+        oldName: oldName,
+        newName: name
+      });
+
+      fn(true);
+    } else {
+      fn(false);
+    }
+  });
+
+  // clean up when a user leaves, and broadcast it to other users
+  socket.on('disconnect', function () {
+
+
+    for (var i = 0; i < userid.length; ++i) {
+      var c = userid[i];
+
+      if (c.id == socket.id) {
+        userid.splice(i, 1);
+
+        if (returnarray[0][i] != null) {
+          returnarray[0].splice(i, 1);
+        }
+        break;
+      }
+    }
+
+    io.emit('gameconnect', returnarray);
+    socket.broadcast.emit('user:left', {
+      name: name
+    });
+    userNames.free(name);
+  });
 
 });
 
