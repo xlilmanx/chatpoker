@@ -10,7 +10,7 @@ class GameUsers extends React.Component {
             return (
               <div key={i} className='gameuser'>
 
-                {this.props.hand.length > 0 &&
+                {this.props.hand[i] != null &&
 
                   this.props.hand[i].map((card) => {
                     return (
