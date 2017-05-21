@@ -131,17 +131,16 @@ io.on('connection', function (socket) {
 
         if (i == 0) {
 
-          handstring = "userid[" + i + "]"
+          handstring = "userid[" + i + "].cards"
 
         } else {
 
-          handstring = handstring + ", userid[" + i + "]";
+          handstring = handstring + ", userid[" + i + "].cards";
 
         }
       }
 
       var results = Ranker.orderHands(handstring.valueOf(), field);
-
       console.log(results);
 
     }
@@ -213,7 +212,10 @@ io.on('connection', function (socket) {
 
       if (c.id == socket.id) {
         userid.splice(i, 1);
-        returnarray[0].splice(i, 1);
+
+        if (returnarray[0].length != null) {
+          returnarray[0].splice(i, 1);
+        }
         break;
       }
     }
