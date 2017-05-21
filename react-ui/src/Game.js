@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 var chat = require('./Chat.js');
 
 
-{/*
 class GameUsers extends React.Component {
   render() {
     return (
@@ -21,7 +20,7 @@ class GameUsers extends React.Component {
     );
   }
 }
-*/}
+
 
 class Deck extends React.Component {
   constructor() {
@@ -140,13 +139,13 @@ class Game extends React.Component {
         </div>
 
         <br />
-        { /*         <GameUsers
+            <GameUsers
           users={chat.state.users}
-        />       */}
-      <div className="hand">
+        />      
+        { /*   <div className="hand">
           Hand: {handhtml}
         </div>
- 
+  */}
         <button className="btn" onClick={this.handleDealHand}>Deal Hand / Restart</button>
         <button className="btn" onClick={this.handleDealField}>Deal Field</button>
         <br /><br />
