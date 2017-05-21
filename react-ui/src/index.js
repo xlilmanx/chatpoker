@@ -6,7 +6,8 @@ import io from 'socket.io-client'
 
 var socket = io();
 
+ReactDOM.render(<ChatApp socket={socket}/>, document.getElementById('app'));
 ReactDOM.render(<Game socket={socket}/>, document.getElementById('wrapper'));
 
-ReactDOM.render(<ChatApp socket={socket}/>, document.getElementById('app'));
+
 
