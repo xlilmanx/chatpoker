@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "express": "^4.15.3",
+    "handranker": "^1.0.5",
     "socket.io": "^2.0.1"
   },
   "repository": {

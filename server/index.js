@@ -8,6 +8,7 @@ var io = require('socket.io')(server);
 var PORT = process.env.PORT || 5000;
 var useronline = 0;
 
+var Ranker = require('handranker');
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
@@ -62,7 +63,8 @@ io.on('connection', function (socket) {
   //    playerhand["hand"] = hand;
   //    allhand.push(playerhand);
   var clientInfo = new Object();
-  clientInfo.clientId = socket.id;
+  clientInfo.id = socket.id;
+  clientInfo.cards = [];
   userid.push(clientInfo);
   io.emit('gameconnect', returnarray);
 
@@ -86,6 +88,14 @@ io.on('connection', function (socket) {
       deckarr.splice(num2, 1);
 
       hand = [card1, card2];
+
+      var c = userid[i];
+
+      if (c.id == socket.id) {
+        userid.cards.push(hand);
+        break;
+      }
+
 
       allhand.push(hand);
       deck = deckarr;
@@ -115,6 +125,22 @@ io.on('connection', function (socket) {
     returnarray[1] = deck;
     returnarray[2] = field;
     io.emit('dealfield', returnarray);
+
+
+    if (field.length >= 5) {
+
+      for (i = 0; i < userid.length; i++) {
+
+        var handstring = handstring + ", userid[" + i + "]";
+
+      }
+
+      var results = Ranker.orderHands(handstring, field);
+
+      console.log(results);
+
+    }
+
   });
 
 
@@ -180,7 +206,7 @@ io.on('connection', function (socket) {
     for (var i = 0; i < userid.length; ++i) {
       var c = userid[i];
 
-      if (c.clientId == socket.id) {
+      if (c.id == socket.id) {
         userid.splice(i, 1);
         returnarray[0].splice(i, 1);
         break;
