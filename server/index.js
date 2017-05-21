@@ -32,13 +32,13 @@ app.get('/', function (req, res) {
 //  Game Variables
 
 var deck = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-      "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-      "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
-      "Kc", "Kd", "Kh", "Ks"];
+  "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+  "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+  "Kc", "Kd", "Kh", "Ks"];
 var deckref = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-      "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-      "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
-      "Kc", "Kd", "Kh", "Ks"];
+  "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+  "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+  "Kc", "Kd", "Kh", "Ks"];
 var field = [];
 //var playerhand = { id: "", hand: "" }
 var allhand = [];
@@ -140,12 +140,29 @@ io.on('connection', function (socket) {
             }
           }
     */
-      var hand1 = { id: 1, cards: userid[0].cards }; // tie
-      var hand2 = { id: 2, cards: userid[1].cards }; // tie
-      var hand3 = { id: 3, cards: userid[2].cards }; // win
+
+      var hand1 = { id: 1, cards: userid[0].cards };
+      var hand2 = { id: 2, cards: userid[1].cards };
+      var hand3 = { id: 3, cards: userid[2].cards };
+      var hand4 = { id: 4, cards: userid[3].cards };
+      var hand5 = { id: 5, cards: userid[4].cards };
+      var hand6 = { id: 6, cards: userid[5].cards };
+      var hand7 = { id: 7, cards: userid[6].cards };
+      var hand8 = { id: 8, cards: userid[7].cards };
       var allplayerhands = [hand1, hand2, hand3];
 
-      var results = Ranker.orderHands(allplayerhands, field);
+      for (i = 0; i < allplayerhands.length; i++) {
+
+        var updatedplayerhands = [];
+        if (allplayerhands[i].cards != null) {
+
+          updatedplayerhands.push(allplayerhands[i]);
+
+        }
+
+      }
+
+      var results = Ranker.orderHands(updatedplayerhands, field);
       console.log(handstring);
       console.log(results);
 
