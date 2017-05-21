@@ -52,6 +52,7 @@ var num2 = 0;
 var card2 = "";
 var hand = [];
 var userid = [];
+var handstring = "";
 
 
 
@@ -128,8 +129,15 @@ io.on('connection', function (socket) {
 
       for (i = 0; i < userid.length; i++) {
 
-        var handstring = handstring + ", userid[" + i + "]";
+        if (i == 0) {
 
+          handstring = "userid[" + i + "]"
+
+        } else {
+
+          handstring = handstring + ", userid[" + i + "]";
+
+        }
       }
 
       var results = Ranker.orderHands(handstring.valueOf(), field);
