@@ -254,7 +254,7 @@ io.on('connection', function (socket) {
       if (c.id == socket.id) {
         userid.splice(i, 1);
 
-        if (returnarray[0][] != null) {
+        if (returnarray[0][i] != null) {
           returnarray[0].splice(i, 1);
         }
         break;
