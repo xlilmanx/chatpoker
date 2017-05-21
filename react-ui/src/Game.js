@@ -73,17 +73,17 @@ class Game extends React.Component {
          deckarr.splice(num2, 1);
      
          var hand = [card1, card2];
-     
-         this.setState({
-           hand: hand,
-           field: [],
-           deck: deckarr
-         });
      */
-    this.state.hand = data[0];
-    this.state.deck = data[1];
-    this.state.field = data[2];
-
+    this.setState({
+      hand: data[0],
+      field: data[2],
+      deck: data[1]
+    });
+    /*
+      this.state.hand = data[0];
+      this.state.deck = data[1];
+      this.state.field = data[2];
+  */
 
   }
 
@@ -101,9 +101,11 @@ class Game extends React.Component {
           deck: deckarr
         });
      */
-    this.state.hand = data[0];
-    this.state.deck = data[1];
-    this.state.field = data[2];
+    this.setState({
+      hand: data[0],
+      field: data[2],
+      deck: data[1]
+    });
   }
 
 
@@ -121,10 +123,10 @@ class Game extends React.Component {
 
 
   render() {
-/*    var handhtml = this.state.hand.map(function (card) {
-      return <span className="card" key={card}>{card}</span>;
-    });
-*/
+    /*    var handhtml = this.state.hand.map(function (card) {
+          return <span className="card" key={card}>{card}</span>;
+        });
+    */
     var fieldhtml = this.state.field.map(function (card) {
       return <span className="card" key={card}>{card}</span>;
     });
