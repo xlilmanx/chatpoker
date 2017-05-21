@@ -31,11 +31,11 @@ io.on('connection', function (socket) {
   // game stuff
 
   socket.on('dealhand', function () {
-    socket.broadcast.emit('dealhand');
+    socket.emit('dealhand');
   });
 
   socket.on('dealfield', function () {
-    socket.broadcast.emit('dealfield');
+    socket.emit('dealfield');
   });
 
 
