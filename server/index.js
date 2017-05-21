@@ -206,7 +206,7 @@ io.on('connection', function (socket) {
         gameinprogress = false;
         handdealt = false;
 
-        var winnername = results[0].id - 1;
+        var winnername = results[0][0].id - 1;
         console.log(winnername);
 
         io.emit('send:message', {
