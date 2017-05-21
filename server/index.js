@@ -176,14 +176,8 @@ io.on('connection', function (socket) {
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
 
-    function removePlayer() {
 
-      //    playerhand["id"] = id;
-      //    playerhand["hand"] = hand;
-      //    allhand.push(playerhand);
-      playercount = playercount - 1;
-
-    }
+    playercount = playercount - 1;
 
     socket.broadcast.emit('user:left', {
       name: name
