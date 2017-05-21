@@ -34,13 +34,13 @@ io.on('connection', function (socket) {
   game.addPlayer;
 
   socket.on('dealhand', function () {
-    var data = game.dealHand;
+    var data = game.returnarray;
     io.emit('dealhand', data);
   });
 
   socket.on('dealfield', function () {
-    var data = game.dealField;
-    io.emit('dealfield', game.dealField);
+    var data = game.returnarray;
+    io.emit('dealfield', data);
   });
 
 

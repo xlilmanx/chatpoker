@@ -58,7 +58,6 @@ function dealHand() {
     returnarray[0] = allhand;
     returnarray[1] = deck;
     returnarray[2] = field;
-    return returnarray;
 
 }
 
@@ -79,14 +78,14 @@ function dealField() {
     returnarray[0] = allhand;
     returnarray[1] = deck;
     returnarray[2] = field;
-    return returnarray;
 
 }
 
-
+/*
 module.exports = {
     addPlayer,
     removePlayer,
     dealHand,
     dealField
 }
+*/
