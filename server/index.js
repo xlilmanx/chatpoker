@@ -32,13 +32,13 @@ app.get('/', function (req, res) {
 //  Game Variables
 
 var deck = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-  "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-  "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js",
-  "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"];
+      "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+      "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+      "Kc", "Kd", "Kh", "Ks"];
 var deckref = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-  "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-  "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js",
-  "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"];
+      "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+      "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+      "Kc", "Kd", "Kh", "Ks"];
 var field = [];
 //var playerhand = { id: "", hand: "" }
 var allhand = [];
@@ -75,7 +75,7 @@ io.on('connection', function (socket) {
 
     deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
       "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-      "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+      "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
       "Kc", "Kd", "Kh", "Ks"];
     allhand = [];
 
@@ -140,13 +140,12 @@ io.on('connection', function (socket) {
             }
           }
     */
-      var hand1 = { id: 1, cards: ['Ac', '5c'] }; // tie
-      var hand2 = { id: 2, cards: ['Ad', '8d'] }; // tie
-      var hand3 = { id: 3, cards: ['Kh', 'Jc'] }; // win
-      var board = ['Th', '9h', 'Tc', '6c', 'Jh'];
+      var hand1 = { id: 1, cards: userid[0].cards }; // tie
+      var hand2 = { id: 2, cards: userid[1].cards }; // tie
+      var hand3 = { id: 3, cards: userid[2].cards }; // win
       var allplayerhands = [hand1, hand2, hand3];
 
-      var results = Ranker.orderHands(allplayerhands, board);
+      var results = Ranker.orderHands(allplayerhands, field);
       console.log(handstring);
       console.log(results);
 
