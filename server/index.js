@@ -31,11 +31,11 @@ io.on('connection', function (socket) {
   // game stuff
 
   socket.on('dealhand', function () {
-    io.emit('dealhand');
+    socket.emit('dealhand');
   });
 
   socket.on('dealfield', function () {
-    io.emit('dealfield');
+    socket.emit('dealfield');
   });
 
 
@@ -49,11 +49,11 @@ io.on('connection', function (socket) {
       io.emit('chat message', 'a user disconnected');
       useronline = useronline - 1;
     io.emit('userupdate', useronline);
-});  */
+
   socket.on('chat message', function (msg) {
     io.emit('chat message', msg);
   });
-
+});  */
   var name = userNames.getGuestName();
 
   // send the new user their name and a list of users
@@ -157,8 +157,3 @@ var userNames = (function () {
     getGuestName: getGuestName
   };
 }());
-
-// export function for listening to the socket
-module.exports = function (socket) {
-
-};
