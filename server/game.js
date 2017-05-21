@@ -55,9 +55,9 @@ function dealHand() {
     }
 
     field = [];
-    returnarray.push(allhand);
-    returnarray.push(deck);
-    returnarray.push(field);
+    returnarray[0] = allhand;
+    returnarray[1] = deck;
+    returnarray[2] = field;
     return returnarray;
 
 }
@@ -76,9 +76,9 @@ function dealField() {
     field = fieldarr;
     deck = deckarr;
 
-    returnarray.push(allhand);
-    returnarray.push(deck);
-    returnarray.push(field);
+    returnarray[0] = allhand;
+    returnarray[1] = deck;
+    returnarray[2] = field;
     return returnarray;
 
 }
