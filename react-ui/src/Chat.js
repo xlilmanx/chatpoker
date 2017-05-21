@@ -32,7 +32,7 @@ class Message extends React.Component{
 	  if (this.props.user == "APPLICATION BOT") {
 		  
 		  return (<div className="message">
-              <strong>{{this.props.text} </strong>     
+              <strong>{this.props.text} </strong>     
 	  </div>);
 		  
 	  } else {
@@ -42,7 +42,7 @@ class Message extends React.Component{
               <span>{this.props.text}</span>        
 	  </div>);}
       
-  }}
+  }
 }
 
 
