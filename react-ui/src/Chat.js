@@ -29,7 +29,7 @@ class UsersList extends React.Component{
 class Message extends React.Component{
   render() {
 
-	  if (this.props.user == APPLICATION BOT) {
+	  if (this.props.user == "APPLICATION BOT") {
 		  
 		  return (<div className="message">
               <strong>{{this.props.text} </strong>     
