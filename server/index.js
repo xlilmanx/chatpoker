@@ -43,6 +43,7 @@ var field = [];
 //var playerhand = { id: "", hand: "" }
 var allhand = [];
 var returnarray = [];
+returnarray[0] = [];
 var playercount = 0;
 var deckarr = [];
 var fieldarr = [];
@@ -131,11 +132,11 @@ io.on('connection', function (socket) {
 
         if (i == 0) {
 
-          handstring = "userid[" + i + "].cards"
+          handstring = "userid[" + i + "]"
 
         } else {
 
-          handstring = handstring + ", userid[" + i + "].cards";
+          handstring = handstring + ", userid[" + i + "]";
 
         }
       }
