@@ -50,6 +50,7 @@ var card1 = "";
 var num2 = 0;
 var card2 = "";
 var hand = [];
+var userid = [];
 
 
 
@@ -60,9 +61,9 @@ io.on('connection', function (socket) {
   //    playerhand["id"] = id;
   //    playerhand["hand"] = hand;
   //    allhand.push(playerhand);
-  var playercountid = playercount;
-  playercount = playercount + 1;
-
+  var clientInfo = new Object();
+  clientInfo.clientId = socket.id;
+  userid.push(clientInfo);
   io.emit('gameconnect', returnarray);
 
 
@@ -75,7 +76,7 @@ io.on('connection', function (socket) {
       "Kc", "Kd", "Kh", "Ks"];
     allhand = [];
 
-    for (i = 0; i < playercount; i++) {
+    for (i = 0; i < userid.length; i++) {
 
       num1 = Math.floor(Math.random() * (deckarr.length - 1));
       card1 = deckarr[num1];
@@ -176,8 +177,16 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function () {
 
 
-    playercount = playercount - 1;
-    returnarray[0].splice(playercountid, 1);
+    for (var i = 0; i < userid.length; ++i) {
+      var c = userid[i];
+
+      if (c.clientId == socket.id) {
+        userid.splice(i, 1);
+        returnarray[0].splice(i, 1);
+        break;
+      }
+    }
+
     io.emit('gameconnect', returnarray);
     socket.broadcast.emit('user:left', {
       name: name
