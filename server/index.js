@@ -8,7 +8,6 @@ var io = require('socket.io')(server);
 var PORT = process.env.PORT || 5000;
 var useronline = 0;
 
-var game = require('./game.js');
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
@@ -63,6 +62,7 @@ io.on('connection', function (socket) {
   //    allhand.push(playerhand);
   playercount = playercount + 1;
   console.log(playercount);
+  var playercountid = playercount;
   io.emit('gameconnect', returnarray);
 
 
@@ -94,7 +94,6 @@ io.on('connection', function (socket) {
     returnarray[0] = allhand;
     returnarray[1] = deck;
     returnarray[2] = field;
-    console.log(returnarray)
     io.emit('dealhand', returnarray);
   });
 
@@ -178,6 +177,8 @@ io.on('connection', function (socket) {
 
 
     playercount = playercount - 1;
+    var removeid = playercountid-1;
+    returnarray[0].splice(removeid,1)
 
     socket.broadcast.emit('user:left', {
       name: name
