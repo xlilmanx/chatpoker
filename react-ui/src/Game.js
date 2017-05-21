@@ -30,11 +30,13 @@ class Game extends React.Component {
         "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js",
         "Qc", "Qd", "Qh", "Qs", "Kc", "Kd", "Kh", "Ks"]
     };
+    this.handleDealHand = this.handleDealHand.bind(this);
+    this.handleDealField = this.handleDealField.bind(this);
   }
 
   componentDidMount() {
         socket.on('dealhand', this.dealHand);
-        socket.on('dealfield', this.dealfield);
+        socket.on('dealfield', this.dealField);
     }
 
   dealHand() {
@@ -57,7 +59,7 @@ class Game extends React.Component {
       deck: deckarr
     })
 
-    socket.emit('dealhand');
+
   }
 
   dealField() {
@@ -75,6 +77,19 @@ class Game extends React.Component {
     })
     socket.emit('dealfield');
   }
+
+  handleDealHand() {
+
+    socket.emit('dealhand');
+
+  }
+
+    handleDealField() {
+
+    socket.emit('dealfield');
+
+  }
+
 
   render() {
     var handhtml = this.state.hand.map(function (card) {
@@ -103,8 +118,8 @@ class Game extends React.Component {
         <div className="hand">
           Hand: {handhtml}
         </div>
-        <button className="btn" onClick={() => this.dealHand()}>Deal Hand / Restart</button>
-        <button className="btn" onClick={() => this.dealField()}>Deal Field</button>
+        <button className="btn" onClick={this.handleDealHand}>Deal Hand / Restart</button>
+        <button className="btn" onClick={this.handleDealField}>Deal Field</button>
         <br /><br />
         <Deck deckhtml={deckhtml} />
 
