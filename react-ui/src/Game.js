@@ -140,7 +140,7 @@ class Game extends React.Component {
 
         <br />
             <GameUsers
-          users={chat.state.users}
+          users={this.props.users}
         />      
         { /*   <div className="hand">
           Hand: {handhtml}
