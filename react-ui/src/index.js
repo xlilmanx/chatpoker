@@ -23,11 +23,11 @@ class MainWrapper extends React.Component {
 
 
     componentDidMount() {
-        this.socket.on('init', this._initialize);
-        this.socket.on('send:message', this._messageRecieve);
-        this.socket.on('user:join', this._userJoined);
-        this.socket.on('user:left', this._userLeft);
-        this.socket.on('change:name', this._userChangedName);
+        socket.on('init', this._initialize);
+        socket.on('send:message', this._messageRecieve);
+        socket.on('user:join', this._userJoined);
+        socket.on('user:left', this._userLeft);
+        socket.on('change:name', this._userChangedName);
     }
 
     _initialize(data) {
@@ -80,12 +80,12 @@ class MainWrapper extends React.Component {
         var { messages } = this.state;
         messages.push(message);
         this.setState({ messages });
-        this.socket.emit('send:message', message);
+        socket.emit('send:message', message);
     }
 
     handleChangeName(newName) {
         var oldName = this.state.user;
-        this.socket.emit('change:name', { name: newName }, (result) => {
+        socket.emit('change:name', { name: newName }, (result) => {
             if (!result) {
                 return alert('There was an error changing your name');
             }
