@@ -23,11 +23,11 @@ class MainWrapper extends React.Component {
 
 
     componentDidMount() {
-        this.props.socket.on('init', this._initialize);
-        this.props.socket.on('send:message', this._messageRecieve);
-        this.props.socket.on('user:join', this._userJoined);
-        this.props.socket.on('user:left', this._userLeft);
-        this.props.socket.on('change:name', this._userChangedName);
+        this.socket.on('init', this._initialize);
+        this.socket.on('send:message', this._messageRecieve);
+        this.socket.on('user:join', this._userJoined);
+        this.socket.on('user:left', this._userLeft);
+        this.socket.on('change:name', this._userChangedName);
     }
 
     _initialize(data) {
@@ -80,12 +80,12 @@ class MainWrapper extends React.Component {
         var { messages } = this.state;
         messages.push(message);
         this.setState({ messages });
-        this.props.socket.emit('send:message', message);
+        this.socket.emit('send:message', message);
     }
 
     handleChangeName(newName) {
         var oldName = this.state.user;
-        this.props.socket.emit('change:name', { name: newName }, (result) => {
+        this.socket.emit('change:name', { name: newName }, (result) => {
             if (!result) {
                 return alert('There was an error changing your name');
             }
@@ -99,7 +99,6 @@ class MainWrapper extends React.Component {
     render() {
         return (
             <div>
-
                 <Game
                     socket={socket}
                     users={this.state.users} />
