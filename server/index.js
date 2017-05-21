@@ -54,6 +54,7 @@ var hand = [];
 var userid = [];
 var handstring = "";
 var gameinprogress = false;
+var handdealt = false;
 
 
 
@@ -106,14 +107,15 @@ io.on('connection', function (socket) {
       returnarray[1] = deck;
       returnarray[2] = field;
       io.emit('dealhand', returnarray);
-      gameinprogress = true;
+      handdealt = true;
 
     }
   });
 
   socket.on('dealfield', function () {
 
-    if (gameinprogress) {
+    if (handdealt) {
+      gameinprogress = true;
       deckarr = deck;
       num1 = Math.floor(Math.random() * (deckarr.length - 1));
       card1 = deckarr[num1];
@@ -202,6 +204,7 @@ io.on('connection', function (socket) {
         console.log(handstring);
         console.log(results);
         gameinprogress = false;
+        handdealt = false;
 
         io.emit('send:message', {
           user: "APPLICATION BOT",
