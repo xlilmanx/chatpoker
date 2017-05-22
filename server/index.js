@@ -349,7 +349,7 @@ server.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });
 
-
+// update game stats
 var updateGame = (function () {
 
   var bets = function () {
@@ -366,6 +366,7 @@ var updateGame = (function () {
     returnbetarray.money = allmoney;
     returnbetarray.bet = allbet;
     io.emit('updateBet', returnbetarray);
+    return true;
   };
 
 }());
