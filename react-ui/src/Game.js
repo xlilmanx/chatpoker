@@ -11,7 +11,7 @@ class GameUsers extends React.Component {
               <div className='gameusercontainer'>
                 <div className='gameuser'>
                   <strong>{user}</strong> <br />
-                  {this.props.money[i]}
+                  ${this.props.money[i]}
                 </div>
                 <div>
                   {this.props.hand[i] != null &&
@@ -172,7 +172,7 @@ class Game extends React.Component {
       var fieldhtml = this.state.field.map(function (card) {
         return (
           <div>
-            <span className="fieldcard" key={card}>{card}</span>
+            <span className="fieldcards" key={card}>{card}</span>
             <span class="spacer">&nbsp;</span>
           </div>
         );
@@ -210,7 +210,7 @@ class Game extends React.Component {
               this.state.deck.length}
           </div>
 
-        </div> <br /><br />
+        </div> <br />
         <Betting
           handleBet={this.handleBet}
           money={this.state.money[this.state.playerid]}
