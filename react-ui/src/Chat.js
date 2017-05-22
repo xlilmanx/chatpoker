@@ -148,7 +148,7 @@ class ChatApp extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='chatapp'>
                 <div className='right-panel'>
 
                     <UsersList

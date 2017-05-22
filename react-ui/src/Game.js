@@ -38,7 +38,7 @@ class GameUsers extends React.Component {
 class Betting extends React.Component {
   render() {
     return (
-      <div>
+      <div className='betting'>
         <div>Betting</div>
         <div><button className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button></div>
         <br />
