@@ -92,7 +92,7 @@ io.on('connection', function (socket) {
 
   }
   returnarray[3] = allmoney;
-  returnarry[4] = allbet;
+  returnarray[4] = allbet;
   io.emit('updateBet', returnarray);
 
   // betting, dealing hand, dealing card
@@ -125,7 +125,7 @@ io.on('connection', function (socket) {
 
     }
     returnarray[3] = allmoney;
-    returnarry[4] = allbet;
+    returnarray[4] = allbet;
     io.emit('updateBet', returnarray);
 
   });
