@@ -375,6 +375,10 @@ var updateGame = (function () {
     returnbetarray.bet = allbet;
   };
 
+    return {
+    
+  };
+
 }());
 
 // Keep track of which names are used so that there are no duplicates
