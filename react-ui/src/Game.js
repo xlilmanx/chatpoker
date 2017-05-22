@@ -198,7 +198,7 @@ class Game extends React.Component {
         <Deck deckhtml={deckhtml} />
 
         <div className="cardsleft">
-          Cards Left in Deck: {this.props.hand[i] != null &&
+          Cards Left in Deck: {this.state.deck != null &&
             this.state.deck.length}
         </div> <br /><br />
 

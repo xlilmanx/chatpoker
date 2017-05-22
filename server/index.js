@@ -81,6 +81,7 @@ io.on('connection', function (socket) {
   // inital connection update game/bet
 
   io.emit('updateGame', returnarray);
+  
   allmoney = [];
   allbet = [];
 
@@ -89,8 +90,8 @@ io.on('connection', function (socket) {
     allmoney.push(userid[i].money);
     allbet.push(userid[i].bet);
 
-
   }
+
   returnarray[3] = allmoney;
   returnarray[4] = allbet;
   io.emit('updateBet', returnarray);
