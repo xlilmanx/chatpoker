@@ -24,16 +24,16 @@ class GameUsers extends React.Component {
                 {user}
 
                 <br />
-                {this.props.bet}
-   {/*             {this.props.bet[i] != null &&
 
-                  this.props.bet[i].map((betamount) => {
-                    return (
-                      <span>${betamount}</span>
-                    );
-                  })
+                ${this.props.bet[i] != null &&
 
-   }*/}
+                  <span>this.props.bet[i]</span>
+
+                }{this.props.bet[i] = null &&
+
+                  <span>0</span>
+
+                }
               </div>
             );
           })}
@@ -42,6 +42,7 @@ class GameUsers extends React.Component {
   }
 }
 
+if (this.props.bet[i] != null) { 'msg' }
 
 class Betting extends React.Component {
   render() {
@@ -122,7 +123,7 @@ class Game extends React.Component {
 
   updateBet(data) {
 
-    
+
     if (data.length == 0) {
 
     } else {
