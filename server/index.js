@@ -286,11 +286,24 @@ io.on('connection', function (socket) {
 
         }
 
-        io.emit('updateBet', returnbetarray);
+
         io.emit('send:message', {
           user: "APPLICATION BOT",
           text: winnername + " has won $" + totalmoneywon + " with " + winninghand + "!"
         });
+
+        allmoney = [];
+        allbet = [];
+
+        for (var i = 0; i < userid.length; i++) {
+
+          allmoney.push(userid[i].money);
+          allbet.push(userid[i].bet);
+
+        }
+        returnbetarray[0] = allmoney;
+        returnbetarray[1] = allbet;
+        io.emit('updateBet', returnbetarray);
 
       }
     }

@@ -25,13 +25,7 @@ class GameUsers extends React.Component {
 
                 <br />
 
-                {this.props.bet[i] != null &&
-
-                  <span>${this.props.bet[i]}</span>
-
-                }{this.props.bet[i] = null &&
-
-                  <span>0</span>
+                <span>${this.props.bet[i]}</span>
 
                 }
               </div>
@@ -128,9 +122,6 @@ class Game extends React.Component {
 
     } else {
 
-      console.log(data[0]);
-      console.log(data[1]);
-
       this.setState({
         money: data[0],
         bet: data[1]
@@ -156,7 +147,7 @@ class Game extends React.Component {
   }
 
   handleBet(amount) {
-    console.log('handle bet');
+
     this.props.socket.emit('dobet', amount);
 
   }
