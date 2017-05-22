@@ -27,7 +27,7 @@ class GameUsers extends React.Component {
 
                 ${this.props.bet[i] != null &&
 
-                  <span>this.props.bet[i]</span>
+                  <span>{this.props.bet[i]}</span>
 
                 }{this.props.bet[i] = null &&
 
