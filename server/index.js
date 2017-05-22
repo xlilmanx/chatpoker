@@ -370,7 +370,7 @@ var updateGame = (function () {
   };
 
     return {
-    
+    bet: returnbetarray
   };
 
 }());
