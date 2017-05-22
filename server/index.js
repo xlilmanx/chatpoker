@@ -175,7 +175,7 @@ io.on('connection', function (socket) {
 
         io.emit('send:message', {
           user: "APPLICATION BOT",
-          text: winnername + " has won $" + totalmoneywon + " with " + winninghand + "!"
+          text: winner.name + " has won $" + winner.totalwon + " with " + winner.hand + "!"
         });
 
         updateGame.bets();
@@ -362,14 +362,14 @@ var updateGame = (function () {
 
     winner.id = userid[results[0][0].id - 1]
     winner.name = winner.name;
-    winning.hand = results[0][0].description;
+    winner.hand = results[0][0].description;
     winner.totalwon = 0;
 
     //handle bet after match end
     for (i = 0; i < userid.length; i++) {
 
-      winner.money = winner.money + userid[i].bet;
-      totalmoneywon = totalmoneywon + userid[i].bet;
+      winner.id.money = winner.id.money + userid[i].bet;
+      winner.totalwon = winner.totalwon + userid[i].bet;
       userid[i].bet = 0;
 
     }
