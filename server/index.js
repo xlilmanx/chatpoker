@@ -53,7 +53,7 @@ var allmoney = [];
 var allbet = [];
 var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0 };
 // waitingtostart, preflop, flop, turn, river
-var gamedata = {gamestate: "waitingtostart", currentbet: 0, dealer: 0};
+var gamedata = { gamestate: "waitingtostart", currentbet: 0, dealer: 0 };
 var smallblind = 1;
 var bigblind = 2;
 
@@ -83,7 +83,6 @@ io.on('connection', function (socket) {
   // update bets
 
   updateGame.bets();
-  io.emit('updateBet', returnbetarray);
 
   // betting, dealing hand, dealing card
 
@@ -101,7 +100,6 @@ io.on('connection', function (socket) {
     }
 
     updateGame.bets();
-    io.emit('updateBet', returnbetarray);
 
   });
 
@@ -276,6 +274,8 @@ var updateGame = (function () {
     }
     returnbetarray.money = allmoney;
     returnbetarray.bet = allbet;
+
+    io.emit('updateBet', returnbetarray);
   };
 
   var gamedata = function () {
@@ -350,7 +350,7 @@ var updateGame = (function () {
     var results = Ranker.orderHands(allplayerhands, field);
 
     winner.id = userid[results[0][0].id - 1]
-    winner.name = winner.id.name;
+    winner.idname = winner.id.name;
     winner.hand = results[0][0].description;
     winner.totalwon = 0;
 
@@ -363,13 +363,12 @@ var updateGame = (function () {
 
     }
 
-            io.emit('send:message', {
-          user: "APPLICATION BOT",
-          text: winner.name + " has won $" + winner.totalwon + " with " + winner.hand + "!"
-        });
+    io.emit('send:message', {
+      user: "APPLICATION BOT",
+      text: winner.idname + " has won $" + winner.totalwon + " with " + winner.hand + "!"
+    });
 
-        updateGame.bets();
-        io.emit('updateBet', returnbetarray);
+    updateGame.bets();
   };
 
   return {
