@@ -8,25 +8,23 @@ class GameUsers extends React.Component {
         {
           this.props.users.map((user, i) => {
             return (
-              <div key={i} className='gameuser'>
+              <div className='gameusercontainer'>
+                <div className='gameuser'>
+                  <strong>{user}</strong> <br />
+                  {this.props.money[i]}
+                </div>
+                <div>
+                  {this.props.hand[i] != null &&
 
-                {this.props.hand[i] != null &&
-
-                  this.props.hand[i].map((card) => {
-                    return (
-                      <span className="card" key={card}>{card}</span>
-                    );
-                  })
-
-                }
-
-                <br />
-                {user}
-
-                <br />
-
-                <span>${this.props.bet[i]}</span>
-
+                    this.props.hand[i].map((card) => {
+                      return (
+                        <span className="playercards" key={card}>{card}</span>
+                      );
+                    })
+                  }
+                  <br />
+                  <span class="betamount">${this.props.bet[i]}</span>
+                </div>
               </div>
             );
           })}
@@ -42,7 +40,7 @@ class Betting extends React.Component {
     return (
       <div>
         <div>Betting</div>
-        <div><button className="btn" onClick={() => this.props.handleBet(1)}>Bet $1</button></div>
+        <div><button className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button></div>
         <br />
         Total Money: ${this.props.money}
       </div>
@@ -172,49 +170,53 @@ class Game extends React.Component {
     */
     if (this.state.field != null) {
       var fieldhtml = this.state.field.map(function (card) {
-        return <span className="card" key={card}>{card}</span>;
+        return (
+          <div>
+            <span className="fieldcard" key={card}>{card}</span>
+            <span class="spacer">&nbsp;</span>
+          </div>
+        );
       });
     }
+
+
     if (this.state.deck != null) {
       var deckhtml = this.state.deck.map(function (card) {
         return <span className="card" key={card}>{card}</span>;
       });
     }
     return (
-      <div className="game">
-        <div className="instructions">
-          To play: press "Deal Hand / Restart" button to get your initial hand. Then press "Deal Field" to add a card to the community. You need to press 3 times for flop, then 1 more time each for turn and river. After 5 cards, then press "Deal Hand / Restart".
-        </div>
-        <div className="field">
-          <div>Field: </div>
-          {fieldhtml}
-        </div>
-
-        <br />
+      <div>
+        <h1>Poker Game</h1>
         <GameUsers
           users={this.props.users}
           hand={this.state.hand}
           bet={this.state.bet}
+          money={this.state.money}
         />
-        { /*   <div className="hand">
-          Hand: {handhtml}
-        </div>
-  */}
-        <button className="btn" onClick={this.handleDealHand}>Deal Hand / Restart</button>
-        <button className="btn" onClick={this.handleDealField}>Deal Field</button>
-        <br /><br />
-        <Deck deckhtml={deckhtml} />
 
-        <div className="cardsleft">
-          Cards Left in Deck: {this.state.deck != null &&
-            this.state.deck.length}
+
+        <div className='fieldarea'>
+          {fieldhtml}
+
+          <div className='dealbuttons'>
+            <button className="button" onClick={this.handleDealHand}>Deal Hand</button>
+            <button className="button" onClick={this.handleDealField}>Deal Field</button>
+          </div>
+          <br /> <br />
+
+          <div className='cardsleft'>
+            Cards Left in Deck: {this.state.deck != null &&
+              this.state.deck.length}
+          </div>
+
         </div> <br /><br />
-
         <Betting
           handleBet={this.handleBet}
           money={this.state.money[this.state.playerid]}
         />
       </div>
+
     );
   }
 }

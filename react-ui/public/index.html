@@ -48,36 +48,96 @@
 			line-height: 25px;
 		}
 
-		.instructions {
-			line-height: 13px;
-			font-size: 13px;
-			color: dodgerblue;
-		}
-
-		.card {
-			border: 1px solid black;
-			padding: 3px;
-		}
-
-		.btn {
-			margin: 5px;
-		}
-
-		.deck {
-			width: 600px;
-			display: block;
-			word-wrap: normal;
-		}
-		
 		.gameuserlist {
-			width: 600px;
-			float: left;
+			display: inline;
+		}
+
+		.gameusercontainer {
+			display: block;
+			text-align: center;
+			width: 250px;
+			padding: 10px;
+			overflow: hidden;
 		}
 
 		.gameuser {
-			display: inline-block;
+			width: 150px;
+			float: left;
+		}
+
+		.playercards {
+			border: 1px solid black;
+			padding: 3px;
 			text-align: center;
-			width: 100px;
+			margin-top: 10px;
+		}
+
+		.betamount {
+			margin: 5px;
+			line-height: 2;
+		}
+
+		.fieldarea {
+			float: left;
+			padding-left: 50px;
+			width: 650px;
+		}
+
+		.fieldcards {
+			border: 1px solid black;
+			padding: 20px;
+			text-align: center;
+			margin-top: 25px;
+			float: left;
+			font-size: 200%;
+		}
+
+		.spacer {
+			padding: 20px;
+			text-align: center;
+			margin-top: 25px;
+			float: left;
+			font-size: 200%;
+		}
+
+		.dealbuttons {
+			clear: both;
+			padding-top: 75px;
+			text-align: center;
+			padding-right: 50px;
+		}
+
+		.cardsleft {
+			clear: both;
+			text-align: center;
+			padding-right: 50px;
+		}
+
+		.button {
+			background-color: #4CAF50;
+			/* Green */
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 10px;
+			-webkit-transition-duration: 0.4s;
+			/* Safari */
+			transition-duration: 0.4s;
+		}
+
+		.button:hover {
+			background-color: #39843c;
+			/* Green */
+			color: white;
+		}
+
+		.disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
 		}
 	</style>
 </head>
