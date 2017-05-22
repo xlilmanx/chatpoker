@@ -24,7 +24,8 @@ class GameUsers extends React.Component {
                 {user}
 
                 <br />
-                {this.props.bet[i] != null &&
+                {this.props.bet}
+   {/*             {this.props.bet[i] != null &&
 
                   this.props.bet[i].map((betamount) => {
                     return (
@@ -32,7 +33,7 @@ class GameUsers extends React.Component {
                     );
                   })
 
-                }
+   }*/}
               </div>
             );
           })}
