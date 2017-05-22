@@ -73,9 +73,12 @@ io.on('connection', function (socket) {
   clientInfo.bet = 0;
   userid.push(clientInfo);
 
+  var clientNumber = -1;
+
   for (var i = 0; i < userid.length; i++) {
     if (userid[i].id === socket.id) {
       clientNumber = i;
+      socket.emit('updatePlayerId', i);
     }
   }
 
@@ -395,6 +398,7 @@ io.on('connection', function (socket) {
       if (userid[i].id === socket.id) {
         clientNumber = i;
         userid[clientNumber].name = name;
+        socket.emit('updatePlayerId', i);
       }
     }
 

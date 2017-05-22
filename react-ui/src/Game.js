@@ -82,19 +82,32 @@ class Game extends React.Component {
         "Kc", "Kd", "Kh", "Ks"],
       users: [],
       money: [],
-      bet: []
+      bet: [],
+      playerid: 0
     };
     this.updateGame = this.updateGame.bind(this);
     this.updateBet = this.updateBet.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
     this.handleBet = this.handleBet.bind(this);
+    this.updatePlayerId = this.updatePlayerId.bind(this);
   }
 
   componentDidMount() {
 
     this.props.socket.on('updateGame', this.updateGame);
     this.props.socket.on('updateBet', this.updateBet);
+    this.props.socket.on('updatePlayerId', this.updatePlayerId);
+
+  }
+
+  updatePlayerId(data) {
+
+    this.setState({
+
+      playerid: data
+
+    })
 
   }
 
@@ -199,7 +212,7 @@ class Game extends React.Component {
 
         <Betting
           handleBet={this.handleBet}
-          money={this.state.money}
+          money={this.state.money[this.state.playerid]}
         />
       </div>
     );
