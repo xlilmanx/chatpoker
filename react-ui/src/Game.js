@@ -40,7 +40,13 @@ class Betting extends React.Component {
     return (
       <div className='betting'>
         <div>Betting</div>
-        <div><button className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button></div>
+        <div className='bettingbutton'>
+          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
+          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
+          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.currentbet - this.props.playerbet)}>Call</button>
+          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
+          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
+        </div>
         <br />
         Total Money: ${this.props.money}
       </div>
@@ -81,21 +87,38 @@ class Game extends React.Component {
       users: [],
       money: [],
       bet: [],
-      playerid: 0
+      playerid: 0,
+      phase: "",
+      currentbet: 0,
+      dealer: 0,
+      turn: 0,
+      isdealer: false,
+      isturn: false,
+      dealhand: false,
+      dealfield: false
+
     };
+    this.updatePhase = this.updatePhase.bind(this);
     this.updateGame = this.updateGame.bind(this);
     this.updateBet = this.updateBet.bind(this);
+    this.handleStartGame = this.handleStartGame.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
     this.handleBet = this.handleBet.bind(this);
+    this.handleFold = this.handleFold.bind(this);
     this.updatePlayerId = this.updatePlayerId.bind(this);
+    this.toggleDealHand = this.toggleDealHand.bind(this);
+    this.toggleDealField = this.toggleDealField.bind(this);
   }
 
   componentDidMount() {
 
+    this.props.socket.on('updatePhase', this.updatePhase);
     this.props.socket.on('updateGame', this.updateGame);
     this.props.socket.on('updateBet', this.updateBet);
     this.props.socket.on('updatePlayerId', this.updatePlayerId);
+    this.props.socket.on('toggleDealHand', this.updatePlayerId);
+    this.props.socket.on('toggleDealField', this.updatePlayerId);
 
   }
 
@@ -108,6 +131,64 @@ class Game extends React.Component {
     })
 
   }
+
+  updatePhase(data) {
+
+    var refisturn = false;
+    if (data.turn = this.state.playerid) {
+      refisturn = true;
+    } else {
+      refisturn = false;
+    }
+
+    var refisdealer = false;
+    if (data.dealer = this.state.playerid) {
+      refisdealer = true;
+    } else {
+      refisdealer = false;
+    }
+
+    this.setState({
+
+      phase: data.phase,
+      currentbet: data.currentbet,
+      dealer: data.dealer,
+      turn: data.turn,
+      isturn: refisturn,
+      isdealer: refisdealer
+
+    })
+
+  }
+
+  toggleDealField() {
+
+    if (this.state.dealfield = true) {
+      this.setState({
+        dealfield: false
+      })
+    } else {
+      this.setState({
+        dealfield: true
+      })
+    }
+
+  }
+
+  toggleDealHand() {
+
+    if (this.state.dealhand = true) {
+      this.setState({
+        dealhand: false
+      })
+    } else {
+      this.setState({
+        dealhand: true
+      })
+    }
+
+  }
+
 
   updateGame(data) {
 
@@ -142,7 +223,11 @@ class Game extends React.Component {
 
   }
 
+  handleDealHand() {
 
+    this.props.socket.emit('startgame');
+
+  }
 
   handleDealHand() {
 
@@ -161,6 +246,13 @@ class Game extends React.Component {
     this.props.socket.emit('dobet', amount);
 
   }
+
+  handleFold() {
+
+    this.props.socket.emit('fold');
+
+  }
+
 
 
   render() {
@@ -200,8 +292,9 @@ class Game extends React.Component {
           <div className='fieldcardcontainer'>{fieldhtml}
           </div>
           <div className='dealbuttons'>
-            <button className="button" onClick={this.handleDealHand}>Deal Hand</button>
-            <button className="button" onClick={this.handleDealField}>Deal Field</button>
+            <button className="startbutton" disabled={!this.props.dealhand || !this.props.isdealer} onClick={this.handleStartGame}>Deal Hand</button>
+            <button className="button" disabled={!this.props.dealhand || !this.props.isdealer} onClick={this.handleDealHand}>Deal Hand</button>
+            <button className="button" disabled={!this.props.dealfield || !this.props.isdealer} onClick={this.handleDealField}>Deal Field</button>
           </div>
           <br /> <br />
 
@@ -213,7 +306,11 @@ class Game extends React.Component {
         </div> <br />
         <Betting
           handleBet={this.handleBet}
+          handleFold={this.handleFold}
           money={this.state.money[this.state.playerid]}
+          isturn={this.state.isturn}
+          currentbet={this.state.currentbet}
+          playerbet={this.state.bet[this.state.playerid]}
         />
       </div>
 
