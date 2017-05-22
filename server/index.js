@@ -210,6 +210,7 @@ io.on('connection', function (socket) {
           field = fieldarr;
           deck = deckarr;
         }
+        gamedata.phase = "turn";
       }
 
       else {
@@ -224,6 +225,7 @@ io.on('connection', function (socket) {
 
         field = fieldarr;
         deck = deckarr;
+        gamedata.phase = "river";
 
       }
 
