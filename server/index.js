@@ -51,6 +51,7 @@ var returnarray = { hand: [], deck: [], field: [] };
 var returnbetarray = { money: [], bet: [] };
 var allmoney = [];
 var allbet = [];
+var winner = { id: 0, name: name, hand: hand, totalwon: 0 };
 // waitingtostart, preflop, flop, turn, river
 var gamestate = "waitingtostart";
 var currentbet = 0;
@@ -359,10 +360,10 @@ var updateGame = (function () {
 
     var results = Ranker.orderHands(allplayerhands, field);
 
-    var winner = userid[results[0][0].id - 1]
-    var winnername = winner.name;
-    var winninghand = results[0][0].description;
-    var totalmoneywon = 0;
+    winner.id = userid[results[0][0].id - 1]
+    winner.name = winner.name;
+    winning.hand = results[0][0].description;
+    winner.totalwon = 0;
 
     //handle bet after match end
     for (i = 0; i < userid.length; i++) {
