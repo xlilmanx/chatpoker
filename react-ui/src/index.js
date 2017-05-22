@@ -103,6 +103,7 @@ class MainWrapper extends React.Component {
                 <Game
                     socket={socket}
                     users={this.state.users} />
+                    <br />
                 <ChatApp
                     socket={socket}
                     users={this.state.users}
