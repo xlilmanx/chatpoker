@@ -23,14 +23,8 @@ app.get('/api', function (req, res) {
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
-/*
-app.get('/', function (req, res) {
-  res.sendFile(__dirname, '../react-ui/public/index.html');
-});
-*/
 
 //  Game Variables
-
 var deck = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
   "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
   "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
@@ -40,7 +34,6 @@ var deckref = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h",
   "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
   "Kc", "Kd", "Kh", "Ks"];
 var field = [];
-//var playerhand = { id: "", hand: "" }
 var allhand = [];
 var returnarray = [];
 var playercount = 0;
@@ -58,8 +51,12 @@ var handdealt = false;
 var returnbetarray = [];
 var allmoney = [];
 var allbet = [];
-
-
+// waitingtostart, preflop, flop, turn, river
+var gamestate = "waitingtostart";
+var currentbet = 0;
+var dealer = 0;
+var smallblind = 1;
+var bigblind = 2;
 
 io.on('connection', function (socket) {
 
@@ -74,7 +71,6 @@ io.on('connection', function (socket) {
   userid.push(clientInfo);
 
 
-
   for (var i = 0; i < userid.length; i++) {
     if (userid[i].id === socket.id) {
       clientNumber = i;
@@ -86,24 +82,21 @@ io.on('connection', function (socket) {
 
   io.emit('updateGame', returnarray);
 
-  // if game in progress update bets
+  // update bets
 
+  allmoney = [];
+  allbet = [];
 
+  for (var i = 0; i < userid.length; i++) {
 
-    allmoney = [];
-    allbet = [];
+    allmoney.push(userid[i].money);
+    allbet.push(userid[i].bet);
 
-    for (var i = 0; i < userid.length; i++) {
+  }
 
-      allmoney.push(userid[i].money);
-      allbet.push(userid[i].bet);
-
-    }
-
-    returnbetarray[0] = allmoney;
-    returnbetarray[1] = allbet;
-    io.emit('updateBet', returnbetarray);
-  
+  returnbetarray[0] = allmoney;
+  returnbetarray[1] = allbet;
+  io.emit('updateBet', returnbetarray);
 
   // betting, dealing hand, dealing card
 
@@ -199,20 +192,6 @@ io.on('connection', function (socket) {
 
 
       if (field.length >= 5) {
-        /*  
-            for (i = 0; i < userid.length; i++) {
-      
-              if (i == 0) {
-      
-                handstring = "userid[" + i + "]";
-      
-              } else {
-      
-                handstring = handstring + ", userid[" + i + "]";
-      
-              }
-            }
-      */
 
         var allplayerhands = [];
         if (userid[0] != null) {
@@ -263,7 +242,18 @@ io.on('connection', function (socket) {
             allplayerhands.push(hand8);
           }
         }
-
+        if (userid[8] != null) {
+          if (userid[8].cards != null) {
+            var hand8 = { id: 9, cards: userid[8].cards };
+            allplayerhands.push(hand8);
+          }
+        }
+        if (userid[9] != null) {
+          if (userid[9].cards != null) {
+            var hand8 = { id: 10, cards: userid[9].cards };
+            allplayerhands.push(hand8);
+          }
+        }
 
         var results = Ranker.orderHands(allplayerhands, field);
 
@@ -307,22 +297,6 @@ io.on('connection', function (socket) {
     }
   });
 
-
-  /*         old stuff
-    io.emit('chat message', 'a user connected');
-    console.log('asdf');
-    useronline = useronline + 1;
-    io.emit('userupdate', useronline);
-   
-    socket.on('disconnect', function () {
-      io.emit('chat message', 'a user disconnected');
-      useronline = useronline - 1;
-    io.emit('userupdate', useronline);
-  
-  socket.on('chat message', function (msg) {
-    io.emit('chat message', msg);
-  });
-  });  */
   var name = userNames.getGuestName();
 
 
