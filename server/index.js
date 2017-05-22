@@ -51,11 +51,9 @@ var returnarray = { hand: [], deck: [], field: [] };
 var returnbetarray = { money: [], bet: [] };
 var allmoney = [];
 var allbet = [];
-var winner = { id: 0, name: name, hand: hand, totalwon: 0 };
+var winner = { id: 0, name: "name", hand: "hand", totalwon: 0 };
 // waitingtostart, preflop, flop, turn, river
-var gamestate = "waitingtostart";
-var currentbet = 0;
-var dealer = 0;
+var gamedata = {gamestate: "waitingtostart", currentbet: 0, dealer: 0};
 var smallblind = 1;
 var bigblind = 2;
 
