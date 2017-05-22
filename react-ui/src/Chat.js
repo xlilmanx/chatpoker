@@ -47,6 +47,18 @@ class Message extends React.Component {
 
 
 class MessageList extends React.Component {
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        const scrollHeight = this.messageList.scrollHeight;
+        const height = this.messageList.clientHeight;
+        const maxScrollTop = scrollHeight - height;
+        this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
+    
     render() {
         return (
             <div className='messages' ref={(div) => {
@@ -175,7 +187,4 @@ class ChatApp extends React.Component {
 }
 
 
-export {
-    ChatApp,
-    MessageList
-}
+export default ChatApp;
