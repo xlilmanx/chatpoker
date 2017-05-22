@@ -61,7 +61,7 @@ class Game extends React.Component {
         "Kc", "Kd", "Kh", "Ks"],
       users: []
     };
-    this.gameConnect = this.gameConnect.bind(this);
+    this.updateGame = this.updateGame.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
   }
