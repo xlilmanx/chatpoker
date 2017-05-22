@@ -26,9 +26,9 @@ class GameUsers extends React.Component {
                 <br />
                 {this.props.bet[i] != null &&
 
-                  this.props.bet[i].map((bet) => {
+                  this.props.bet[i].map((betamount) => {
                     return (
-                      <span >${bet}</span>
+                      <span>${betamount}</span>
                     );
                   })
 
