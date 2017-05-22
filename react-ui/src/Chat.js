@@ -58,7 +58,7 @@ class MessageList extends React.Component {
         const maxScrollTop = scrollHeight - height;
         this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
-    
+
     render() {
         return (
             <div className='messages' ref={(div) => {
@@ -113,7 +113,7 @@ class MessageForm extends React.Component {
                     <input
                         onChange={this.changeHandler}
                         value={this.state.text}
-                        size="30"
+                        className='messageforminput'
                     />
                 </form>
             </div>
