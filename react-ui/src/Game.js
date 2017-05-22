@@ -198,7 +198,8 @@ class Game extends React.Component {
         <Deck deckhtml={deckhtml} />
 
         <div className="cardsleft">
-          Cards Left in Deck: {this.state.deck.length}
+          Cards Left in Deck: {this.props.hand[i] != null &&
+            this.state.deck.length}
         </div> <br /><br />
 
         <Betting
