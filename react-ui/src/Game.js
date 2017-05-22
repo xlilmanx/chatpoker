@@ -22,10 +22,36 @@ class GameUsers extends React.Component {
 
                 <br />
                 {user}
+
+                <br />
+                {this.props.bet[i] != null &&
+
+                  this.props.bet[i].map((bet) => {
+                    return (
+                      <span >${bet}</span>
+                    );
+                  })
+
+                }
               </div>
             );
           })}
       </div>
+    );
+  }
+}
+
+
+class Betting extends React.Component {
+  render() {
+    return (
+      <div>
+        <div>Betting</div>
+        <div><button className="btn" onClick={() => this.props.handleBet(1)}>Bet $1</button></div>
+        <br />
+        Total Money: ${this.props.money}
+      </div>
+
     );
   }
 }
@@ -59,11 +85,14 @@ class Game extends React.Component {
         "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
         "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
         "Kc", "Kd", "Kh", "Ks"],
-      users: []
+      users: [],
+      money: 0,
+      bet: 0
     };
     this.updateGame = this.updateGame.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
+    this.handleBet = this.handleBet.bind(this);
   }
 
   componentDidMount() {
@@ -88,6 +117,22 @@ class Game extends React.Component {
 
   }
 
+  updateBet(data) {
+
+    if (data.length == 0) {
+
+    } else {
+
+      this.setState({
+        money: data[3],
+        bet: data[4]
+      });
+
+    }
+
+
+  }
+
 
 
   handleDealHand() {
@@ -99,6 +144,12 @@ class Game extends React.Component {
   handleDealField() {
 
     this.props.socket.emit('dealfield');
+
+  }
+
+  handleBet(amount) {
+
+    this.props.socket.emit('dobet', amount);
 
   }
 
@@ -132,6 +183,7 @@ class Game extends React.Component {
         <GameUsers
           users={this.props.users}
           hand={this.state.hand}
+          bet={this.state.bet}
         />
         { /*   <div className="hand">
           Hand: {handhtml}
@@ -144,7 +196,12 @@ class Game extends React.Component {
 
         <div className="cardsleft">
           Cards Left in Deck: {this.state.deck.length}
-        </div>
+        </div> <br /><br />
+
+        <Betting
+          handleBet={this.handleBet}
+          money={this.state.money}
+        />
       </div>
     );
   }

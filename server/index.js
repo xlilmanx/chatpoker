@@ -67,6 +67,7 @@ io.on('connection', function (socket) {
   clientInfo.cards = [];
   clientInfo.name = "";
   clientInfo.money = 100;
+  clientInfo.bet = 0;
   userid.push(clientInfo);
 
   for (var i = 0; i < userid.length; i++) {
@@ -76,6 +77,23 @@ io.on('connection', function (socket) {
   }
 
   io.emit('updateGame', returnarray);
+
+  socket.on('dobet', function (data) {
+
+    for (var i = 0; i < userid.length; ++i) {
+      var c = userid[i];
+
+      if (c.id == socket.id) {
+
+        userid[i].money = userid[i].money - data;
+        userid[i].bet = userid[i].bet + data;
+
+      }
+    }
+
+    io.emit('updateBet', returnarray);
+
+  });
 
 
   socket.on('dealhand', function () {
