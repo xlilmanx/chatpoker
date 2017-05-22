@@ -42,7 +42,7 @@ class GameUsers extends React.Component {
   }
 }
 
-if (this.props.bet[i] != null) { 'msg' }
+
 
 class Betting extends React.Component {
   render() {
