@@ -171,7 +171,7 @@ class Game extends React.Component {
     if (this.state.field != null) {
       var fieldhtml = this.state.field.map(function (card) {
         return (
-          <div className='fieldcardcontainer'>
+          <div>
             <span className="fieldcards" key={card}>{card}</span>
             <span className="spacer">&nbsp;</span>
           </div>
@@ -197,8 +197,8 @@ class Game extends React.Component {
 
 
         <div className='fieldarea'>
-          {fieldhtml}
-
+          <div className='fieldcardcontainer'>{fieldhtml}
+          </div>
           <div className='dealbuttons'>
             <button className="button" onClick={this.handleDealHand}>Deal Hand</button>
             <button className="button" onClick={this.handleDealField}>Deal Field</button>
