@@ -129,10 +129,8 @@ io.on('connection', function (socket) {
 
         hand = [card1, card2];
 
-
         var c = userid[i];
         c.cards = hand;
-
 
         allhand.push(hand);
         deck = deckarr;
@@ -171,7 +169,6 @@ io.on('connection', function (socket) {
 
         gameinprogress = false;
         handdealt = false;
-
 
         io.emit('send:message', {
           user: "APPLICATION BOT",
@@ -361,7 +358,7 @@ var updateGame = (function () {
     var results = Ranker.orderHands(allplayerhands, field);
 
     winner.id = userid[results[0][0].id - 1]
-    winner.name = winner.name;
+    winner.name = winner.id.name;
     winner.hand = results[0][0].description;
     winner.totalwon = 0;
 
