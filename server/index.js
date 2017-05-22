@@ -69,6 +69,7 @@ io.on('connection', function (socket) {
   clientInfo.money = 100;
   clientInfo.bet = 0;
   userid.push(clientInfo);
+  var doUpdateGame = updateGame.initiate();
 
 
   for (var i = 0; i < userid.length; i++) {
@@ -85,7 +86,7 @@ io.on('connection', function (socket) {
   // update bets
 
   updateGame.bets();
-      io.emit('updateBet', returnbetarray);
+  io.emit('updateBet', returnbetarray);
 
   // betting, dealing hand, dealing card
 
@@ -103,7 +104,7 @@ io.on('connection', function (socket) {
     }
 
     updateGame.bets();
-        io.emit('updateBet', returnbetarray);
+    io.emit('updateBet', returnbetarray);
 
   });
 
@@ -259,7 +260,7 @@ io.on('connection', function (socket) {
         });
 
         updateGame.bets();
-            io.emit('updateBet', returnbetarray);
+        io.emit('updateBet', returnbetarray);
 
       }
     }
@@ -355,6 +356,10 @@ server.listen(PORT, function () {
 // update game stats
 var updateGame = (function () {
 
+  var initiate = function () {
+    return true;
+  };
+
   var bets = function () {
     allmoney = [];
     allbet = [];
@@ -368,8 +373,6 @@ var updateGame = (function () {
     }
     returnbetarray.money = allmoney;
     returnbetarray.bet = allbet;
-
-
   };
 
 }());
