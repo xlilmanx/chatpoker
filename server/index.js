@@ -35,7 +35,6 @@ var deckref = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h",
   "Kc", "Kd", "Kh", "Ks"];
 var field = [];
 var allhand = [];
-var returnarray = [];
 var playercount = 0;
 var deckarr = [];
 var fieldarr = [];
@@ -48,7 +47,8 @@ var userid = [];
 var handstring = "";
 var gameinprogress = false;
 var handdealt = false;
-var returnbetarray = [];
+var returnarray = {hand: [], deck:[], field:[]};
+var returnbetarray = {money:[], bet:[]};
 var allmoney = [];
 var allbet = [];
 // waitingtostart, preflop, flop, turn, river
@@ -94,8 +94,8 @@ io.on('connection', function (socket) {
 
   }
 
-  returnbetarray[0] = allmoney;
-  returnbetarray[1] = allbet;
+  returnbetarray.money = allmoney;
+  returnbetarray.bet = allbet;
   io.emit('updateBet', returnbetarray);
 
   // betting, dealing hand, dealing card
@@ -123,8 +123,8 @@ io.on('connection', function (socket) {
 
 
     }
-    returnbetarray[0] = allmoney;
-    returnbetarray[1] = allbet;
+    returnbetarray.money = allmoney;
+    returnbetarray.bet = allbet;
     io.emit('updateBet', returnbetarray);
 
   });
@@ -161,9 +161,9 @@ io.on('connection', function (socket) {
       }
 
       field = [];
-      returnarray[0] = allhand;
-      returnarray[1] = deck;
-      returnarray[2] = field;
+      returnarray.hand = allhand;
+      returnarray.deck = deck;
+      returnarray.field = field;
       io.emit('updateGame', returnarray);
       handdealt = true;
 
@@ -185,9 +185,9 @@ io.on('connection', function (socket) {
       field = fieldarr;
       deck = deckarr;
 
-      returnarray[0] = allhand;
-      returnarray[1] = deck;
-      returnarray[2] = field;
+      returnarray.hand = allhand;
+      returnarray.deck = deck;
+      returnarray.field = field;
       io.emit('updateGame', returnarray);
 
 
@@ -289,8 +289,8 @@ io.on('connection', function (socket) {
           allbet.push(userid[i].bet);
 
         }
-        returnbetarray[0] = allmoney;
-        returnbetarray[1] = allbet;
+        returnbetarray.money = allmoney;
+        returnbetarray.bet = allbet;
         io.emit('updateBet', returnbetarray);
 
       }
@@ -384,6 +384,20 @@ server.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });
 
+/*
+var updateGame = (function() {
+
+  var bets = function (name) {
+    if (!name || names[name]) {
+      return false;
+    } else {
+      names[name] = true;
+      return true;
+    }
+  };
+
+}());
+*/
 // Keep track of which names are used so that there are no duplicates
 var userNames = (function () {
   var names = {};

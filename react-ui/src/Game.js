@@ -116,9 +116,9 @@ class Game extends React.Component {
     } else {
 
       this.setState({
-        hand: data[0],
-        deck: data[1],
-        field: data[2]
+        hand: data.hand,
+        deck: data.deck,
+        field: data.field
       });
 
     }
@@ -133,8 +133,8 @@ class Game extends React.Component {
     } else {
 
       this.setState({
-        money: data[0],
-        bet: data[1]
+        money: data.money,
+        bet: data.bet
       });
 
     }
