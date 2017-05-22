@@ -18,12 +18,12 @@ class GameUsers extends React.Component {
 
                     this.props.hand[i].map((card) => {
                       return (
-                        <span className="playercards" key={card}>{card}</span>
+                        <span className='playercards' key={card}>{card}</span>
                       );
                     })
                   }
                   <br />
-                  <span class="betamount">${this.props.bet[i]}</span>
+                  <span class='betamount'>${this.props.bet[i]}</span>
                 </div>
               </div>
             );
@@ -173,7 +173,7 @@ class Game extends React.Component {
         return (
           <div>
             <span className="fieldcards" key={card}>{card}</span>
-            <span class="spacer">&nbsp;</span>
+            <span className="spacer">&nbsp;</span>
           </div>
         );
       });
