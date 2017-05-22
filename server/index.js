@@ -78,23 +78,28 @@ io.on('connection', function (socket) {
     }
   }
 
-  // inital connection update game/bet
+  // inital connection update game
 
   io.emit('updateGame', returnarray);
-  
-  allmoney = [];
-  allbet = [];
 
-  for (var i = 0; i < userid.length; i++) {
+  // if game in progress update bets
 
-    allmoney.push(userid[i].money);
-    allbet.push(userid[i].bet);
+  if (gameinprogress) {
 
+    allmoney = [];
+    allbet = [];
+
+    for (var i = 0; i < userid.length; i++) {
+
+      allmoney.push(userid[i].money);
+      allbet.push(userid[i].bet);
+
+    }
+
+    returnarray[3] = allmoney;
+    returnarray[4] = allbet;
+    io.emit('updateBet', returnarray);
   }
-
-  returnarray[3] = allmoney;
-  returnarray[4] = allbet;
-  io.emit('updateBet', returnarray);
 
   // betting, dealing hand, dealing card
 
