@@ -55,6 +55,8 @@ var userid = [];
 var handstring = "";
 var gameinprogress = false;
 var handdealt = false;
+var allmoney = [];
+var allbet = [];
 
 
 
@@ -76,7 +78,24 @@ io.on('connection', function (socket) {
     }
   }
 
+  // inital connection update game/bet
+
   io.emit('updateGame', returnarray);
+  allmoney = [];
+  allbet = [];
+
+  for (var i = 0; i < userid.length; i++) {
+
+    allmoney.push(userid[i].money);
+    allbet.push(userid[i].bet);
+
+
+  }
+  returnarray[3] = allmoney;
+  returnarry[4] = allbet;
+  io.emit('updateBet', returnarray);
+
+  // betting, dealing hand, dealing card
 
   socket.on('dobet', function (data) {
 
@@ -94,7 +113,19 @@ io.on('connection', function (socket) {
 
       }
     }
-    
+
+    allmoney = [];
+    allbet = [];
+
+    for (var i = 0; i < userid.length; i++) {
+
+      allmoney.push(userid[i].money);
+      allbet.push(userid[i].bet);
+
+
+    }
+    returnarray[3] = allmoney;
+    returnarry[4] = allbet;
     io.emit('updateBet', returnarray);
 
   });
