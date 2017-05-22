@@ -220,7 +220,7 @@ io.on('connection', function (socket) {
 
         io.emit('send:message', {
           user: "APPLICATION BOT",
-          text: winnername + " has won with" + winninghand + "!"
+          text: winnername + " has won with " + winninghand + "!"
         });
       }
     }
@@ -316,6 +316,7 @@ io.on('connection', function (socket) {
     for (var i = 0; i < userid.length; i++) {
       if (userid[i].id === socket.id) {
         clientNumber = i;
+        userid[clientNumber].name = name;
       }
     }
 
