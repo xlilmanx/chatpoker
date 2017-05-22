@@ -85,7 +85,7 @@ io.on('connection', function (socket) {
 
   // if game in progress update bets
 
-  if (gameinprogress) {
+
 
     allmoney = [];
     allbet = [];
@@ -100,7 +100,7 @@ io.on('connection', function (socket) {
     returnbetarray[0] = allmoney;
     returnbetarray[1] = allbet;
     io.emit('updateBet', returnbetarray);
-  }
+  
 
   // betting, dealing hand, dealing card
 
@@ -113,10 +113,6 @@ io.on('connection', function (socket) {
 
         userid[i].money = userid[i].money - data;
         userid[i].bet = userid[i].bet + data;
-
-        console.log("socket: " + userid[i].money);
-        console.log("socket: " + userid[i].bet);
-
 
       }
     }
@@ -267,8 +263,7 @@ io.on('connection', function (socket) {
 
 
         var results = Ranker.orderHands(allplayerhands, field);
-        console.log(handstring);
-        console.log(results);
+
         gameinprogress = false;
         handdealt = false;
 

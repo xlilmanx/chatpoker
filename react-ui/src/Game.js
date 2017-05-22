@@ -27,7 +27,6 @@ class GameUsers extends React.Component {
 
                 <span>${this.props.bet[i]}</span>
 
-                }
               </div>
             );
           })}
