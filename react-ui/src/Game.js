@@ -121,6 +121,7 @@ class Game extends React.Component {
 
   updateBet(data) {
 
+    console.log('update bet');
     if (data.length == 0) {
 
     } else {
@@ -150,7 +151,7 @@ class Game extends React.Component {
   }
 
   handleBet(amount) {
-
+    console.log('handle bet');
     this.props.socket.emit('dobet', amount);
 
   }
