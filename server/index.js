@@ -105,36 +105,36 @@ io.on('connection', function (socket) {
   // betting, dealing hand, dealing card
 
   socket.on('dobet', function (data) {
+    if (gameinprogress) {
+      for (var i = 0; i < userid.length; ++i) {
+        var c = userid[i];
 
-    for (var i = 0; i < userid.length; ++i) {
-      var c = userid[i];
+        if (c.id == socket.id) {
 
-      if (c.id == socket.id) {
+          userid[i].money = userid[i].money - data;
+          userid[i].bet = userid[i].bet + data;
 
-        userid[i].money = userid[i].money - data;
-        userid[i].bet = userid[i].bet + data;
+          console.log("socket: " + userid[i].money);
+          console.log("socket: " + userid[i].bet);
 
-        console.log("socket: " + userid[i].money);
-        console.log("socket: " + userid[i].bet);
+
+        }
+      }
+
+      allmoney = [];
+      allbet = [];
+
+      for (var i = 0; i < userid.length; i++) {
+
+        allmoney.push(userid[i].money);
+        allbet.push(userid[i].bet);
 
 
       }
+      returnbetarray[0] = allmoney;
+      returnbetarray[1] = allbet;
+      io.emit('updateBet', returnbetarray);
     }
-
-    allmoney = [];
-    allbet = [];
-
-    for (var i = 0; i < userid.length; i++) {
-
-      allmoney.push(userid[i].money);
-      allbet.push(userid[i].bet);
-
-
-    }
-    returnbetarray[0] = allmoney;
-    returnbetarray[1] = allbet;
-    io.emit('updateBet', returnbetarray);
-
   });
 
 
