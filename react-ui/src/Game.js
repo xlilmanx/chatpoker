@@ -223,7 +223,7 @@ class Game extends React.Component {
 
   }
 
-  handleDealHand() {
+  handleStartGame() {
 
     this.props.socket.emit('startgame');
 
