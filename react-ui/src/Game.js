@@ -98,6 +98,7 @@ class Game extends React.Component {
   componentDidMount() {
 
     this.props.socket.on('updateGame', this.updateGame);
+    this.props.socket.on('updateBet', this.updateBet);
 
   }
 
