@@ -86,8 +86,8 @@ class Game extends React.Component {
         "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
         "Kc", "Kd", "Kh", "Ks"],
       users: [],
-      money: 0,
-      bet: 0
+      money: [],
+      bet: []
     };
     this.updateGame = this.updateGame.bind(this);
     this.updateBet = this.updateBet.bind(this);
