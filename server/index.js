@@ -138,9 +138,7 @@ io.on('connection', function (socket) {
       }
 
       field = [];
-      returnarray.hand = allhand;
-      returnarray.deck = deck;
-      returnarray.field = field;
+      updateGame.gamedata();
       io.emit('updateGame', returnarray);
       handdealt = true;
 
@@ -162,94 +160,16 @@ io.on('connection', function (socket) {
       field = fieldarr;
       deck = deckarr;
 
-      returnarray.hand = allhand;
-      returnarray.deck = deck;
-      returnarray.field = field;
+      updateGame.gamedata();
       io.emit('updateGame', returnarray);
 
 
       if (field.length >= 5) {
 
-        var allplayerhands = [];
-        if (userid[0] != null) {
-          if (userid[0].cards != null) {
-            var hand1 = { id: 1, cards: userid[0].cards };
-            allplayerhands.push(hand1);
-          }
-        }
-        if (userid[1] != null) {
-          if (userid[1].cards != null) {
-            var hand2 = { id: 2, cards: userid[1].cards };
-            allplayerhands.push(hand2);
-          }
-        }
-        if (userid[2] != null) {
-          if (userid[2].cards != null) {
-            var hand3 = { id: 3, cards: userid[2].cards };
-            allplayerhands.push(hand3);
-          }
-        }
-        if (userid[3] != null) {
-          if (userid[3].cards != null) {
-            var hand4 = { id: 4, cards: userid[3].cards };
-            allplayerhands.push(hand4);
-          }
-        }
-        if (userid[4] != null) {
-          if (userid[4].cards != null) {
-            var hand5 = { id: 5, cards: userid[4].cards };
-            allplayerhands.push(hand5);
-          }
-        }
-        if (userid[5] != null) {
-          if (userid[5].cards != null) {
-            var hand6 = { id: 6, cards: userid[5].cards };
-            allplayerhands.push(hand6);
-          }
-        }
-        if (userid[6] != null) {
-          if (userid[6].cards != null) {
-            var hand7 = { id: 7, cards: userid[6].cards };
-            allplayerhands.push(hand7);
-          }
-        }
-        if (userid[7] != null) {
-          if (userid[7].cards != null) {
-            var hand8 = { id: 8, cards: userid[7].cards };
-            allplayerhands.push(hand8);
-          }
-        }
-        if (userid[8] != null) {
-          if (userid[8].cards != null) {
-            var hand8 = { id: 9, cards: userid[8].cards };
-            allplayerhands.push(hand8);
-          }
-        }
-        if (userid[9] != null) {
-          if (userid[9].cards != null) {
-            var hand8 = { id: 10, cards: userid[9].cards };
-            allplayerhands.push(hand8);
-          }
-        }
-
-        var results = Ranker.orderHands(allplayerhands, field);
+        updateGame.winner();
 
         gameinprogress = false;
         handdealt = false;
-
-        var winner = userid[results[0][0].id - 1]
-        var winnername = winner.name;
-        var winninghand = results[0][0].description;
-        var totalmoneywon = 0;
-
-        //handle bet after match end
-        for (i = 0; i < userid.length; i++) {
-
-          winner.money = winner.money + userid[i].bet;
-          totalmoneywon = totalmoneywon + userid[i].bet;
-          userid[i].bet = 0;
-
-        }
 
 
         io.emit('send:message', {
@@ -265,7 +185,6 @@ io.on('connection', function (socket) {
   });
 
   var name = userNames.getGuestName();
-
 
   // send the new user their name and a list of users
   socket.emit('init', {
@@ -369,8 +288,96 @@ var updateGame = (function () {
     returnbetarray.bet = allbet;
   };
 
-    return {
-    bets: bets
+  var gamedata = function () {
+    returnarray.hand = allhand;
+    returnarray.deck = deck;
+    returnarray.field = field;
+  };
+
+  var winner = function () {
+    var allplayerhands = [];
+    if (userid[0] != null) {
+      if (userid[0].cards != null) {
+        var hand1 = { id: 1, cards: userid[0].cards };
+        allplayerhands.push(hand1);
+      }
+    }
+    if (userid[1] != null) {
+      if (userid[1].cards != null) {
+        var hand2 = { id: 2, cards: userid[1].cards };
+        allplayerhands.push(hand2);
+      }
+    }
+    if (userid[2] != null) {
+      if (userid[2].cards != null) {
+        var hand3 = { id: 3, cards: userid[2].cards };
+        allplayerhands.push(hand3);
+      }
+    }
+    if (userid[3] != null) {
+      if (userid[3].cards != null) {
+        var hand4 = { id: 4, cards: userid[3].cards };
+        allplayerhands.push(hand4);
+      }
+    }
+    if (userid[4] != null) {
+      if (userid[4].cards != null) {
+        var hand5 = { id: 5, cards: userid[4].cards };
+        allplayerhands.push(hand5);
+      }
+    }
+    if (userid[5] != null) {
+      if (userid[5].cards != null) {
+        var hand6 = { id: 6, cards: userid[5].cards };
+        allplayerhands.push(hand6);
+      }
+    }
+    if (userid[6] != null) {
+      if (userid[6].cards != null) {
+        var hand7 = { id: 7, cards: userid[6].cards };
+        allplayerhands.push(hand7);
+      }
+    }
+    if (userid[7] != null) {
+      if (userid[7].cards != null) {
+        var hand8 = { id: 8, cards: userid[7].cards };
+        allplayerhands.push(hand8);
+      }
+    }
+    if (userid[8] != null) {
+      if (userid[8].cards != null) {
+        var hand8 = { id: 9, cards: userid[8].cards };
+        allplayerhands.push(hand8);
+      }
+    }
+    if (userid[9] != null) {
+      if (userid[9].cards != null) {
+        var hand8 = { id: 10, cards: userid[9].cards };
+        allplayerhands.push(hand8);
+      }
+    }
+
+    var results = Ranker.orderHands(allplayerhands, field);
+
+    var winner = userid[results[0][0].id - 1]
+    var winnername = winner.name;
+    var winninghand = results[0][0].description;
+    var totalmoneywon = 0;
+
+    //handle bet after match end
+    for (i = 0; i < userid.length; i++) {
+
+      winner.money = winner.money + userid[i].bet;
+      totalmoneywon = totalmoneywon + userid[i].bet;
+      userid[i].bet = 0;
+
+    }
+  };
+
+  return {
+    bets: bets,
+    gamedata: gamedata,
+    winner: winner
   };
 
 }());
