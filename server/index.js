@@ -85,6 +85,7 @@ io.on('connection', function (socket) {
   // update bets
 
   updateGame.bets();
+      io.emit('updateBet', returnbetarray);
 
   // betting, dealing hand, dealing card
 
@@ -102,6 +103,7 @@ io.on('connection', function (socket) {
     }
 
     updateGame.bets();
+        io.emit('updateBet', returnbetarray);
 
   });
 
@@ -257,6 +259,7 @@ io.on('connection', function (socket) {
         });
 
         updateGame.bets();
+            io.emit('updateBet', returnbetarray);
 
       }
     }
@@ -365,8 +368,8 @@ var updateGame = (function () {
     }
     returnbetarray.money = allmoney;
     returnbetarray.bet = allbet;
-    io.emit('updateBet', returnbetarray);
-    return true;
+
+
   };
 
 }());
