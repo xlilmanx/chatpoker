@@ -121,10 +121,13 @@ class Game extends React.Component {
 
   updateBet(data) {
 
-    console.log('update bet');
+    
     if (data.length == 0) {
 
     } else {
+
+      console.log(data[3]);
+      console.log(data[4]);
 
       this.setState({
         money: data[3],
