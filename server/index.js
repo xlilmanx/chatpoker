@@ -47,8 +47,8 @@ var userid = [];
 var handstring = "";
 var gameinprogress = false;
 var handdealt = false;
-var returnarray = {hand: [], deck:[], field:[]};
-var returnbetarray = {money:[], bet:[]};
+var returnarray = { hand: [], deck: [], field: [] };
+var returnbetarray = { money: [], bet: [] };
 var allmoney = [];
 var allbet = [];
 // waitingtostart, preflop, flop, turn, river
@@ -84,19 +84,7 @@ io.on('connection', function (socket) {
 
   // update bets
 
-  allmoney = [];
-  allbet = [];
-
-  for (var i = 0; i < userid.length; i++) {
-
-    allmoney.push(userid[i].money);
-    allbet.push(userid[i].bet);
-
-  }
-
-  returnbetarray.money = allmoney;
-  returnbetarray.bet = allbet;
-  io.emit('updateBet', returnbetarray);
+  updateGame.bets();
 
   // betting, dealing hand, dealing card
 
@@ -113,19 +101,7 @@ io.on('connection', function (socket) {
       }
     }
 
-    allmoney = [];
-    allbet = [];
-
-    for (var i = 0; i < userid.length; i++) {
-
-      allmoney.push(userid[i].money);
-      allbet.push(userid[i].bet);
-
-
-    }
-    returnbetarray.money = allmoney;
-    returnbetarray.bet = allbet;
-    io.emit('updateBet', returnbetarray);
+    updateGame.bets();
 
   });
 
@@ -384,20 +360,27 @@ server.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });
 
-/*
-var updateGame = (function() {
 
-  var bets = function (name) {
-    if (!name || names[name]) {
-      return false;
-    } else {
-      names[name] = true;
-      return true;
+var updateGame = (function () {
+
+  var bets = function () {
+    allmoney = [];
+    allbet = [];
+
+    for (var i = 0; i < userid.length; i++) {
+
+      allmoney.push(userid[i].money);
+      allbet.push(userid[i].bet);
+
+
     }
+    returnbetarray.money = allmoney;
+    returnbetarray.bet = allbet;
+    io.emit('updateBet', returnbetarray);
   };
 
 }());
-*/
+
 // Keep track of which names are used so that there are no duplicates
 var userNames = (function () {
   var names = {};
