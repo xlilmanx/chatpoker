@@ -69,8 +69,6 @@ io.on('connection', function (socket) {
   clientInfo.money = 100;
   clientInfo.bet = 0;
   userid.push(clientInfo);
-  var doUpdateGame = updateGame.initiate();
-
 
   for (var i = 0; i < userid.length; i++) {
     if (userid[i].id === socket.id) {
@@ -355,10 +353,6 @@ server.listen(PORT, function () {
 
 // update game stats
 var updateGame = (function () {
-
-  var initiate = function () {
-    return true;
-  };
 
   var bets = function () {
     allmoney = [];
