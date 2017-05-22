@@ -171,7 +171,7 @@ class Game extends React.Component {
     if (this.state.field != null) {
       var fieldhtml = this.state.field.map(function (card) {
         return (
-          <div>
+          <div className='fieldcardcontainer'>
             <span className="fieldcards" key={card}>{card}</span>
             <span className="spacer">&nbsp;</span>
           </div>
