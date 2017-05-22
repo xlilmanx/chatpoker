@@ -105,36 +105,36 @@ io.on('connection', function (socket) {
   // betting, dealing hand, dealing card
 
   socket.on('dobet', function (data) {
-    if (gameinprogress) {
-      for (var i = 0; i < userid.length; ++i) {
-        var c = userid[i];
 
-        if (c.id == socket.id) {
+    for (var i = 0; i < userid.length; ++i) {
+      var c = userid[i];
 
-          userid[i].money = userid[i].money - data;
-          userid[i].bet = userid[i].bet + data;
+      if (c.id == socket.id) {
 
-          console.log("socket: " + userid[i].money);
-          console.log("socket: " + userid[i].bet);
+        userid[i].money = userid[i].money - data;
+        userid[i].bet = userid[i].bet + data;
 
-
-        }
-      }
-
-      allmoney = [];
-      allbet = [];
-
-      for (var i = 0; i < userid.length; i++) {
-
-        allmoney.push(userid[i].money);
-        allbet.push(userid[i].bet);
+        console.log("socket: " + userid[i].money);
+        console.log("socket: " + userid[i].bet);
 
 
       }
-      returnbetarray[0] = allmoney;
-      returnbetarray[1] = allbet;
-      io.emit('updateBet', returnbetarray);
     }
+
+    allmoney = [];
+    allbet = [];
+
+    for (var i = 0; i < userid.length; i++) {
+
+      allmoney.push(userid[i].money);
+      allbet.push(userid[i].bet);
+
+
+    }
+    returnbetarray[0] = allmoney;
+    returnbetarray[1] = allbet;
+    io.emit('updateBet', returnbetarray);
+
   });
 
 
@@ -272,14 +272,26 @@ io.on('connection', function (socket) {
         gameinprogress = false;
         handdealt = false;
 
-        var winnername = userid[results[0][0].id - 1].name;
+        var winner = userid[results[0][0].id - 1]
+        var winnername = winner.name;
         var winninghand = results[0][0].description;
+        var totalmoneywon = 0;
 
+        //handle bet after match end
+        for (i = 0; i < userid.length; i++) {
 
+          winner.money = winner.money + userid[i].bet;
+          totalmoneywon = totalmoneywon + userid[i].bet;
+          userid[i].bet = 0;
+
+        }
+
+        io.emit('updateBet', returnbetarray);
         io.emit('send:message', {
           user: "APPLICATION BOT",
-          text: winnername + " has won with " + winninghand + "!"
+          text: winnername + " has won $" + totalmoneywon + " with " + winninghand + "!"
         });
+
       }
     }
   });
