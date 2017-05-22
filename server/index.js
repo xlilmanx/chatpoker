@@ -256,18 +256,7 @@ io.on('connection', function (socket) {
           text: winnername + " has won $" + totalmoneywon + " with " + winninghand + "!"
         });
 
-        allmoney = [];
-        allbet = [];
-
-        for (var i = 0; i < userid.length; i++) {
-
-          allmoney.push(userid[i].money);
-          allbet.push(userid[i].bet);
-
-        }
-        returnbetarray.money = allmoney;
-        returnbetarray.bet = allbet;
-        io.emit('updateBet', returnbetarray);
+        updateGame.bets();
 
       }
     }
