@@ -215,11 +215,12 @@ io.on('connection', function (socket) {
         handdealt = false;
 
         var winnername = userid[results[0][0].id - 1].name;
+        var winninghand = results[0][0].description;
 
 
         io.emit('send:message', {
           user: "APPLICATION BOT",
-          text: winnername + " has won!"
+          text: winnername + " has won with" + winninghand + "!"
         });
       }
     }
