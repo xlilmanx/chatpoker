@@ -134,7 +134,6 @@ io.on('connection', function (socket) {
 
       field = [];
       updateGame.gamedata();
-      io.emit('updateGame', returnarray);
       handdealt = true;
 
     }
@@ -156,7 +155,7 @@ io.on('connection', function (socket) {
       deck = deckarr;
 
       updateGame.gamedata();
-      io.emit('updateGame', returnarray);
+      
 
 
       if (field.length >= 5) {
@@ -165,7 +164,6 @@ io.on('connection', function (socket) {
 
         gameinprogress = false;
         handdealt = false;
-
 
 
       }
@@ -282,6 +280,7 @@ var updateGame = (function () {
     returnarray.hand = allhand;
     returnarray.deck = deck;
     returnarray.field = field;
+    io.emit('updateGame', returnarray);
   };
 
   var winner = function () {
