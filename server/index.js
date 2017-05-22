@@ -168,13 +168,7 @@ io.on('connection', function (socket) {
         gameinprogress = false;
         handdealt = false;
 
-        io.emit('send:message', {
-          user: "APPLICATION BOT",
-          text: winner.name + " has won $" + winner.totalwon + " with " + winner.hand + "!"
-        });
 
-        updateGame.bets();
-        io.emit('updateBet', returnbetarray);
 
       }
     }
@@ -368,6 +362,14 @@ var updateGame = (function () {
       userid[i].bet = 0;
 
     }
+
+            io.emit('send:message', {
+          user: "APPLICATION BOT",
+          text: winner.name + " has won $" + winner.totalwon + " with " + winner.hand + "!"
+        });
+
+        updateGame.bets();
+        io.emit('updateBet', returnbetarray);
   };
 
   return {
