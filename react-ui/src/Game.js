@@ -90,6 +90,7 @@ class Game extends React.Component {
       bet: 0
     };
     this.updateGame = this.updateGame.bind(this);
+    this.updateBet = this.updateBet.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
     this.handleBet = this.handleBet.bind(this);
