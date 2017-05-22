@@ -127,12 +127,12 @@ class Game extends React.Component {
 
     } else {
 
-      console.log(data[3]);
-      console.log(data[4]);
+      console.log(data[0]);
+      console.log(data[1]);
 
       this.setState({
-        money: data[3],
-        bet: data[4]
+        money: data[0],
+        bet: data[1]
       });
 
     }
