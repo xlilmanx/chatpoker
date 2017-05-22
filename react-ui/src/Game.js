@@ -23,7 +23,7 @@ class GameUsers extends React.Component {
                     })
                   }
                   <br />
-                  <span class='betamount'>${this.props.bet[i]}</span>
+                  <span className='betamount'>${this.props.bet[i]}</span>
                 </div>
               </div>
             );

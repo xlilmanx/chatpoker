@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ChatApp from './Chat.js';
+import { ChatApp, MessageList } from './Chat.js';
 import Game from './Game.js';
 import io from 'socket.io-client'
 
@@ -21,6 +21,12 @@ class MainWrapper extends React.Component {
 
     }
 
+    scrollToBottom() {
+        const scrollHeight = this.messageList.scrollHeight;
+        const height = this.messageList.clientHeight;
+        const maxScrollTop = scrollHeight - height;
+        this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
 
     componentDidMount() {
         socket.on('init', this._initialize);
@@ -39,6 +45,7 @@ class MainWrapper extends React.Component {
         var { messages } = this.state;
         messages.push(message);
         this.setState({ messages });
+        this.scrollToBottom();
     }
 
     _userJoined(data) {

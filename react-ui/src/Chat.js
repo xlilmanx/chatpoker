@@ -49,7 +49,9 @@ class Message extends React.Component {
 class MessageList extends React.Component {
     render() {
         return (
-            <div className='messages'>
+            <div className='messages' ref={(div) => {
+                this.messageList = div;
+            }}>
                 <h2> Conversation: </h2>
                 {
                     this.props.messages.map((message, i) => {
@@ -173,4 +175,7 @@ class ChatApp extends React.Component {
 }
 
 
-export default ChatApp;
+export {
+    ChatApp,
+    MessageList
+}
