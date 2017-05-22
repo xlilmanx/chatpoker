@@ -95,7 +95,8 @@ class Game extends React.Component {
       isdealer: false,
       isturn: false,
       dealhand: false,
-      dealfield: false
+      dealfield: false,
+      gameinprogress: false
 
     };
     this.updatePhase = this.updatePhase.bind(this);
@@ -148,6 +149,13 @@ class Game extends React.Component {
       refisdealer = false;
     }
 
+    var refgameinprogress = false;
+    if (data.phase != "waitingtostart") {
+      refgameinprogress = true;
+    } else {
+      refgameinprogress = false;
+    }
+
     this.setState({
 
       phase: data.phase,
@@ -155,7 +163,8 @@ class Game extends React.Component {
       dealer: data.dealer,
       turn: data.turn,
       isturn: refisturn,
-      isdealer: refisdealer
+      isdealer: refisdealer,
+      gameinprogress: refgameinprogress
 
     })
 
@@ -292,9 +301,9 @@ class Game extends React.Component {
           <div className='fieldcardcontainer'>{fieldhtml}
           </div>
           <div className='dealbuttons'>
-            <button className="startbutton" disabled={!this.props.dealhand || !this.props.isdealer} onClick={this.handleStartGame}>Deal Hand</button>
-            <button className="button" disabled={!this.props.dealhand || !this.props.isdealer} onClick={this.handleDealHand}>Deal Hand</button>
-            <button className="button" disabled={!this.props.dealfield || !this.props.isdealer} onClick={this.handleDealField}>Deal Field</button>
+            <button className="startbutton" disabled={!this.state.gameinprogress} onClick={this.handleStartGame}>Deal Hand</button>
+            <button className="button" disabled={!this.state.dealhand || !this.state.isdealer} onClick={this.handleDealHand}>Deal Hand</button>
+            <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
           </div>
           <br /> <br />
 
