@@ -88,9 +88,13 @@ io.on('connection', function (socket) {
         userid[i].money = userid[i].money - data;
         userid[i].bet = userid[i].bet + data;
 
+        console.log("socket: " + userid[i].money);
+        console.log("socket: " + userid[i].bet);
+
+
       }
     }
-    console.log("socket: " + data);
+    
     io.emit('updateBet', returnarray);
 
   });
