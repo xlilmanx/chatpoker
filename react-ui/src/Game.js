@@ -56,26 +56,23 @@ class Game extends React.Component {
       hand: [],
       field: [],
       deck: ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-      "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-      "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
-      "Kc", "Kd", "Kh", "Ks"],
+        "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
+        "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
+        "Kc", "Kd", "Kh", "Ks"],
       users: []
     };
-    this.dealHand = this.dealHand.bind(this);
-    this.dealField = this.dealField.bind(this);
     this.gameConnect = this.gameConnect.bind(this);
     this.handleDealHand = this.handleDealHand.bind(this);
     this.handleDealField = this.handleDealField.bind(this);
   }
 
   componentDidMount() {
-    this.props.socket.on('dealhand', this.dealHand);
-    this.props.socket.on('dealfield', this.dealField);
-    this.props.socket.on('gameconnect', this.gameConnect);
+
+    this.props.socket.on('updateGame', this.updateGame);
 
   }
 
-  gameConnect(data) {
+  updateGame(data) {
 
     if (data.length == 0) {
 
@@ -83,62 +80,14 @@ class Game extends React.Component {
 
       this.setState({
         hand: data[0],
-        field: data[2],
-        deck: data[1]
+        deck: data[1],
+        field: data[2]
       });
 
     }
 
   }
 
-
-  dealHand(data) {
-    /*     var deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
-           "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
-           "9c", "9d", "9h", "9s", "10c", "10d", "10h", "10s", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
-           "Kc", "Kd", "Kh", "Ks"];
-         var num1 = Math.floor(Math.random() * (deckarr.length - 1));
-         var card1 = deckarr[num1];
-         deckarr.splice(num1, 1);
-         var num2 = Math.floor(Math.random() * (deckarr.length - 1));
-         var card2 = deckarr[num2];
-         deckarr.splice(num2, 1);
-     
-         var hand = [card1, card2];
-     */
-    this.setState({
-      hand: data[0],
-      field: data[2],
-      deck: data[1]
-    });
-    /*
-      this.state.hand = data[0];
-      this.state.deck = data[1];
-      this.state.field = data[2];
-  */
-
-  }
-
-  dealField(data) {
-    /*    var deckarr = this.state.deck;
-        var num1 = Math.floor(Math.random() * (deckarr.length - 1));
-        var card1 = deckarr[num1];
-        deckarr.splice(num1, 1);
-    
-        var fieldarr = this.state.field;
-        fieldarr.push(card1);
-    
-        this.setState({
-          field: fieldarr,
-          deck: deckarr
-        });
-     */
-    this.setState({
-      hand: data[0],
-      field: data[2],
-      deck: data[1]
-    });
-  }
 
 
   handleDealHand() {

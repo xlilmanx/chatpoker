@@ -62,13 +62,11 @@ io.on('connection', function (socket) {
 
   // game stuff
 
-  //    playerhand["id"] = id;
-  //    playerhand["hand"] = hand;
-  //    allhand.push(playerhand);
   var clientInfo = new Object();
   clientInfo.id = socket.id;
   clientInfo.cards = [];
   clientInfo.name = "";
+  clientInfo.money = 100;
   userid.push(clientInfo);
 
   for (var i = 0; i < userid.length; i++) {
@@ -77,7 +75,7 @@ io.on('connection', function (socket) {
     }
   }
 
-  io.emit('gameconnect', returnarray);
+  io.emit('updateGame', returnarray);
 
 
   socket.on('dealhand', function () {
@@ -114,7 +112,7 @@ io.on('connection', function (socket) {
       returnarray[0] = allhand;
       returnarray[1] = deck;
       returnarray[2] = field;
-      io.emit('dealhand', returnarray);
+      io.emit('updateGame', returnarray);
       handdealt = true;
 
     }
@@ -138,7 +136,7 @@ io.on('connection', function (socket) {
       returnarray[0] = allhand;
       returnarray[1] = deck;
       returnarray[2] = field;
-      io.emit('dealfield', returnarray);
+      io.emit('updateGame', returnarray);
 
 
       if (field.length >= 5) {
