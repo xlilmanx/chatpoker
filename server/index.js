@@ -147,6 +147,7 @@ io.on('connection', function (socket) {
   socket.on('dobet', function (data) {
 
     console.log('do bet');
+    console.log(clientNumber);
     if (gamedata.turnnum == clientNumber) {
 
       for (var i = 0; i < userid.length; ++i) {
