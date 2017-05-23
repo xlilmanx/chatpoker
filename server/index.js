@@ -154,10 +154,10 @@ io.on('connection', function (socket) {
       console.log('fold')
       returnarray.hand[clientNumber] = [];
       io.emit('updateGame', returnarray);
-      updateGame.endturn();
+      updateGame.endturn(socket);
 
     } else {
-      updateGame.endturn();
+      updateGame.endturn(socket);
 
     }
 
@@ -372,7 +372,7 @@ var updateGame = (function () {
     io.emit('updateGame', returnarray);
   };
 
-  var endturn = function () {
+  var endturn = function (socket) {
 
 
     if (gamedata.turnnum = gamedata.dealernum && userid[gamedata.turnnum].bet == gamedata.currentbet) {
