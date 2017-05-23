@@ -54,7 +54,7 @@ var allbet = [];
 var allturbet = [];
 var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0 };
 // waitingtostart, preflop, flop, turn, river
-var gamedata = { phase: "waitingtostart", currentbet: 0, dealernum: 0, turnnum: 0 };
+var gamedata = { phase: "waitingtostart", currentbet: 0, dealernum: -1, turnnum: 0 };
 var smallblind = 1;
 var bigblind = 2;
 
@@ -377,7 +377,7 @@ var updateGame = (function () {
   var endturn = function () {
 
 
-    if (gamedata.turnnum = gamedata.dealernum && userid[gamedata.turnnum].bet == gamedata.currentbet) {
+    if (gamedata.turnnum == gamedata.dealernum && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
       if (clientNumber === gamedata.dealernum) {
 
