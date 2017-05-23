@@ -121,12 +121,12 @@ console.log (gamedata.turn);
   socket.on('startgame', function (data) {
 
 console.log('socket startgame')
-    gamedata.dealer = (gamedata.dealer + 1) % userid.length;
+    gamedata.dealernum = (gamedata.dealer + 1) % userid.length;
     gamedata.phase = "preflop";
     gamedata.currentbet = bigblind;
-    gamedata.turn = (gamedata.dealer + 3) % userid.length;
-    var smallblindplayer = (gamedata.dealer + 1) % userid.length;
-    var bigblindplayer = (gamedata.dealer + 2) % userid.length;
+    gamedata.turnnum = (gamedata.dealernum + 3) % userid.length;
+    var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
+    var bigblindplayer = (gamedata.dealernum + 2) % userid.length;
     userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
     userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
     userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
