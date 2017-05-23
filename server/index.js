@@ -69,7 +69,24 @@ io.on('connection', function (socket) {
   clientInfo.money = 100;
   clientInfo.bet = 0;
   clientInfo.turnbet = 0;
-  userid.push(clientInfo);
+  var idAdded = false;
+
+  for (i = 0; i < userid.length; i++) {
+
+    if (userid[i] == null) {
+
+      userid.splice(clientInfo, 1);
+      idAdded = true;
+
+    }
+
+  }
+
+  if (idAdded = false) {
+    userid.push(clientInfo);
+
+  }
+
 
   for (var i = 0; i < userid.length; i++) {
     if (userid[i].id === socket.id) {
@@ -174,7 +191,31 @@ io.on('connection', function (socket) {
       console.log('fold')
       returnarray.hand[clientNumber] = [];
       io.emit('updateGame', returnarray);
-      updateGame.endturn();
+
+      var numplayersingame = 0;
+
+      for (i = 0; i < userid.length; i++) {
+
+        if (users[i].cards.length != 0) {
+
+          numplayersingame = numplayersingame + 1;
+
+        }
+
+      }
+
+      if (numplayersingame == 1) {
+
+        updateGame.winner();
+
+
+      } else {
+
+        updateGame.endturn();
+
+      }
+
+
 
     } else {
       updateGame.endturn();
@@ -273,6 +314,13 @@ io.on('connection', function (socket) {
       console.log('dealfield')
       io.emit('toggleDealField', false);
       gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+
+      do {
+        gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+      }
+      while (userid[gamedata.turnnum].cards.length == 0);
+
+
       io.emit('updatePhase', gamedata);
       updateGame.gamedatacards();
     }
@@ -328,35 +376,37 @@ io.on('connection', function (socket) {
 
 
       if (c.id == socket.id) {
-        userid.splice(i, 1);
+        delete userid[i];
+        delete returnarray[i];
+        //       userid.splice(i, 1);
 
-        if (returnarray[0] != null) {
-          if (returnarray[0][i] != null) {
-            returnarray[0].splice(i, 1);
-          }
-          break;
-        }
+        /*        if (returnarray[0] != null) {
+                  if (returnarray[0][i] != null) {
+                    returnarray[0].splice(i, 1);
+                  }*/
+        break;
       }
     }
+  }
 
     io.emit('gameconnect', returnarray);
-    socket.broadcast.emit('user:left', {
-      name: name
-    });
-    userNames.free(name);
+  socket.broadcast.emit('user:left', {
+    name: name
   });
+  userNames.free(name);
+});
 
-  socket.on('updateclientnumber', function () {
+socket.on('updateclientnumber', function () {
 
-    for (var i = 0; i < userid.length; i++) {
-      if (userid[i].id === socket.id) {
-        clientNumber = i;
-        userid[clientNumber].name = name;
-        socket.emit('updatePlayerId', i);
-      }
+  for (var i = 0; i < userid.length; i++) {
+    if (userid[i].id === socket.id) {
+      clientNumber = i;
+      userid[clientNumber].name = name;
+      socket.emit('updatePlayerId', i);
     }
+  }
 
-  });
+});
 
 });
 
