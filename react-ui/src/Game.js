@@ -160,13 +160,16 @@ class Game extends React.Component {
 
       phase: data.phase,
       currentbet: data.currentbet,
-     // dealer: data.dealer,
-     // turn: data.turn,
+      dealer: data.dealer,
+      turn: data.turn,
       isturn: refisturn,
       isdealer: refisdealer,
       gameinprogress: refgameinprogress
 
     })
+
+    console.log (data.dealer);
+    console.log (data.turn);
 
   }
 
