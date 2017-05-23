@@ -281,7 +281,7 @@ class Game extends React.Component {
       });
     }
     return (
-      <div>
+      <div className='gamecontainer'>
         <h1>Poker Game</h1>
         <GameUsers
           users={this.props.users}

@@ -405,30 +405,31 @@ io.on('connection', function (socket) {
 
     for (var i = 0; i < userid.length; i++) {
       var c = userid[i];
+      if (c != null) {
+        if (c.id == socket.id) {
+          delete userid[i];
+          delete returnarray[i];
+          if (i == bigblindplayer) {
 
-      if (c.id == socket.id) {
-        delete userid[i];
-        delete returnarray[i];
-        if (i == bigblindplayer) {
+            for (i = userid.length; i > 0; i--) {
+              bigblindplayer = (bigblindplayer - 1) % userid.length;
+              if (userid[bigblindplayer] != null) {
 
-          for (i = userid.length; i > 0; i--) {
-            bigblindplayer = (bigblindplayer - 1) % userid.length;
-            if (userid[bigblindplayer] != null) {
+                break;
+              }
 
-              break;
             }
 
           }
+          //       userid.splice(i, 1);
 
+          /*       if (returnarray[0] != null) {
+                     if (returnarray[0][i] != null) {
+                       returnarray[0].splice(i, 1);
+                     }
+           break;
+                 }*/
         }
-        //       userid.splice(i, 1);
-
-        /*       if (returnarray[0] != null) {
-                   if (returnarray[0][i] != null) {
-                     returnarray[0].splice(i, 1);
-                   }
-         break;
-               }*/
       }
 
       socketList = io.sockets.server.eio.clients;
