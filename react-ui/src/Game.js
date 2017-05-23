@@ -304,8 +304,7 @@ console.log(phasedata);
           <div className='fieldcardcontainer'>{fieldhtml}
           </div>
           <div className='dealbuttons'>
-            <button className="startbutton" disabled={this.state.gameinprogress} onClick={this.handleStartGame}>Start Game</button>
-            <button className="button" disabled={!this.state.dealhand || !this.state.isdealer} onClick={this.handleDealHand}>Deal Hand</button>
+            <button className="button" disabled={this.state.gameinprogress} onClick={this.handleDealHand}>Deal Hand</button>
             <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
           </div>
           <br /> {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isturn: {this.state.isturn.toString()} -- currentbet: {this.state.currentbet}<br />
