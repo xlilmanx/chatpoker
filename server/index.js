@@ -57,6 +57,8 @@ var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0 };
 var gamedata = { phase: "waitingtostart", currentbet: 0, dealernum: -1, turnnum: 0, numplayers: 0 };
 var smallblind = 1;
 var bigblind = 2;
+var bigblindplayer = -1;
+var smallblindplayer = -1;
 
 io.on('connection', function (socket) {
 
@@ -181,32 +183,7 @@ io.on('connection', function (socket) {
 
     }
   });
-  /*
-    socket.on('startgame', function (data) {
-  
-      console.log('socket startgame')
-      gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
-      gamedata.phase = "preflop";
-      gamedata.currentbet = bigblind;
-      gamedata.turnnum = (gamedata.dealernum + 3) % userid.length;
-      var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
-      var bigblindplayer = (gamedata.dealernum + 2) % userid.length;
-      userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
-      userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
-      userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
-      userid[bigblindplayer].bet = userid[bigblindplayer].bet + bigblind;
-      io.emit('updatePhase', gamedata);
-      updateGame.bets();
-  
-    });
-  
-  
-    socket.on('endTurn', function () {
-  
-      updateGame.endturn();
-  
-    });
-  */
+
   socket.on('fold', function () {
 
     if (gamedata.currentbet > userid[clientnum].bet) {
@@ -293,7 +270,7 @@ io.on('connection', function (socket) {
       gamedata.phase = "preflop";
       gamedata.currentbet = bigblind;
 
-      var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
+      smallblindplayer = (gamedata.dealernum + 1) % userid.length;
       if (userid[smallblindplayer] == null) {
         for (i = 0; i < userid.length; i++) {
           smallblindplayer = (smallblindplayer + 1) % userid.length;
@@ -303,7 +280,7 @@ io.on('connection', function (socket) {
         }
       }
 
-      var bigblindplayer = (smallblindplayer + 1) % userid.length;
+      bigblindplayer = (smallblindplayer + 1) % userid.length;
       if (userid[bigblindplayer] == null) {
         for (i = 0; i < userid.length; i++) {
           bigblindplayer = (bigblindplayer + 1) % userid.length;
