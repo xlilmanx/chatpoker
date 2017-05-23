@@ -163,6 +163,20 @@ io.on('connection', function (socket) {
 
     if (!gameinprogress) {
 
+      console.log('deal hand')
+      gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
+      gamedata.phase = "preflop";
+      gamedata.currentbet = bigblind;
+      gamedata.turnnum = (gamedata.dealernum + 3) % userid.length;
+      var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
+      var bigblindplayer = (gamedata.dealernum + 2) % userid.length;
+      userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
+      userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
+      userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
+      userid[bigblindplayer].bet = userid[bigblindplayer].bet + bigblind;
+      io.emit('updatePhase', gamedata);
+      updateGame.bets();
+
       deckarr = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
         "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
         "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
