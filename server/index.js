@@ -353,7 +353,7 @@ var updateGame = (function () {
   var endturn = function () {
 
 
-    if (gamedata.turn == gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
+    if (gamedata.turn = gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
 
 
 
