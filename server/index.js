@@ -380,7 +380,7 @@ io.on('connection', function (socket) {
           }
         }
       }
-
+      betraised = false;
       allowbet = true;
       io.emit('updatePhase', gamedata);
       updateGame.gamedatacards();
