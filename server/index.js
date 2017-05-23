@@ -122,44 +122,42 @@ io.on('connection', function (socket) {
 
     }
   });
-/*
-  socket.on('startgame', function (data) {
-
-    console.log('socket startgame')
-    gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
-    gamedata.phase = "preflop";
-    gamedata.currentbet = bigblind;
-    gamedata.turnnum = (gamedata.dealernum + 3) % userid.length;
-    var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
-    var bigblindplayer = (gamedata.dealernum + 2) % userid.length;
-    userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
-    userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
-    userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
-    userid[bigblindplayer].bet = userid[bigblindplayer].bet + bigblind;
-    io.emit('updatePhase', gamedata);
-    updateGame.bets();
-
-  });
-
-
-  socket.on('endTurn', function () {
-
-    updateGame.endturn();
-
-  });
-*/
+  /*
+    socket.on('startgame', function (data) {
+  
+      console.log('socket startgame')
+      gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
+      gamedata.phase = "preflop";
+      gamedata.currentbet = bigblind;
+      gamedata.turnnum = (gamedata.dealernum + 3) % userid.length;
+      var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
+      var bigblindplayer = (gamedata.dealernum + 2) % userid.length;
+      userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
+      userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
+      userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
+      userid[bigblindplayer].bet = userid[bigblindplayer].bet + bigblind;
+      io.emit('updatePhase', gamedata);
+      updateGame.bets();
+  
+    });
+  
+  
+    socket.on('endTurn', function () {
+  
+      updateGame.endturn();
+  
+    });
+  */
   socket.on('fold', function () {
 
     if (gamedata.currentbet > userid[clientNumber].bet) {
-
+      console.log('fold')
       returnarray.hand[clientNumber] = [];
       io.emit('updateGame', returnarray);
       updateGame.endturn();
 
     } else {
-      console.log('fold')
-      gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
-      io.emit('updatePhase', gamedata);
+      updateGame.endturn();
 
     }
 
