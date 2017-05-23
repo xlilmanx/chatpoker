@@ -80,12 +80,13 @@ io.on('connection', function (socket) {
 
   // inital connection update game
 
-  socket.emit('updateGame', returnarray);
-  socket.emit('updatePhase', gamedata);
+  io.emit('updateGame', returnarray);
+  io.emit('updatePhase', gamedata);
+  io.emit('updateBet', returnbetarray);
 
   // update bets
 
-  updateGame.bets();
+  //updateGame.bets();
 
   // betting, dealing hand, dealing card
 
@@ -124,7 +125,7 @@ io.on('connection', function (socket) {
     var bigblindplayer = (gamedata.dealer + 2) % userid.length;
     userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
     userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
-    userid[bigblindplayer].money = userid[bigblindplayer].money - smallblind;
+    userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
     userid[bigblindplayer].bet = userid[bigblindplayer].bet + bigblind;
     io.emit('updatePhase', gamedata);
     updateGame.bets();
