@@ -65,6 +65,7 @@ io.on('connection', function (socket) {
 
   var clientInfo = new Object();
   clientInfo.id = socket.id;
+  clientInfo.number = 0;
   clientInfo.cards = [];
   clientInfo.name = "";
   clientInfo.money = 100;
@@ -74,7 +75,7 @@ io.on('connection', function (socket) {
 
   for (var i = 0; i < userid.length; i++) {
     if (userid[i].id === socket.id) {
-      clientNumber = i;
+      clientInfo.number = i;
       socket.emit('updatePlayerId', i);
     }
   }
@@ -94,7 +95,7 @@ console.log (gamedata2.turn);
 
   socket.on('dobet', function (data) {
 
-    if (gamedata.turn = clientNumber) {
+    if (gamedata.turn = clientInfo.number) {
 
       for (var i = 0; i < userid.length; ++i) {
         var c = userid[i];
@@ -144,9 +145,9 @@ console.log('socket startgame')
 
   socket.on('fold', function () {
 
-    if (gamedata.currentbet > userid[clientNumber].bet) {
+    if (gamedata.currentbet > userid[clientInfo.number].bet) {
 
-      returnarray.hand[clientNumber] = [];
+      returnarray.hand[clientInfo.number] = [];
       io.emit('updateGame', returnarray);
       updateGame.endturn();
 
@@ -197,7 +198,7 @@ console.log('fold')
 
   socket.on('dealfield', function () {
 
-    if (gamedata.dealer == clientNumber) {
+    if (gamedata.dealer == clientInfo.number) {
       gameinprogress = true;
 
       if (gamedata.phase == "preflop") {
@@ -266,7 +267,7 @@ console.log('dealfield')
       userNames.free(oldName);
 
       name = data.name;
-      userid[clientNumber].name = name;
+      userid[clientInfo.number].name = name;
 
       socket.broadcast.emit('change:name', {
         oldName: oldName,
@@ -310,8 +311,8 @@ console.log('dealfield')
 
     for (var i = 0; i < userid.length; i++) {
       if (userid[i].id === socket.id) {
-        clientNumber = i;
-        userid[clientNumber].name = name;
+        clientInfo.number = i;
+        userid[clientInfo.number].name = name;
         socket.emit('updatePlayerId', i);
       }
     }
@@ -359,7 +360,7 @@ var updateGame = (function () {
 
     if (gamedata.turn = gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
 
-      if (clientNumber === gamedata.dealer) {
+      if (clientInfo.number === gamedata.dealer) {
 
         if (gamedata.phase == "preflop") {
 
@@ -521,7 +522,7 @@ var userNames = (function () {
     do {
       name = 'Guest ' + nextUserId;
       nextUserId += 1;
-      userid[clientNumber].name = name;
+      userid[clientInfo.number].name = name;
     } while (!claim(name));
 
     return name;
