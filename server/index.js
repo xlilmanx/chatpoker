@@ -218,12 +218,14 @@ io.on('connection', function (socket) {
 
       for (i = 0; i < userid.length; i++) {
 
-        if (users[i].cards.length != 0) {
+        if (user[i] != null) {
 
-          numplayersingame = numplayersingame + 1;
+          if (users[i].cards.length != 0) {
 
+            numplayersingame = numplayersingame + 1;
+
+          }
         }
-
       }
 
       if (numplayersingame == 1) {
