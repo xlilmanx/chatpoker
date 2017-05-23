@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
 
 
   if (idAdded == false) {
-    console.log(idAdded.toString());
+    console.log("initial idadd: " +idAdded.toString());
     if (userid.length > 0) {
       for (i = 0; i < userid.length; i++) {
 
@@ -101,10 +101,11 @@ io.on('connection', function (socket) {
 
   }
 
+  console.log("after idadd: " +idAdded.toString());
+  console.log(userid.length);
+
 
   // inital connection update game
-  console.log(gamedata.dealernum);
-  console.log(gamedata.turnnum);
 
   allmoney = [];
   allbet = [];
