@@ -122,16 +122,15 @@ io.on('connection', function (socket) {
 
   for (var i = 0; i < userid.length; i++) {
 
-    allmoney.push(userid[i].money);
-    allbet.push(userid[i].bet);
-    allturnbet.push(userid[i].turnbet);
-
-
+    if (userid[i] != null) {
+      allmoney[i] = userid[i].money;
+      allbet[i] = userid[i].bet;
+      allturnbet[i] = userid[i].turnbet;
+    }
   }
   returnbetarray.money = allmoney;
   returnbetarray.bet = allbet;
   returnbetarray.turnbet = allturnbet;
-
 
 
 
@@ -147,6 +146,7 @@ io.on('connection', function (socket) {
 
   socket.on('dobet', function (data) {
 
+    console.log('do bet');
     if (gamedata.turnnum == clientNumber) {
 
       for (var i = 0; i < userid.length; ++i) {
@@ -157,12 +157,13 @@ io.on('connection', function (socket) {
           userid[i].money = userid[i].money - data;
           userid[i].bet = userid[i].bet + data;
           userid[i].turnbet = userid[i].turnbet + data;
-
+          console.log('do bet complete: ' + userid[i].turnbet);
           if (userid[i].bet >= gamedata.currentbet) {
 
             gamedata.currentbet = userid[i].bet;
             io.emit('updatePhase', gamedata);
 
+            console.log('updated currentbet');
           }
 
         }
@@ -268,20 +269,23 @@ io.on('connection', function (socket) {
 
       for (i = 0; i < userid.length; i++) {
 
-        num1 = Math.floor(Math.random() * (deckarr.length - 1));
-        card1 = deckarr[num1];
-        deckarr.splice(num1, 1);
-        num2 = Math.floor(Math.random() * (deckarr.length - 1));
-        card2 = deckarr[num2];
-        deckarr.splice(num2, 1);
+        if (userid[i] != null) {
 
-        hand = [card1, card2];
+          num1 = Math.floor(Math.random() * (deckarr.length - 1));
+          card1 = deckarr[num1];
+          deckarr.splice(num1, 1);
+          num2 = Math.floor(Math.random() * (deckarr.length - 1));
+          card2 = deckarr[num2];
+          deckarr.splice(num2, 1);
 
-        var c = userid[i];
-        c.cards = hand;
+          hand = [card1, card2];
 
-        allhand.push(hand);
-        deck = deckarr;
+          var c = userid[i];
+          c.cards = hand;
+
+          allhand[i] = hand;
+          deck = deckarr;
+        }
       }
 
       field = [];
@@ -530,61 +534,61 @@ var updateGame = (function () {
     if (userid[0] != null) {
       if (userid[0].cards != null) {
         var hand1 = { id: 1, cards: userid[0].cards };
-        allplayerhands.push(hand1);
+        allplayerhands[0] = hand1;
       }
     }
     if (userid[1] != null) {
       if (userid[1].cards != null) {
         var hand2 = { id: 2, cards: userid[1].cards };
-        allplayerhands.push(hand2);
+        allplayerhands[1] = hand2;
       }
     }
     if (userid[2] != null) {
       if (userid[2].cards != null) {
         var hand3 = { id: 3, cards: userid[2].cards };
-        allplayerhands.push(hand3);
+        allplayerhands[2] = hand3;
       }
     }
     if (userid[3] != null) {
       if (userid[3].cards != null) {
         var hand4 = { id: 4, cards: userid[3].cards };
-        allplayerhands.push(hand4);
+        allplayerhands[3] = hand4;
       }
     }
     if (userid[4] != null) {
       if (userid[4].cards != null) {
         var hand5 = { id: 5, cards: userid[4].cards };
-        allplayerhands.push(hand5);
+        allplayerhands[4] = hand5;
       }
     }
     if (userid[5] != null) {
       if (userid[5].cards != null) {
         var hand6 = { id: 6, cards: userid[5].cards };
-        allplayerhands.push(hand6);
+        allplayerhands[5] = hand6;
       }
     }
     if (userid[6] != null) {
       if (userid[6].cards != null) {
         var hand7 = { id: 7, cards: userid[6].cards };
-        allplayerhands.push(hand7);
+        allplayerhands[6] = hand7;
       }
     }
     if (userid[7] != null) {
       if (userid[7].cards != null) {
         var hand8 = { id: 8, cards: userid[7].cards };
-        allplayerhands.push(hand8);
+        allplayerhands[7] = hand8;
       }
     }
     if (userid[8] != null) {
       if (userid[8].cards != null) {
         var hand8 = { id: 9, cards: userid[8].cards };
-        allplayerhands.push(hand8);
+        allplayerhands[8] = hand9;
       }
     }
     if (userid[9] != null) {
       if (userid[9].cards != null) {
         var hand8 = { id: 10, cards: userid[9].cards };
-        allplayerhands.push(hand8);
+        allplayerhands[9] = hand10;
       }
     }
 
