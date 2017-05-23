@@ -227,7 +227,7 @@ io.on('connection', function (socket) {
           }
         }
       }
-
+      console.log('numplayersingame: ' + numplayersingame);
       if (numplayersingame == 1) {
 
         updateGame.winner();
