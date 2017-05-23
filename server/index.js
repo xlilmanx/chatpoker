@@ -69,6 +69,7 @@ io.on('connection', function (socket) {
   clientInfo.money = 100;
   clientInfo.bet = 0;
   clientInfo.turnbet = 0;
+  var clientNumber = -1;
   var idAdded = false;
 
   if (userid.length > 0) {
@@ -84,6 +85,7 @@ io.on('connection', function (socket) {
   }
   if (idAdded = false) {
     userid.push(clientInfo);
+    idAdded = true;
   }
 
 
