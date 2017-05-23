@@ -155,7 +155,7 @@ class Game extends React.Component {
     } else {
       refgameinprogress = false;
     }
-
+console.log(data);
     this.setState({
 
       phase: data.phase,
