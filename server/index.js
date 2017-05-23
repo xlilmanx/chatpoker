@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
 
 
   if (idAdded == false) {
-    console.log("initial idadd: " +idAdded.toString());
+    console.log("initial idadd: " + idAdded.toString());
     if (userid.length > 0) {
       for (i = 0; i < userid.length; i++) {
 
@@ -84,6 +84,13 @@ io.on('connection', function (socket) {
 
         }
       }
+
+      if (idAdded == false) {
+
+        userid.push(clientInfo);
+        idAdded = true;
+      }
+
     } else {
 
       userid.push(clientInfo);
@@ -101,7 +108,7 @@ io.on('connection', function (socket) {
 
   }
 
-  console.log("after idadd: " +idAdded.toString());
+  console.log("after idadd: " + idAdded.toString());
   console.log(userid.length);
 
 
