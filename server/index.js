@@ -79,7 +79,7 @@ io.on('connection', function (socket) {
   }
 
   // inital connection update game
-
+console.log ('gamedata');
   socket.emit('updateGame', returnarray);
   socket.emit('updatePhase', gamedata);
   socket.emit('updateBet', returnbetarray);
