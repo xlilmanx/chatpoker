@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
 
 
   if (idAdded == false) {
-    console.log(isAdded.toString());
+    console.log(idAdded.toString());
     if (userid.length > 0) {
       for (i = 0; i < userid.length; i++) {
 
@@ -100,8 +100,6 @@ io.on('connection', function (socket) {
     var name = userNames.getGuestName();
 
   }
-
-
 
 
   // inital connection update game
