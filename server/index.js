@@ -187,42 +187,28 @@ io.on('connection', function (socket) {
   socket.on('fold', function () {
 
     if (gamedata.currentbet > userid[clientnum].bet) {
-      console.log('fold');
+      console.log('fold: ' + clientnum);
       returnarray.hand[clientnum] = [];
       io.emit('updateGame', returnarray);
 
       var numplayersingame = 0;
 
       for (i = 0; i < userid.length; i++) {
-
         if (user[i] != null) {
-
           if (users[i].cards.length != 0) {
-
             numplayersingame = numplayersingame + 1;
-
           }
         }
       }
       console.log('numplayersingame: ' + numplayersingame);
       if (numplayersingame == 1) {
-
         updateGame.winner();
-
-
       } else {
-
         updateGame.endturn(clientnum);
-
       }
-
-
-
     } else {
       updateGame.endturn(clientnum);
-
     }
-
   });
 
 
@@ -514,9 +500,10 @@ var updateGame = (function () {
   var endturn = function (n) {
 
     console.log('did end turn client: ' + n);
+
     if (gamedata.turnnum == bigblindplayer && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
-      console.log('dealer call');
+      console.log('dealer call: ' + userid[gamedata.turnnum] + " - " + gamedata.currentbet);
 
       if (n == bigblindplayer) {
 
@@ -548,20 +535,14 @@ var updateGame = (function () {
           
                     }*/
           updateGame.winner();
-
           gameinprogress = false;
           handdealt = false;
           gamedata.phase = "waitingtostart";
           io.emit('updatePhase', gamedata);
-
         }
-
-      } console.log('nope error no player: ' + n)
-
-
+      } console.log('nope error ' + n + 'not player: ' + bigblindplayer)
     } else {
       console.log('endturn');
-
       for (i = 0; i < userid.length; i++) {
         gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
         if (userid[gamedata.turnnum] != null) {
@@ -569,9 +550,7 @@ var updateGame = (function () {
         }
       }
       io.emit('updatePhase', gamedata);
-
     }
-
   };
 
   var winner = function () {
