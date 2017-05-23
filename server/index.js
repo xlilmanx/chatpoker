@@ -64,12 +64,14 @@ io.on('connection', function (socket) {
 
   var clientInfo = new Object();
   clientInfo.id = socket.id;
+  clientInfo.num = -1;
   clientInfo.cards = [];
   clientInfo.name = "";
   clientInfo.money = 100;
   clientInfo.bet = 0;
   clientInfo.turnbet = 0;
   var idAdded = false;
+  var clientnum = -1;
 
 
   if (idAdded == false) {
@@ -100,13 +102,14 @@ io.on('connection', function (socket) {
     for (var i = 0; i < userid.length; i++) {
       if (userid[i] != null) {
         if (userid[i].id === socket.id) {
-          clientNumber = i;
+          userid[i].num = i;
+          clientnum = i;
           socket.emit('updatePlayerId', i);
         }
       }
     }
 
-    var name = userNames.getGuestName();
+    var name = userNames.getGuestName(clientnum);
 
   }
 
@@ -147,8 +150,8 @@ io.on('connection', function (socket) {
   socket.on('dobet', function (data) {
 
     console.log('do bet');
-    console.log(clientNumber);
-    if (gamedata.turnnum == clientNumber) {
+    console.log(clientnum);
+    if (gamedata.turnnum == clientnum) {
 
       for (var i = 0; i < userid.length; ++i) {
         var c = userid[i];
@@ -206,9 +209,9 @@ io.on('connection', function (socket) {
   */
   socket.on('fold', function () {
 
-    if (gamedata.currentbet > userid[clientNumber].bet) {
+    if (gamedata.currentbet > userid[clientnum].bet) {
       console.log('fold')
-      returnarray.hand[clientNumber] = [];
+      returnarray.hand[clientnum] = [];
       io.emit('updateGame', returnarray);
 
       var numplayersingame = 0;
@@ -230,7 +233,7 @@ io.on('connection', function (socket) {
 
       } else {
 
-        updateGame.endturn();
+        updateGame.endturn(clientnum);
 
       }
 
@@ -298,7 +301,7 @@ io.on('connection', function (socket) {
 
   socket.on('dealfield', function () {
 
-    if (gamedata.dealernum == clientNumber) {
+    if (gamedata.dealernum == clientnum) {
       gameinprogress = true;
 
       if (gamedata.phase == "preflop") {
@@ -376,7 +379,7 @@ io.on('connection', function (socket) {
       userNames.free(oldName);
 
       name = data.name;
-      userid[clientNumber].name = name;
+      userid[clientnum].name = name;
 
       socket.broadcast.emit('change:name', {
         oldName: oldName,
@@ -435,8 +438,8 @@ io.on('connection', function (socket) {
     for (var i = 0; i < userid.length; i++) {
       if (userid[i] != null) {
         if (userid[i].id === socket.id) {
-          clientNumber = i;
-          userid[clientNumber].name = name;
+          clientnum = i;
+          userid[clientnum].name = name;
           socket.emit('updatePlayerId', i);
         }
       }
@@ -480,12 +483,12 @@ var updateGame = (function () {
     io.emit('updateGame', returnarray);
   };
 
-  var endturn = function () {
+  var endturn = function (n) {
 
 
     if (gamedata.turnnum == gamedata.dealernum && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
-      if (clientNumber === gamedata.dealernum) {
+      if (n === gamedata.dealernum) {
 
         if (gamedata.phase == "preflop") {
 
@@ -641,14 +644,14 @@ var userNames = (function () {
   };
 
   // find the lowest unused "guest" name and claim it
-  var getGuestName = function () {
+  var getGuestName = function (n) {
     var name,
       nextUserId = 1;
 
     do {
       name = 'Guest ' + nextUserId;
       nextUserId += 1;
-      userid[clientNumber].name = name;
+      userid[n].name = name;
     } while (!claim(name));
 
     return name;
