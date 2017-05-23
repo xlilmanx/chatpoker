@@ -69,32 +69,39 @@ io.on('connection', function (socket) {
   clientInfo.money = 100;
   clientInfo.bet = 0;
   clientInfo.turnbet = 0;
-  var clientNumber = -1;
   var idAdded = false;
 
-  if (userid.length > 0) {
-    for (i = 0; i < userid.length; i++) {
 
-      if (userid[i] == null) {
+  if (idAdded = false) {
+    if (userid.length > 0) {
+      for (i = 0; i < userid.length; i++) {
 
-        userid.splice(i, 1, clientInfo);
-        idAdded = true;
+        if (userid[i] == null) {
 
+          userid.splice(i, 1, clientInfo);
+          idAdded = true;
+
+        }
+      }
+    } else {
+
+      userid.push(clientInfo);
+      idAdded = true;
+    }
+
+    for (var i = 0; i < userid.length; i++) {
+      if (userid[i].id === socket.id) {
+        clientNumber = i;
+        socket.emit('updatePlayerId', i);
       }
     }
-  }
-  if (idAdded = false) {
-    userid.push(clientInfo);
-    idAdded = true;
+
+    var name = userNames.getGuestName();
+
   }
 
 
-  for (var i = 0; i < userid.length; i++) {
-    if (userid[i].id === socket.id) {
-      clientNumber = i;
-      socket.emit('updatePlayerId', i);
-    }
-  }
+
 
   // inital connection update game
   console.log(gamedata.dealernum);
@@ -327,7 +334,7 @@ io.on('connection', function (socket) {
     }
   });
 
-  var name = userNames.getGuestName(clientNumber);
+
 
   // send the new user their name and a list of users
   socket.emit('init', {
@@ -617,7 +624,7 @@ var userNames = (function () {
   };
 
   // find the lowest unused "guest" name and claim it
-  var getGuestName = function (n) {
+  var getGuestName = function () {
     var name,
       nextUserId = 1;
 
