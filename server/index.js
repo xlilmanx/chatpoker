@@ -154,10 +154,10 @@ io.on('connection', function (socket) {
       console.log('fold')
       returnarray.hand[clientNumber] = [];
       io.emit('updateGame', returnarray);
-      updateGame.endturn(socket);
+      updateGame.endturn();
 
     } else {
-      updateGame.endturn(socket);
+      updateGame.endturn();
 
     }
 
@@ -251,7 +251,9 @@ io.on('connection', function (socket) {
 
       }
       console.log('dealfield')
+      io.emit('toggleDealField', false);
       gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+      io.emit('updatePhase', gamedata);
       updateGame.gamedatacards();
     }
   });
@@ -372,7 +374,7 @@ var updateGame = (function () {
     io.emit('updateGame', returnarray);
   };
 
-  var endturn = function (socket) {
+  var endturn = function () {
 
 
     if (gamedata.turnnum = gamedata.dealernum && userid[gamedata.turnnum].bet == gamedata.currentbet) {
@@ -382,17 +384,17 @@ var updateGame = (function () {
         if (gamedata.phase == "preflop") {
 
           gamedata.phase = "flop";
-          socket.emit('toggleDealField');
+          io.emit('toggleDealField', true);
 
         } else if (gamedata.phase == "flop") {
 
           gamedata.phase = "turn";
-          socket.emit('toggleDealField');
+          io.emit('toggleDealField', true);
 
         } else if (gamedata.phase == "turn") {
 
           gamedata.phase = "river";
-          socket.emit('toggleDealField');
+          io.emit('toggleDealField', true);
 
         } else if (gamedata.phase == "river") {
 
@@ -406,7 +408,7 @@ var updateGame = (function () {
           gameinprogress = false;
           handdealt = false;
           gamedata.phase = "waitingtostart";
-          socket.emit('toggleDealHand');
+          io.emit('updatePhase', gamedata);
 
         }
 
