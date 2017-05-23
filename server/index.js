@@ -135,7 +135,7 @@ io.on('connection', function (socket) {
 
   socket.emit('updateGame', returnarray);
   socket.emit('updatePhase', gamedata);
-  socket.emit('updateBet', returnbetarray);
+  io.emit('updateBet', returnbetarray);
 
   // update bets
 
