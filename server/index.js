@@ -197,8 +197,8 @@ io.on('connection', function (socket) {
       var numplayersingame = 0;
 
       for (i = 0; i < userid.length; i++) {
-        if (user[i] != null) {
-          if (users[i].cards.length != 0) {
+        if (userid[i] != null) {
+          if (userid[i].cards.length != 0) {
             numplayersingame = numplayersingame + 1;
           }
         }
