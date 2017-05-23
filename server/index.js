@@ -240,7 +240,7 @@ io.on('connection', function (socket) {
 
 
     } else {
-      updateGame.endturn();
+      updateGame.endturn(clientnum);
 
     }
 
