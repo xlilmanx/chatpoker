@@ -25,6 +25,7 @@ app.get('*', function (request, response) {
 });
 
 //  Game Variables
+var socketList = io.sockets.server.eio.clients;
 var deck = ["Ac", "Ad", "Ah", "As", "2c", "2d", "2h", "2s", "3c", "3d", "3h", "3s", "4c", "4d", "4h", "4s",
   "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
   "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
@@ -400,13 +401,12 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function () {
 
 
-    for (var i = 0; i < userid.length; ++i) {
+    for (var i = 0; i < userid.length; i++) {
       var c = userid[i];
 
       if (c.id == socket.id) {
         delete userid[i];
         delete returnarray[i];
-
         if (i == bigblindplayer) {
 
           for (i = userid.length; i > 0; i--) {
@@ -427,6 +427,28 @@ io.on('connection', function (socket) {
                    }
          break;
                }*/
+      }
+
+      socketList = io.sockets.server.eio.clients;
+      for (i = userid.length - 1; i > 0; i--) {
+        if (userid[i] != null) {
+          if (socketList[userid[i].id] === undefined) {
+            delete userid[i];
+            delete returnarray[i];
+            if (i == bigblindplayer) {
+
+              for (i = userid.length; i > 0; i--) {
+                bigblindplayer = (bigblindplayer - 1) % userid.length;
+                if (userid[bigblindplayer] != null) {
+
+                  break;
+                }
+
+              }
+
+            }
+          }
+        }
       }
 
       for (i = userid.length - 1; i > 0; i--) {
@@ -549,6 +571,7 @@ var updateGame = (function () {
           break;
         }
       }
+      console.log('nexturn: ' + gamedata.turnnum);
       io.emit('updatePhase', gamedata);
     }
   };
