@@ -98,9 +98,11 @@ io.on('connection', function (socket) {
     }
 
     for (var i = 0; i < userid.length; i++) {
-      if (userid[i].id === socket.id) {
-        clientNumber = i;
-        socket.emit('updatePlayerId', i);
+      if (userid[i] != null) {
+        if (userid[i].id === socket.id) {
+          clientNumber = i;
+          socket.emit('updatePlayerId', i);
+        }
       }
     }
 
@@ -426,10 +428,12 @@ io.on('connection', function (socket) {
   socket.on('updateclientnumber', function () {
 
     for (var i = 0; i < userid.length; i++) {
-      if (userid[i].id === socket.id) {
-        clientNumber = i;
-        userid[clientNumber].name = name;
-        socket.emit('updatePlayerId', i);
+      if (userid[i] != null) {
+        if (userid[i].id === socket.id) {
+          clientNumber = i;
+          userid[clientNumber].name = name;
+          socket.emit('updatePlayerId', i);
+        }
       }
     }
 
@@ -451,9 +455,9 @@ var updateGame = (function () {
 
     for (var i = 0; i < userid.length; i++) {
 
-      allmoney.push(userid[i].money);
-      allbet.push(userid[i].bet);
-      allturnbet.push(userid[i].turnbet);
+      allmoney[i] = userid[i].money;
+      allbet[i] = userid[i].bet;
+      allturnbet[i] = userid[i].turnbet;
 
 
     }
@@ -594,10 +598,11 @@ var updateGame = (function () {
     //handle bet after match end
     for (i = 0; i < userid.length; i++) {
 
-      winner.id.money = winner.id.money + userid[i].bet;
-      winner.totalwon = winner.totalwon + userid[i].bet;
-      userid[i].bet = 0;
-
+      if (userid[i] != null) {
+        winner.id.money = winner.id.money + userid[i].bet;
+        winner.totalwon = winner.totalwon + userid[i].bet;
+        userid[i].bet = 0;
+      }
     }
 
     io.emit('send:message', {
