@@ -75,7 +75,7 @@ io.on('connection', function (socket) {
 
   for (var i = 0; i < userid.length; i++) {
     if (userid[i].id === socket.id) {
-      clientInfo.number = i;
+      clientNumber = i;
       socket.emit('updatePlayerId', i);
     }
   }
@@ -95,7 +95,7 @@ console.log (gamedata2.turn);
 
   socket.on('dobet', function (data) {
 
-    if (gamedata.turn = clientInfo.number) {
+    if (gamedata.turn = clientNumber) {
 
       for (var i = 0; i < userid.length; ++i) {
         var c = userid[i];
@@ -145,9 +145,9 @@ console.log('socket startgame')
 
   socket.on('fold', function () {
 
-    if (gamedata.currentbet > userid[clientInfo.number].bet) {
+    if (gamedata.currentbet > userid[clientNumber].bet) {
 
-      returnarray.hand[clientInfo.number] = [];
+      returnarray.hand[clientNumber] = [];
       io.emit('updateGame', returnarray);
       updateGame.endturn();
 
@@ -198,7 +198,7 @@ console.log('fold')
 
   socket.on('dealfield', function () {
 
-    if (gamedata.dealer == clientInfo.number) {
+    if (gamedata.dealer == clientNumber) {
       gameinprogress = true;
 
       if (gamedata.phase == "preflop") {
@@ -267,7 +267,7 @@ console.log('dealfield')
       userNames.free(oldName);
 
       name = data.name;
-      userid[clientInfo.number].name = name;
+      userid[clientNumber].name = name;
 
       socket.broadcast.emit('change:name', {
         oldName: oldName,
@@ -311,8 +311,8 @@ console.log('dealfield')
 
     for (var i = 0; i < userid.length; i++) {
       if (userid[i].id === socket.id) {
-        clientInfo.number = i;
-        userid[clientInfo.number].name = name;
+        clientNumber = i;
+        userid[clientNumber].name = name;
         socket.emit('updatePlayerId', i);
       }
     }
@@ -360,7 +360,7 @@ var updateGame = (function () {
 
     if (gamedata.turn = gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
 
-      if (clientInfo.number === gamedata.dealer) {
+      if (clientNumber === gamedata.dealer) {
 
         if (gamedata.phase == "preflop") {
 
@@ -522,7 +522,7 @@ var userNames = (function () {
     do {
       name = 'Guest ' + nextUserId;
       nextUserId += 1;
-      userid[clientInfo.number].name = name;
+      userid[clientNumber].name = name;
     } while (!claim(name));
 
     return name;
