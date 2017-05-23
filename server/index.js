@@ -61,6 +61,8 @@ var bigblind = 2;
 var bigblindplayer = -1;
 var smallblindplayer = -1;
 var betraised = false;
+var betraisedplayer = -1;
+var allowbet = false;
 
 io.on('connection', function (socket) {
 
@@ -153,37 +155,41 @@ io.on('connection', function (socket) {
 
   socket.on('dobet', function (data) {
 
-    console.log('do bet');
-    console.log(clientnum);
-    if (gamedata.turnnum == clientnum) {
+    if (allowbet) {
 
-      for (var i = 0; i < userid.length; ++i) {
-        var c = userid[i];
+      console.log('do bet');
+      console.log(clientnum);
+      if (gamedata.turnnum == clientnum) {
 
-        if (c.id == socket.id) {
+        for (var i = 0; i < userid.length; ++i) {
+          var c = userid[i];
 
-          userid[i].money = userid[i].money - data;
-          userid[i].bet = userid[i].bet + data;
-          userid[i].turnbet = userid[i].turnbet + data;
-          console.log('do bet complete: ' + userid[i].turnbet);
-          if (userid[i].bet > gamedata.currentbet) {
+          if (c.id == socket.id) {
 
-            gamedata.currentbet = userid[i].bet;
-            io.emit('updatePhase', gamedata);
-            betraised = true;
+            userid[i].money = userid[i].money - data;
+            userid[i].bet = userid[i].bet + data;
+            userid[i].turnbet = userid[i].turnbet + data;
+            console.log('do bet complete: ' + userid[i].turnbet);
+            if (userid[i].bet > gamedata.currentbet) {
 
-            console.log('updated currentbet');
+              gamedata.currentbet = userid[i].bet;
+              io.emit('updatePhase', gamedata);
+              betraised = true;
+              betraisedplayer = i;
+
+              console.log('updated currentbet');
+            }
+
           }
-
         }
+
+        updateGame.bets();
+
+      } else {
+
+        socket.emit('updatePhase', gamedata);
+
       }
-
-      updateGame.bets();
-
-    } else {
-
-      socket.emit('updatePhase', gamedata);
-
     }
   });
 
@@ -191,9 +197,11 @@ io.on('connection', function (socket) {
 
     if (gamedata.currentbet > userid[clientnum].bet) {
       console.log('fold: ' + clientnum);
+      userid[clientnum].cards = [];
       returnarray.hand[clientnum] = [];
       io.emit('updateGame', returnarray);
-
+      updateGame.endturn(clientnum);
+/*
       var numplayersingame = 0;
 
       for (i = 0; i < userid.length; i++) {
@@ -209,7 +217,7 @@ io.on('connection', function (socket) {
       } else {
         updateGame.endturn(clientnum);
       }
-    } else {
+  */  } else {
       updateGame.endturn(clientnum);
     }
   });
@@ -294,14 +302,15 @@ io.on('connection', function (socket) {
       userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
       userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
       userid[bigblindplayer].bet = userid[bigblindplayer].bet + bigblind;
+      betraised = true;
+      betraisedplayer = bigblindplayer;
       io.emit('updatePhase', gamedata);
       updateGame.bets();
-
-
 
       field = [];
       updateGame.gamedatacards();
       gameinprogress = true;
+      allowbet = true;
 
     }
   });
@@ -325,7 +334,8 @@ io.on('connection', function (socket) {
           field = fieldarr;
           deck = deckarr;
         }
-        gamedata.phase = "turn";
+
+        gamedata.phase = "flop";
       }
 
       else {
@@ -340,30 +350,38 @@ io.on('connection', function (socket) {
 
         field = fieldarr;
         deck = deckarr;
-        gamedata.phase = "river";
 
+        if (gamedata.phase == "flop") {
+          gamedata.phase = "turn";
+        } else {
+          gamedata.phase = "river";
+        }
       }
       console.log('dealfield');
       io.emit('toggleDealField', 0);
 
-      for (i = 0; i < userid.length; i++) {
-        gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
-        if (userid[gamedata.turnnum] != null) {
-          break;
-        }
-      }
-
-      do {
+      gamedata.turnnum = (gamedata.dealernum + 1) % userid.length;
+      if (userid[gamedata.turnnum] == null) {
         for (i = 0; i < userid.length; i++) {
           gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
           if (userid[gamedata.turnnum] != null) {
-            break;
+            if (userid[gamedata.turnnum].cards.length != 0) {
+              break;
+            }
+          }
+        }
+      } else if (userid[gamedata.turnnum].cards.length == 0) {
+        for (i = 0; i < userid.length; i++) {
+          gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+          if (userid[gamedata.turnnum] != null) {
+            if (userid[gamedata.turnnum].cards.length != 0) {
+              break;
+            }
           }
         }
       }
-      while (userid[gamedata.turnnum].cards.length == 0);
 
-
+      allowbet = true;
       io.emit('updatePhase', gamedata);
       updateGame.gamedatacards();
     }
@@ -413,70 +431,107 @@ io.on('connection', function (socket) {
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
 
-
     for (var i = 0; i < userid.length; i++) {
       var c = userid[i];
       if (c != null) {
         if (c.id == socket.id) {
+          if (c.cards.length != 0) {
+            gamedata.numplayers = gamedata.numplayers - 1;
+          }
           delete userid[i];
           delete returnarray[i];
-          if (i == bigblindplayer) {
-
-            for (i = userid.length; i > 0; i--) {
-              bigblindplayer = (bigblindplayer - 1) % userid.length;
-              if (userid[bigblindplayer] != null) {
-
+          delete returnbetarray[i];
+          if (i == gamedata.dealernum) {
+            for (i = 0; i < userid.length; i++) {
+              gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
+              if (userid[gamedata.dealernum] != null) {
                 break;
               }
-
             }
-
           }
-          //       userid.splice(i, 1);
-
-          /*       if (returnarray[0] != null) {
-                     if (returnarray[0][i] != null) {
-                       returnarray[0].splice(i, 1);
-                     }
-           break;
-                 }*/
-        }
-      }
-
-      socketList = io.sockets.server.eio.clients;
-      for (i = userid.length - 1; i > 0; i--) {
-        if (userid[i] != null) {
-          if (socketList[userid[i].id] === undefined) {
-            delete userid[i];
-            delete returnarray[i];
-            if (i == bigblindplayer) {
-
-              for (i = userid.length; i > 0; i--) {
-                bigblindplayer = (bigblindplayer - 1) % userid.length;
-                if (userid[bigblindplayer] != null) {
-
+          if (i == gamedata.turnnum) {
+            for (i = 0; i < userid.length; i++) {
+              gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+              if (userid[gamedata.turnnum] != null) {
+                if (userid[gamedata.turnnum].cards.length != 0) {
                   break;
                 }
-
               }
-
             }
           }
-        }
-      }
-
-      for (i = userid.length - 1; i > 0; i--) {
-
-        if (userid[i] == null) {
-          userid.splice(i, 1);
-        } else {
-          break;
-
+          if (i == betraisedplayer) {
+            for (i = userid.length; i > 0; i--) {
+              betraisedplayer = (betraisedplayer - 1) % userid.length;
+              if (userid[betraisedplayer] != null) {
+                break;
+              }
+            }
+          }
         }
       }
     }
 
-    io.emit('gameconnect', returnarray);
+    socketList = io.sockets.server.eio.clients;
+    for (i = userid.length - 1; i > 0; i--) {
+      if (userid[i] != null) {
+        if (socketList[userid[i].id] === undefined) {
+          if (c.cards.length != 0) {
+            gamedata.numplayers = gamedata.numplayers - 1;
+          }
+          delete userid[i];
+          delete returnarray[i];
+          delete returnbetarray[i];
+          if (i == gamedata.dealernum) {
+            for (i = 0; i < userid.length; i++) {
+              gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
+              if (userid[gamedata.dealernum] != null) {
+                break;
+              }
+            }
+          }
+          if (i == gamedata.turnnum) {
+            for (i = 0; i < userid.length; i++) {
+              gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+              if (userid[gamedata.turnnum] != null) {
+                if (userid[gamedata.turnnum].cards.length != 0) {
+                  break;
+                }
+              }
+            }
+          }
+          if (i == betraisedplayer) {
+            for (i = userid.length; i > 0; i--) {
+              betraisedplayer = (betraisedplayer - 1) % userid.length;
+              if (userid[betraisedplayer] != null) {
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    for (i = userid.length - 1; i >= 0; i--) {
+
+      if (userid[i] == null) {
+        userid.splice(i, 1);
+      } else {
+        break;
+      }
+    }
+
+    if (userid.length == 0) {
+
+      gamedata.phase = "waitingtostart";
+
+    }
+
+
+    //    io.emit('gameconnect', returnarray);
+    io.emit('updateGame', returnarray);
+    io.emit('updatePhase', gamedata);
+    io.emit('updateBet', returnbetarray);
+
     socket.broadcast.emit('user:left', {
       name: name
     });
@@ -512,12 +567,11 @@ var updateGame = (function () {
     allturnbet = [];
 
     for (var i = 0; i < userid.length; i++) {
-
-      allmoney[i] = userid[i].money;
-      allbet[i] = userid[i].bet;
-      allturnbet[i] = userid[i].turnbet;
-
-
+      if (userid[i] != null) {
+        allmoney[i] = userid[i].money;
+        allbet[i] = userid[i].bet;
+        allturnbet[i] = userid[i].turnbet;
+      }
     }
     returnbetarray.money = allmoney;
     returnbetarray.bet = allbet;
@@ -537,7 +591,7 @@ var updateGame = (function () {
 
     console.log('did end turn client: ' + n);
 
-    if (gamedata.turnnum == bigblindplayer && !betraised) {
+    if ((gamedata.turnnum == betraisedplayer && !betraised) || (gamedata.turnnum == betraisedplayer && gamedata.numplayers == 1)) {
 
       console.log('dealer call: ' + userid[gamedata.turnnum].bet + " - " + gamedata.currentbet);
 
@@ -546,25 +600,23 @@ var updateGame = (function () {
       if (gamedata.phase == "preflop") {
 
         console.log('preflop end');
-        gamedata.phase = "flop";
-        io.emit('updatePhase', gamedata);
+        allowbet = false;
         io.emit('toggleDealField', 1);
 
       } else if (gamedata.phase == "flop") {
 
         console.log('flop end');
-        gamedata.phase = "turn";
-        io.emit('updatePhase', gamedata);
+        allowbet = false;
         io.emit('toggleDealField', 1);
 
       } else if (gamedata.phase == "turn") {
 
-        console.log('river end');
-        gamedata.phase = "river";
-        io.emit('updatePhase', gamedata);
+        console.log('turn end');
+        allowbet = false;
         io.emit('toggleDealField', 1);
 
       } else if (gamedata.phase == "river") {
+        allowbet = false;
         console.log('checkwinner');
         /*          if (field.length >= 5) {
         
@@ -583,7 +635,9 @@ var updateGame = (function () {
       for (i = 0; i < userid.length; i++) {
         gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
         if (userid[gamedata.turnnum] != null) {
-          break;
+          if (userid[gamedata.turnnum].cards.length != 0) {
+            break;
+          }
         }
       }
       betraised = false;
@@ -595,85 +649,84 @@ var updateGame = (function () {
   var winner = function () {
     var allplayerhands = [];
     if (userid[0] != null) {
-      if (userid[0].cards != null) {
+      if (userid[0].cards.length != 0) {
         var hand1 = { id: 1, cards: userid[0].cards };
         allplayerhands[0] = hand1;
       }
     }
     if (userid[1] != null) {
-      if (userid[1].cards != null) {
+      if (userid[1].cards.length != 0) {
         var hand2 = { id: 2, cards: userid[1].cards };
         allplayerhands[1] = hand2;
       }
     }
     if (userid[2] != null) {
-      if (userid[2].cards != null) {
+      if (userid[2].cards.length != 0) {
         var hand3 = { id: 3, cards: userid[2].cards };
         allplayerhands[2] = hand3;
       }
     }
     if (userid[3] != null) {
-      if (userid[3].cards != null) {
+      if (userid[3].cards.length != 0) {
         var hand4 = { id: 4, cards: userid[3].cards };
         allplayerhands[3] = hand4;
       }
     }
     if (userid[4] != null) {
-      if (userid[4].cards != null) {
+      if (userid[4].cards.length != 0) {
         var hand5 = { id: 5, cards: userid[4].cards };
         allplayerhands[4] = hand5;
       }
     }
     if (userid[5] != null) {
-      if (userid[5].cards != null) {
+      if (userid[5].cards.length != 0) {
         var hand6 = { id: 6, cards: userid[5].cards };
         allplayerhands[5] = hand6;
       }
     }
     if (userid[6] != null) {
-      if (userid[6].cards != null) {
+      if (userid[6].cards.length != 0) {
         var hand7 = { id: 7, cards: userid[6].cards };
         allplayerhands[6] = hand7;
       }
     }
     if (userid[7] != null) {
-      if (userid[7].cards != null) {
+      if (userid[7].cards.length != 0) {
         var hand8 = { id: 8, cards: userid[7].cards };
         allplayerhands[7] = hand8;
       }
     }
     if (userid[8] != null) {
-      if (userid[8].cards != null) {
+      if (userid[8].cards.length != 0) {
         var hand8 = { id: 9, cards: userid[8].cards };
         allplayerhands[8] = hand9;
       }
     }
     if (userid[9] != null) {
-      if (userid[9].cards != null) {
+      if (userid[9].cards.length != 0) {
         var hand8 = { id: 10, cards: userid[9].cards };
         allplayerhands[9] = hand10;
       }
     }
 
-    for (i = 0; i < allplayerhands.length; i++) {
-
-      if (allplayerhands[i].cards == null) {
-
-        allplayerhands.splice(i, 1);
+    for (i = 0; i < 9; i++) {
+      if (allplayerhands[i] == null) {
+        allplayerhands.splice(i, 1, []);
+      } else if (allplayerhands[i].cards == null) {
+        allplayerhands.splice(i, 1, []);
       }
-
     }
 
     var winnerarray = []
     for (i = 0; i < userid.length; i++) {
       if (userid[i] != null) {
-        winnerarray.push(userid[i].num);
+        if (userid[i].cards.length != null) {
+          winnerarray.push(userid[i].num);
+        }
       }
     }
-
+    console.log(allplayerhands);
     var results = Ranker.orderHands(allplayerhands, field);
-
-
 
     winner.id = userid[winnerarray[results[0][0].id - 1]];
     winner.idname = winner.id.name;

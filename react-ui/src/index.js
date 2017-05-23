@@ -98,7 +98,7 @@ class MainWrapper extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='appcontainer'>
                 <Game
                     socket={socket}
                     users={this.state.users} />
@@ -114,9 +114,6 @@ class MainWrapper extends React.Component {
         );
     }
 }
-
-
-
 
 
 

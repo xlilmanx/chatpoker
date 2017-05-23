@@ -5,10 +5,18 @@ class GameUsers extends React.Component {
   render() {
     return (
       <div className='gameuserlist'>
+
         {
           this.props.users.map((user, i) => {
             return (
-              <div className='gameusercontainer'>
+              <div className='gameusercontainer' key={'user' + i}>
+                <div className='dealerturn'>
+                  <strong><span className={this.props.dealer == i ? 'dealerturnvisible' : 'dealerturnhidden'}> Dealer
+                  </span>
+                    <span className={this.props.turn == i ? 'dealerturnvisible' : 'dealerturnhidden'}>
+                      Turn
+                  </span></strong>
+                </div>
                 <div className='gameuser'>
                   <strong>{user}</strong> <br />
                   ${this.props.money[i]}
@@ -18,7 +26,7 @@ class GameUsers extends React.Component {
 
                     this.props.hand[i].map((card) => {
                       return (
-                        <span className='playercards' key={card}>{card}</span>
+                        <span className='playercards' key={card}>{this.props.playerid == i ? card : 'X'}</span>
                       );
                     })
                   }
@@ -41,11 +49,11 @@ class Betting extends React.Component {
       <div className='betting'>
         <div>Betting</div>
         <div className='bettingbutton'>
-          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
-          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
-          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call</button>
-          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
-          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
         </div>
         <br />
         Total Money: ${this.props.money}
@@ -57,7 +65,7 @@ class Betting extends React.Component {
 
 
 
-
+/*
 class Deck extends React.Component {
   constructor() {
     super();
@@ -73,7 +81,7 @@ class Deck extends React.Component {
     );
   }
 }
-
+*/
 class Game extends React.Component {
   constructor() {
     super();
@@ -118,8 +126,8 @@ class Game extends React.Component {
     this.props.socket.on('updateGame', this.updateGame);
     this.props.socket.on('updateBet', this.updateBet);
     this.props.socket.on('updatePlayerId', this.updatePlayerId);
-    this.props.socket.on('toggleDealHand', this.updateDealHand);
-    this.props.socket.on('toggleDealField', this.updateDealField);
+    this.props.socket.on('toggleDealHand', this.toggleDealHand);
+    this.props.socket.on('toggleDealField', this.toggleDealField);
 
   }
 
@@ -186,7 +194,7 @@ class Game extends React.Component {
 
   toggleDealHand() {
 
-    if (this.state.dealhand = true) {
+    if (this.state.dealhand == true) {
       this.setState({
         dealhand: false
       })
@@ -200,7 +208,7 @@ class Game extends React.Component {
 
 
   updateGame(gamedata) {
-
+    console.log(gamedata)
     if (gamedata.length == 0) {
 
     } else {
@@ -272,7 +280,7 @@ class Game extends React.Component {
     if (this.state.field != null) {
       var fieldhtml = this.state.field.map(function (card) {
         return (
-          <div>
+          <div key={'field: ' + card}>
             <span className="fieldcards" key={card}>{card}</span>
             <span className="spacer">&nbsp;</span>
           </div>
@@ -280,12 +288,13 @@ class Game extends React.Component {
       });
     }
 
-
-    if (this.state.deck != null) {
-      var deckhtml = this.state.deck.map(function (card) {
-        return <span className="card" key={card}>{card}</span>;
-      });
-    }
+    /*
+        if (this.state.deck != null) {
+          var deckhtml = this.state.deck.map(function (card) {
+            return <span className="card" key={card}>{card}</span>;
+          });
+        }
+        */
     return (
       <div className='gamecontainer'>
         <h1>Poker Game</h1>
@@ -294,9 +303,10 @@ class Game extends React.Component {
           hand={this.state.hand}
           bet={this.state.bet}
           money={this.state.money}
+          dealer={this.state.dealer}
+          turn={this.state.turn}
+          playerid={this.state.playerid}
         />
-
-
         <div className='fieldarea'>
           <div className='fieldcardcontainer'>{fieldhtml}
           </div>
@@ -304,9 +314,28 @@ class Game extends React.Component {
             <button className="button" disabled={this.state.gameinprogress} onClick={this.handleDealHand}>Deal Hand</button>
             <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
           </div>
-          <br />playerid: {this.state.playerid} -- gameinprogress: {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isdealer: {this.state.isdealer.toString()}{this.state.dealfield.toString()} -- isturn: {this.state.isturn.toString()} -- currentbet: {this.state.currentbet}<br />
 
+          {/*
+          <br />playerid: {this.state.playerid} -- gameinprogress: {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isdealer: {this.state.isdealer.toString()}{this.state.dealfield.toString()} -- isturn: {this.state.isturn.toString()} -- currentbet: {this.state.currentbet}<br />
+          */}
+
+          <br />
+
+          <div className='bigplayercardscontainer'>
+            {this.state.hand[this.state.playerid] != null &&
+              this.state.hand[this.state.playerid].map((card) => {
+                return (
+                  <div key={'bigplayercards: ' + card}>
+                    <span className='bigplayercards' key={'big ' + card}>{card}</span>
+                    <span className="spacer">&nbsp;</span></div>
+                );
+              })
+            }
+          </div>
+          <br />
+          <br />
           <div className='cardsleft'>
+
             Cards Left in Deck: {this.state.deck != null &&
               this.state.deck.length}
           </div>
@@ -320,6 +349,7 @@ class Game extends React.Component {
           currentbet={this.state.currentbet}
           playerbet={this.state.bet[this.state.playerid]}
           dealfield={this.state.dealfield}
+          gameinprogress={this.state.gameinprogress}
         />
       </div>
 
