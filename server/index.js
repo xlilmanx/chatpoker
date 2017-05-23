@@ -210,7 +210,7 @@ io.on('connection', function (socket) {
   socket.on('fold', function () {
 
     if (gamedata.currentbet > userid[clientnum].bet) {
-      console.log('fold')
+      console.log('fold');
       returnarray.hand[clientnum] = [];
       io.emit('updateGame', returnarray);
 
@@ -253,7 +253,7 @@ io.on('connection', function (socket) {
 
     if (!gameinprogress) {
 
-      console.log('deal hand')
+      console.log('deal hand');
       gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
       gamedata.phase = "preflop";
       gamedata.currentbet = bigblind;
@@ -338,7 +338,7 @@ io.on('connection', function (socket) {
         gamedata.phase = "river";
 
       }
-      console.log('dealfield')
+      console.log('dealfield');
       io.emit('toggleDealField', false);
       gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
 
@@ -487,10 +487,12 @@ var updateGame = (function () {
 
   var endturn = function (n) {
 
-
+    console.log('did end turn client: ' + n);
     if (gamedata.turnnum == gamedata.dealernum && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
-      if (n === gamedata.dealernum) {
+      console.log('dealer call');
+
+      if (n == gamedata.dealernum) {
 
         if (gamedata.phase == "preflop") {
 
@@ -508,7 +510,7 @@ var updateGame = (function () {
           io.emit('toggleDealField', true);
 
         } else if (gamedata.phase == "river") {
-
+          console.log('checkwinner');
           /*          if (field.length >= 5) {
           
            
@@ -527,7 +529,7 @@ var updateGame = (function () {
 
 
     } else {
-      console.log('endturn')
+      console.log('endturn');
       gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
       io.emit('updatePhase', gamedata);
 
