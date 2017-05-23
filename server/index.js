@@ -598,9 +598,27 @@ var updateGame = (function () {
       }
     }
 
+    for (i = 0; i < allplayerhands.length; i++) {
+
+      if (allplayerhands[i] == null) {
+
+        allplayerhands.splice(i, 1);
+      }
+
+    }
+
+    var winnerarray = []
+    for (i = 0; i < userid.length; i++) {
+      if (userid[i] != null) {
+        winnerarray.push(userid[i].num);
+      }
+    }
+
     var results = Ranker.orderHands(allplayerhands, field);
 
-    winner.id = userid[results[0][0].id - 1]
+
+
+    winner.id = userid[winnerarray[results[0][0].id - 1]];
     winner.idname = winner.id.name;
     winner.hand = results[0][0].description;
     winner.totalwon = 0;
