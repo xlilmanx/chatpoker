@@ -55,7 +55,6 @@ var allturbet = [];
 var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0 };
 // waitingtostart, preflop, flop, turn, river
 var gamedata = { phase: "waitingtostart", currentbet: 0, dealernum: 0, turnnum: 0 };
-var gamedata2 = { phase: "waitingtostart", currentbet: 0, dealer: 0, turn: 0 };
 var smallblind = 1;
 var bigblind = 2;
 
@@ -65,7 +64,6 @@ io.on('connection', function (socket) {
 
   var clientInfo = new Object();
   clientInfo.id = socket.id;
-  clientInfo.number = 0;
   clientInfo.cards = [];
   clientInfo.name = "";
   clientInfo.money = 100;
@@ -81,8 +79,8 @@ io.on('connection', function (socket) {
   }
 
   // inital connection update game
-console.log (gamedata.dealer);
-console.log (gamedata.turn);
+console.log (gamedata.dealernum);
+console.log (gamedata.turnnum);
   socket.emit('updateGame', returnarray);
   socket.emit('updatePhase', gamedata);
   socket.emit('updateBet', returnbetarray);
@@ -121,7 +119,7 @@ console.log (gamedata.turn);
   socket.on('startgame', function (data) {
 
 console.log('socket startgame')
-    gamedata.dealernum = (gamedata.dealer + 1) % userid.length;
+    gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
     gamedata.phase = "preflop";
     gamedata.currentbet = bigblind;
     gamedata.turnnum = (gamedata.dealernum + 3) % userid.length;
