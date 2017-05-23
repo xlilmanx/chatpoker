@@ -525,7 +525,7 @@ var updateGame = (function () {
 
     if (gamedata.turnnum == bigblindplayer && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
-      console.log('dealer call: ' + userid[gamedata.turnnum] + " - " + gamedata.currentbet);
+      console.log('dealer call: ' + userid[gamedata.turnnum].bet + " - " + gamedata.currentbet);
 
       if (n == bigblindplayer) {
 
@@ -562,7 +562,7 @@ var updateGame = (function () {
           gamedata.phase = "waitingtostart";
           io.emit('updatePhase', gamedata);
         }
-      } console.log('nope error ' + n + 'not player: ' + bigblindplayer)
+      } console.log('nope error ' + n + ' not player: ' + bigblindplayer)
     } else {
       console.log('endturn');
       for (i = 0; i < userid.length; i++) {

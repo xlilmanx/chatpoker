@@ -134,7 +134,6 @@ class Game extends React.Component {
   }
 
   updatePhase(phasedata) {
-    console.log(phasedata.turnnum);
 
     var refisturn = false;
     if (phasedata.turnnum == this.state.playerid) {
@@ -299,7 +298,7 @@ class Game extends React.Component {
             <button className="button" disabled={this.state.gameinprogress} onClick={this.handleDealHand}>Deal Hand</button>
             <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
           </div>
-          <br />playerid: {this.state.playerid} -- gameinprogress: {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isturn: {this.state.isturn.toString()} -- currentbet: {this.state.currentbet}<br />
+          <br />playerid: {this.state.playerid} -- gameinprogress: {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isdealer: {this.state.isdealer} -- isturn: {this.state.isturn.toString()} -- currentbet: {this.state.currentbet}<br />
 
           <div className='cardsleft'>
             Cards Left in Deck: {this.state.deck != null &&
