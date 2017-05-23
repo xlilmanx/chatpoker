@@ -123,53 +123,53 @@ class Game extends React.Component {
 
   }
 
-  updatePlayerId(data) {
+  updatePlayerId(playerid) {
 
     this.setState({
 
-      playerid: data
+      playerid: playerid
 
     })
 
   }
 
-  updatePhase(data) {
-
+  updatePhase(phasedata) {
+console.log(phase);
     var refisturn = false;
-    if (data.turn = this.state.playerid) {
+    if (phasedata.turn = this.state.playerid) {
       refisturn = true;
     } else {
       refisturn = false;
     }
 
     var refisdealer = false;
-    if (data.dealer = this.state.playerid) {
+    if (phasedata.dealer = this.state.playerid) {
       refisdealer = true;
     } else {
       refisdealer = false;
     }
 
     var refgameinprogress = false;
-    if (data.phase != "waitingtostart") {
+    if (phasedata.phase != "waitingtostart") {
       refgameinprogress = true;
     } else {
       refgameinprogress = false;
     }
-console.log(data);
+
     this.setState({
 
-      phase: data.phase,
-      currentbet: data.currentbet,
-      dealer: data.dealer,
-      turn: data.turn,
+      phase: phasedata.phase,
+      currentbet: phasedata.currentbet,
+      dealer: phasedata.dealer,
+      turn: phasedata.turn,
       isturn: refisturn,
       isdealer: refisdealer,
       gameinprogress: refgameinprogress
 
     })
 
-    console.log (data.dealer);
-    console.log (data.turn);
+    console.log (phasedata.dealer);
+    console.log (phasedata.turn);
 
   }
 
@@ -202,32 +202,32 @@ console.log(data);
   }
 
 
-  updateGame(data) {
+  updateGame(gamedata) {
 
-    if (data.length == 0) {
+    if (gamedata.length == 0) {
 
     } else {
 
       this.setState({
-        hand: data.hand,
-        deck: data.deck,
-        field: data.field
+        hand: gamedata.hand,
+        deck: gamedata.deck,
+        field: gamedata.field
       });
 
     }
 
   }
 
-  updateBet(data) {
+  updateBet(betdata) {
 
 
-    if (data.length == 0) {
+    if (betdata.length == 0) {
 
     } else {
 
       this.setState({
-        money: data.money,
-        bet: data.bet
+        money: betdata.money,
+        bet: betdata.bet
       });
 
     }
