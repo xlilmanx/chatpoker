@@ -378,35 +378,47 @@ io.on('connection', function (socket) {
       if (c.id == socket.id) {
         delete userid[i];
         delete returnarray[i];
+
         //       userid.splice(i, 1);
 
-        /*        if (returnarray[0] != null) {
-                  if (returnarray[0][i] != null) {
-                    returnarray[0].splice(i, 1);
-                  }*/
+        /*       if (returnarray[0] != null) {
+                   if (returnarray[0][i] != null) {
+                     returnarray[0].splice(i, 1);
+                   }
+         break;
+               }*/
         break;
       }
+
+      for (i = userid.length - 1; i > 0; i--) {
+
+        if (userid[i] == null) {
+          userid.splice(i, 1);
+        } else {
+          break;
+
+        }
+      }
     }
-  }
 
     io.emit('gameconnect', returnarray);
-  socket.broadcast.emit('user:left', {
-    name: name
+    socket.broadcast.emit('user:left', {
+      name: name
+    });
+    userNames.free(name);
   });
-  userNames.free(name);
-});
 
-socket.on('updateclientnumber', function () {
+  socket.on('updateclientnumber', function () {
 
-  for (var i = 0; i < userid.length; i++) {
-    if (userid[i].id === socket.id) {
-      clientNumber = i;
-      userid[clientNumber].name = name;
-      socket.emit('updatePlayerId', i);
+    for (var i = 0; i < userid.length; i++) {
+      if (userid[i].id === socket.id) {
+        clientNumber = i;
+        userid[clientNumber].name = name;
+        socket.emit('updatePlayerId', i);
+      }
     }
-  }
 
-});
+  });
 
 });
 
