@@ -71,20 +71,19 @@ io.on('connection', function (socket) {
   clientInfo.turnbet = 0;
   var idAdded = false;
 
-  for (i = 0; i < userid.length; i++) {
+  if (userid.length > 0) {
+    for (i = 0; i < userid.length; i++) {
 
-    if (userid[i] == null) {
+      if (userid[i] == null) {
 
-      userid.splice(clientInfo, 1);
-      idAdded = true;
+        userid.splice(clientInfo, 1);
+        idAdded = true;
 
+      }
     }
-
   }
-
   if (idAdded = false) {
     userid.push(clientInfo);
-
   }
 
 
