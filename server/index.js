@@ -60,6 +60,7 @@ var smallblind = 1;
 var bigblind = 2;
 var bigblindplayer = -1;
 var smallblindplayer = -1;
+var betraised = false;
 
 io.on('connection', function (socket) {
 
@@ -169,6 +170,7 @@ io.on('connection', function (socket) {
 
             gamedata.currentbet = userid[i].bet;
             io.emit('updatePhase', gamedata);
+            betraised = true;
 
             console.log('updated currentbet');
           }
@@ -523,46 +525,44 @@ var updateGame = (function () {
 
     console.log('did end turn client: ' + n);
 
-    if (gamedata.turnnum == bigblindplayer && userid[gamedata.turnnum].bet == gamedata.currentbet) {
+    if (gamedata.turnnum == bigblindplayer && !betraised) {
 
       console.log('dealer call: ' + userid[gamedata.turnnum].bet + " - " + gamedata.currentbet);
 
-      if (n === bigblindplayer) {
+      console.log('equal n');
 
-        console.log('equal n');
+      if (gamedata.phase == "preflop") {
 
-        if (gamedata.phase == "preflop") {
+        console.log('preflop end');
+        gamedata.phase = "flop";
+        io.emit('toggleDealField', true);
 
-          console.log('preflop end');
-          gamedata.phase = "flop";
-          io.emit('toggleDealField', true);
+      } else if (gamedata.phase == "flop") {
 
-        } else if (gamedata.phase == "flop") {
+        console.log('flop end');
+        gamedata.phase = "turn";
+        io.emit('toggleDealField', true);
 
-          console.log('flop end');
-          gamedata.phase = "turn";
-          io.emit('toggleDealField', true);
+      } else if (gamedata.phase == "turn") {
 
-        } else if (gamedata.phase == "turn") {
+        console.log('river end');
+        gamedata.phase = "river";
+        io.emit('toggleDealField', true);
 
-          console.log('river end');
-          gamedata.phase = "river";
-          io.emit('toggleDealField', true);
-
-        } else if (gamedata.phase == "river") {
-          console.log('checkwinner');
-          /*          if (field.length >= 5) {
-          
-           
-          
-                    }*/
-          updateGame.winner();
-          gameinprogress = false;
-          handdealt = false;
-          gamedata.phase = "waitingtostart";
-          io.emit('updatePhase', gamedata);
-        }
-      } console.log('nope error ' + n + ' not player: ' + bigblindplayer)
+      } else if (gamedata.phase == "river") {
+        console.log('checkwinner');
+        /*          if (field.length >= 5) {
+        
+         
+        
+                  }*/
+        updateGame.winner();
+        gameinprogress = false;
+        handdealt = false;
+        gamedata.phase = "waitingtostart";
+        io.emit('updatePhase', gamedata);
+      }
+      console.log('nope error ' + n + ' not player: ' + bigblindplayer)
     } else {
       console.log('endturn');
       for (i = 0; i < userid.length; i++) {

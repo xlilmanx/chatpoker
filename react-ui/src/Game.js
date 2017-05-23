@@ -118,8 +118,8 @@ class Game extends React.Component {
     this.props.socket.on('updateGame', this.updateGame);
     this.props.socket.on('updateBet', this.updateBet);
     this.props.socket.on('updatePlayerId', this.updatePlayerId);
-    this.props.socket.on('toggleDealHand', this.updatePlayerId);
-    this.props.socket.on('toggleDealField', this.updatePlayerId);
+    this.props.socket.on('toggleDealHand', this.updateDealHand);
+    this.props.socket.on('toggleDealField', this.updateDealField);
 
   }
 
