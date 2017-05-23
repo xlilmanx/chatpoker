@@ -327,7 +327,7 @@ io.on('connection', function (socket) {
     }
   });
 
-  var name = userNames.getGuestName();
+  var name = userNames.getGuestName(clientNumber);
 
   // send the new user their name and a list of users
   socket.emit('init', {
@@ -617,7 +617,7 @@ var userNames = (function () {
   };
 
   // find the lowest unused "guest" name and claim it
-  var getGuestName = function () {
+  var getGuestName = function (n) {
     var name,
       nextUserId = 1;
 
