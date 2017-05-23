@@ -80,8 +80,8 @@ io.on('connection', function (socket) {
 
   // inital connection update game
 
-  io.emit('updateGame', returnarray);
-  io.emit('updatePhase', gamedata);
+  socket.emit('updateGame', returnarray);
+  socket.emit('updatePhase', gamedata);
 
   // update bets
 
@@ -353,7 +353,7 @@ var updateGame = (function () {
   var endturn = function () {
 
 
-    if (turn == gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
+    if (gamedata.turn == gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
 
 
 
