@@ -80,9 +80,9 @@ io.on('connection', function (socket) {
 
   // inital connection update game
 
-  io.emit('updateGame', returnarray);
-  io.emit('updatePhase', gamedata);
-  io.emit('updateBet', returnbetarray);
+  socket.emit('updateGame', returnarray);
+  socket.emit('updatePhase', gamedata);
+  socket.emit('updateBet', returnbetarray);
 
   // update bets
 
@@ -117,7 +117,7 @@ io.on('connection', function (socket) {
 
   socket.on('startgame', function (data) {
 
-  //  gamedata.dealer = (gamedata.dealer + 1) % userid.length;
+    gamedata.dealer = (gamedata.dealer + 1) % userid.length;
     gamedata.phase = "preflop";
     gamedata.currentbet = bigblind;
     gamedata.turn = (gamedata.dealer + 3) % userid.length;
@@ -485,7 +485,7 @@ var updateGame = (function () {
       text: winner.idname + " has won $" + winner.totalwon + " with " + winner.hand + "!"
     });
 
-    updateGame.bets();
+    bets();
   };
 
   return {
