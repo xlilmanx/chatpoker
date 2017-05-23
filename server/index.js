@@ -186,7 +186,7 @@ io.on('connection', function (socket) {
       }
 
       field = [];
-      updateGame.gamedata();
+      updateGame.gamedatacards();
       gameinprogress = true;
 
     }
@@ -231,7 +231,7 @@ io.on('connection', function (socket) {
       }
 
       gamedata.turn = (gamedata.turn + 1) % userid.length;
-      updateGame.gamedata();
+      updateGame.gamedatacards();
     }
   });
 
@@ -344,7 +344,7 @@ var updateGame = (function () {
     io.emit('updateBet', returnbetarray);
   };
 
-  var gamedata = function () {
+  var gamedatacards = function () {
     returnarray.hand = allhand;
     returnarray.deck = deck;
     returnarray.field = field;
