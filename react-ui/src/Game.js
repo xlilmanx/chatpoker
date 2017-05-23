@@ -160,8 +160,8 @@ console.log(phasedata);
 
       phase: phasedata.phase,
       currentbet: phasedata.currentbet,
-      dealer: phasedata.dealer,
-      turn: phasedata.turn,
+      dealer: phasedata.dealernum,
+      turn: phasedata.turnnum,
       isturn: refisturn,
       isdealer: refisdealer,
       gameinprogress: refgameinprogress
