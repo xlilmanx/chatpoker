@@ -117,7 +117,7 @@ io.on('connection', function (socket) {
 
   socket.on('startgame', function (data) {
 
-    gamedata.dealer = (gamedata.dealer + 1) % userid.length;
+  //  gamedata.dealer = (gamedata.dealer + 1) % userid.length;
     gamedata.phase = "preflop";
     gamedata.currentbet = bigblind;
     gamedata.turn = (gamedata.dealer + 3) % userid.length;
