@@ -572,6 +572,7 @@ var updateGame = (function () {
           break;
         }
       }
+      betraised = false;
       console.log('nexturn: ' + gamedata.turnnum);
       io.emit('updatePhase', gamedata);
     }
