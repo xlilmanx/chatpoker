@@ -104,6 +104,13 @@ io.on('connection', function (socket) {
           userid[i].bet = userid[i].bet + data;
           userid[i].turnbet = userid[i].turnbet + data;
 
+          if (userid[i].bet >= gamedata.currentbet) {
+
+            gamedata.currentbet = userid[i].bet;
+            io.emit('updatePhase', gamedata);
+
+          }
+
         }
       }
 
@@ -115,7 +122,7 @@ io.on('connection', function (socket) {
 
     }
   });
-
+/*
   socket.on('startgame', function (data) {
 
     console.log('socket startgame')
@@ -140,7 +147,7 @@ io.on('connection', function (socket) {
     updateGame.endturn();
 
   });
-
+*/
   socket.on('fold', function () {
 
     if (gamedata.currentbet > userid[clientNumber].bet) {

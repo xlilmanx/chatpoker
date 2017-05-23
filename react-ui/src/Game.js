@@ -43,7 +43,7 @@ class Betting extends React.Component {
         <div className='bettingbutton'>
           <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
           <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.currentbet - this.props.playerbet)}>Call</button>
+          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet),0)}>Call</button>
           <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
           <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
         </div>
@@ -134,7 +134,7 @@ class Game extends React.Component {
   }
 
   updatePhase(phasedata) {
-console.log(phasedata);
+    console.log(phasedata);
 
     var refisturn = false;
     if (phasedata.turnnum == this.state.playerid) {
