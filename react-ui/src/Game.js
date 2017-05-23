@@ -136,14 +136,14 @@ class Game extends React.Component {
   updatePhase(phasedata) {
 console.log(phasedata);
     var refisturn = false;
-    if (phasedata.turn = this.state.playerid) {
+    if (phasedata.turnnum = this.state.playerid) {
       refisturn = true;
     } else {
       refisturn = false;
     }
 
     var refisdealer = false;
-    if (phasedata.dealer = this.state.playerid) {
+    if (phasedata.dealernum = this.state.playerid) {
       refisdealer = true;
     } else {
       refisdealer = false;
