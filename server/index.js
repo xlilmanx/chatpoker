@@ -522,14 +522,12 @@ var updateGame = (function () {
   var endturn = function (n) {
 
     console.log('did end turn client: ' + n);
-    var checknumber = 0;
-    checknumber = n;
 
     if (gamedata.turnnum == bigblindplayer && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
       console.log('dealer call: ' + userid[gamedata.turnnum].bet + " - " + gamedata.currentbet);
 
-      if (checknumber == bigblindplayer) {
+      if (n === bigblindplayer) {
 
         console.log('equal n');
 
