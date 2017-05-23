@@ -54,8 +54,8 @@ var allbet = [];
 var allturbet = [];
 var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0 };
 // waitingtostart, preflop, flop, turn, river
-var gamedata = { phase: "waitingtostart", currentbet: 0, dealer: -1, turn: 0 };
-var gamedata2 = { phase: "waitingtostart", currentbet: 0, dealer: -1, turn: 0 };
+var gamedata = { phase: "waitingtostart", currentbet: 0, dealer: 0, turn: 0 };
+var gamedata2 = { phase: "waitingtostart", currentbet: 0, dealer: 0, turn: 0 };
 var smallblind = 1;
 var bigblind = 2;
 
