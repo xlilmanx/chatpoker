@@ -355,8 +355,6 @@ var updateGame = (function () {
 
     if (gamedata.turn = gamedata.dealer && userid[turn].bet == gamedata.currentbet) {
 
-
-
       if (clientNumber === gamedata.dealer) {
 
         if (gamedata.phase == "preflop") {
@@ -395,7 +393,7 @@ var updateGame = (function () {
 
     } else {
 
-      turn = (turn + 1) % userid.length;
+      gamedata.turn = (gamedata.turn + 1) % userid.length;
       io.emit('updatePhase', gamedata);
 
     }
