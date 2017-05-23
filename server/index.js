@@ -166,7 +166,7 @@ io.on('connection', function (socket) {
           userid[i].bet = userid[i].bet + data;
           userid[i].turnbet = userid[i].turnbet + data;
           console.log('do bet complete: ' + userid[i].turnbet);
-          if (userid[i].bet >= gamedata.currentbet) {
+          if (userid[i].bet > gamedata.currentbet) {
 
             gamedata.currentbet = userid[i].bet;
             io.emit('updatePhase', gamedata);
@@ -344,7 +344,7 @@ io.on('connection', function (socket) {
 
       }
       console.log('dealfield');
-      io.emit('toggleDealField', false);
+      io.emit('toggleDealField', 0);
 
       for (i = 0; i < userid.length; i++) {
         gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
@@ -548,21 +548,21 @@ var updateGame = (function () {
         console.log('preflop end');
         gamedata.phase = "flop";
         io.emit('updatePhase', gamedata);
-        io.emit('toggleDealField', true);
+        io.emit('toggleDealField', 1);
 
       } else if (gamedata.phase == "flop") {
 
         console.log('flop end');
         gamedata.phase = "turn";
         io.emit('updatePhase', gamedata);
-        io.emit('toggleDealField', true);
+        io.emit('toggleDealField', 1);
 
       } else if (gamedata.phase == "turn") {
 
         console.log('river end');
         gamedata.phase = "river";
         io.emit('updatePhase', gamedata);
-        io.emit('toggleDealField', true);
+        io.emit('toggleDealField', 1);
 
       } else if (gamedata.phase == "river") {
         console.log('checkwinner');
@@ -657,7 +657,7 @@ var updateGame = (function () {
 
     for (i = 0; i < allplayerhands.length; i++) {
 
-      if (allplayerhands[i] == null) {
+      if (allplayerhands[i].cards == null) {
 
         allplayerhands.splice(i, 1);
       }

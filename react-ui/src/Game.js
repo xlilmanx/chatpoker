@@ -41,11 +41,11 @@ class Betting extends React.Component {
       <div className='betting'>
         <div>Betting</div>
         <div className='bettingbutton'>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
+          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
+          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
+          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call</button>
+          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
+          <button disabled={!this.props.isturn || this.props.dealfield} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
         </div>
         <br />
         Total Money: ${this.props.money}
@@ -171,10 +171,16 @@ class Game extends React.Component {
   }
 
   toggleDealField(value) {
+    if (value == 1) {
+      this.setState({
+        dealfield: true
+      })
+    } else {
+      this.setState({
+        dealfield: false
+      })
 
-    this.setState({
-      dealfield: value
-    })
+    }
 
   }
 
@@ -313,6 +319,7 @@ class Game extends React.Component {
           isturn={this.state.isturn}
           currentbet={this.state.currentbet}
           playerbet={this.state.bet[this.state.playerid]}
+          dealfield={this.state.dealfield}
         />
       </div>
 
