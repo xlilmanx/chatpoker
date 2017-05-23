@@ -283,12 +283,47 @@ io.on('connection', function (socket) {
       }
 
       console.log('deal hand');
-      gamedata.dealernum = (gamedata.dealernum + 1) % gamedata.numplayers;
+      for (i = 0; i < userid.length; i++) {
+        gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
+        if (userid[gamedata.dealernum] != null) {
+          break;
+        }
+      }
+
       gamedata.phase = "preflop";
       gamedata.currentbet = bigblind;
-      gamedata.turnnum = (gamedata.dealernum + 3) % gamedata.numplayers;
-      var smallblindplayer = (gamedata.dealernum + 1) % gamedata.numplayers;
-      var bigblindplayer = (gamedata.dealernum + 2) % gamedata.numplayers;
+
+      var smallblindplayer = (gamedata.dealernum + 1) % userid.length;
+      if (userid[smallblindplayer] == null) {
+        for (i = 0; i < userid.length; i++) {
+          smallblindplayer = (smallblindplayer + 1) % userid.length;
+          if (userid[smallblindplayer] != null) {
+            break;
+          }
+        }
+      }
+
+      var bigblindplayer = (smallblindplayer + 1) % userid.length;
+      if (userid[bigblindplayer] == null) {
+        for (i = 0; i < userid.length; i++) {
+          bigblindplayer = (bigblindplayer + 1) % userid.length;
+          if (userid[bigblindplayer] != null) {
+            break;
+          }
+        }
+      }
+
+      gamedata.turnnum = (bigblindplayer + 1) % userid.length;
+      if (userid[gamedata.turnnum] == null) {
+        for (i = 0; i < userid.length; i++) {
+          gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+          if (userid[gamedata.turnnum] != null) {
+            break;
+          }
+        }
+      }
+
+
       userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
       userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
       userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
@@ -405,11 +440,22 @@ io.on('connection', function (socket) {
     for (var i = 0; i < userid.length; ++i) {
       var c = userid[i];
 
-
       if (c.id == socket.id) {
         delete userid[i];
         delete returnarray[i];
 
+        if (i == bigblindplayer) {
+
+          for (i = userid.length; i > 0; i--) {
+            bigblindplayer = (bigblindplayer - 1) % userid.length;
+            if (userid[bigblindplayer] != null) {
+
+              break;
+            }
+
+          }
+
+        }
         //       userid.splice(i, 1);
 
         /*       if (returnarray[0] != null) {
@@ -418,7 +464,6 @@ io.on('connection', function (socket) {
                    }
          break;
                }*/
-        break;
       }
 
       for (i = userid.length - 1; i > 0; i--) {
@@ -492,24 +537,29 @@ var updateGame = (function () {
   var endturn = function (n) {
 
     console.log('did end turn client: ' + n);
-    if (gamedata.turnnum == ((gamedata.dealernum + 2) % gamedata.numplayers) && userid[gamedata.turnnum].bet == gamedata.currentbet) {
+    if (gamedata.turnnum == bigblindplayer && userid[gamedata.turnnum].bet == gamedata.currentbet) {
 
       console.log('dealer call');
 
-      if (n == gamedata.dealernum) {
+      if (n == bigblindplayer) {
+
+        console.log('equal n');
 
         if (gamedata.phase == "preflop") {
 
+          console.log('preflop end');
           gamedata.phase = "flop";
           io.emit('toggleDealField', true);
 
         } else if (gamedata.phase == "flop") {
 
+          console.log('flop end');
           gamedata.phase = "turn";
           io.emit('toggleDealField', true);
 
         } else if (gamedata.phase == "turn") {
 
+          console.log('river end');
           gamedata.phase = "river";
           io.emit('toggleDealField', true);
 
@@ -529,12 +579,18 @@ var updateGame = (function () {
 
         }
 
-      }
+      } console.log('nope error no player: ' + n)
 
 
     } else {
       console.log('endturn');
-      gamedata.turnnum = (gamedata.turnnum + 1) % gamedata.numplayers;
+
+      for (i = 0; i < userid.length; i++) {
+        gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+        if (userid[gamedata.turnnum] != null) {
+          break;
+        }
+      }
       io.emit('updatePhase', gamedata);
 
     }
