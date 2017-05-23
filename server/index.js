@@ -76,7 +76,7 @@ io.on('connection', function (socket) {
 
       if (userid[i] == null) {
 
-        userid.splice(clientInfo, 1);
+        userid.splice(i, 1, clientInfo);
         idAdded = true;
 
       }
