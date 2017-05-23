@@ -72,7 +72,8 @@ io.on('connection', function (socket) {
   var idAdded = false;
 
 
-  if (idAdded = false) {
+  if (idAdded == false) {
+    console.log(isAdded.toString());
     if (userid.length > 0) {
       for (i = 0; i < userid.length; i++) {
 
