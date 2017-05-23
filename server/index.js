@@ -117,6 +117,7 @@ io.on('connection', function (socket) {
 
   socket.on('startgame', function (data) {
 
+console.log('socket startgame')
     gamedata.dealer = (gamedata.dealer + 1) % userid.length;
     gamedata.phase = "preflop";
     gamedata.currentbet = bigblind;
@@ -148,7 +149,7 @@ io.on('connection', function (socket) {
       updateGame.endturn();
 
     } else {
-
+console.log('fold')
       gamedata.turn = (gamedata.turn + 1) % userid.length;
       io.emit('updatePhase', gamedata);
 
@@ -229,7 +230,7 @@ io.on('connection', function (socket) {
         gamedata.phase = "river";
 
       }
-
+console.log('dealfield')
       gamedata.turn = (gamedata.turn + 1) % userid.length;
       updateGame.gamedatacards();
     }
@@ -393,7 +394,7 @@ var updateGame = (function () {
 
 
     } else {
-
+console.log('endturn')
       gamedata.turn = (gamedata.turn + 1) % userid.length;
       io.emit('updatePhase', gamedata);
 
