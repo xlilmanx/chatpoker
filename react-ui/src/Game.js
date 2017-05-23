@@ -41,11 +41,11 @@ class Betting extends React.Component {
       <div className='betting'>
         <div>Betting</div>
         <div className='bettingbutton'>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.currentbet - this.props.playerbet)}>Call</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
-          <button disabled={!this.props.isturn} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
+          <button disabled={this.props.isturn} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
+          <button disabled={this.props.isturn} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
+          <button disabled={this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.currentbet - this.props.playerbet)}>Call</button>
+          <button disabled={this.props.isturn} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
+          <button disabled={this.props.isturn} className="button" onClick={() => this.props.handleFold()}>End Turn/Fold</button>
         </div>
         <br />
         Total Money: ${this.props.money}
@@ -302,8 +302,8 @@ class Game extends React.Component {
           </div>
           <div className='dealbuttons'>
             <button className="startbutton" disabled={this.state.gameinprogress} onClick={this.handleStartGame}>Start Game</button>
-            <button className="button" disabled={!this.state.dealhand || !this.state.isdealer} onClick={this.handleDealHand}>Deal Hand</button>
-            <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
+            <button className="button" disabled={this.state.dealhand || this.state.isdealer} onClick={this.handleDealHand}>Deal Hand</button>
+            <button className="button" disabled={this.state.dealfield || this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
           </div>
           <br /> {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isturn: {this.state.isturn}<br />
 
