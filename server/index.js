@@ -81,6 +81,26 @@ io.on('connection', function (socket) {
   // inital connection update game
   console.log(gamedata.dealernum);
   console.log(gamedata.turnnum);
+
+  allmoney = [];
+  allbet = [];
+  allturnbet = [];
+
+  for (var i = 0; i < userid.length; i++) {
+
+    allmoney.push(userid[i].money);
+    allbet.push(userid[i].bet);
+    allturnbet.push(userid[i].turnbet);
+
+
+  }
+  returnbetarray.money = allmoney;
+  returnbetarray.bet = allbet;
+  returnbetarray.turnbet = allturnbet;
+
+
+
+
   socket.emit('updateGame', returnarray);
   socket.emit('updatePhase', gamedata);
   socket.emit('updateBet', returnbetarray);

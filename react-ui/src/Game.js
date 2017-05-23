@@ -134,7 +134,7 @@ class Game extends React.Component {
   }
 
   updatePhase(phasedata) {
-    console.log(phasedata);
+    console.log(phasedata.turnnum);
 
     var refisturn = false;
     if (phasedata.turnnum == this.state.playerid) {
@@ -156,7 +156,7 @@ class Game extends React.Component {
     } else {
       refgameinprogress = false;
     }
-
+    console.log(phasedata.turnnum);
     this.setState({
 
       phase: phasedata.phase,
