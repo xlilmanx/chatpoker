@@ -146,7 +146,7 @@ class Game extends React.Component {
 
     clearInterval(this.doInterval);
 
-    var doInterval = setInterval(this.timer, 1000);
+    this.doInterval = setInterval(this.timer, 1000);
 
   }
 
