@@ -70,61 +70,76 @@ io.on('connection', function (socket) {
 
   // game stuff
 
-  var clientInfo = new Object();
-  clientInfo.id = socket.id;
-  clientInfo.num = -1;
-  clientInfo.cards = [];
-  clientInfo.name = "";
-  clientInfo.money = 100;
-  clientInfo.bet = 0;
-  clientInfo.turnbet = 0;
-  var idAdded = false;
-  var clientnum = -1;
+  var elementPos = userid.map(function (x) { return userid.id; }).indexOf(socket.id);
+  var objectFound = userid[elementPos];
+
+  if (userid[elementPos] == undefined) {
+
+    var clientInfo = new Object();
+    clientInfo.id = socket.id;
+    clientInfo.num = -1;
+    clientInfo.cards = [];
+    clientInfo.name = "";
+    clientInfo.money = 100;
+    clientInfo.bet = 0;
+    clientInfo.turnbet = 0;
+    var idAdded = false;
+    var clientnum = -1;
 
 
-  if (idAdded == false) {
-    console.log("initial idadd: " + idAdded.toString());
-    if (userid.length > 0) {
-      for (i = 0; i < userid.length; i++) {
+    if (idAdded == false) {
+      console.log("initial idadd: " + idAdded.toString());
+      if (userid.length > 0) {
+        for (i = 0; i < userid.length; i++) {
 
-        if (userid[i] == null) {
+          if (userid[i] == null) {
 
-          userid.splice(i, 1, clientInfo);
-          idAdded = true;
+            userid.splice(i, 1, clientInfo);
+            idAdded = true;
 
+          }
         }
-      }
 
-      if (idAdded == false) {
+        if (idAdded == false) {
+
+          userid.push(clientInfo);
+          idAdded = true;
+        }
+
+      } else {
 
         userid.push(clientInfo);
         idAdded = true;
       }
 
-    } else {
-
-      userid.push(clientInfo);
-      idAdded = true;
-    }
-
-    for (var i = 0; i < userid.length; i++) {
-      if (userid[i] != null) {
-        if (userid[i].id === socket.id) {
-          userid[i].num = i;
-          clientnum = i;
-          socket.emit('updatePlayerId', i);
+      for (var i = 0; i < userid.length; i++) {
+        if (userid[i] != null) {
+          if (userid[i].id === socket.id) {
+            userid[i].num = i;
+            clientnum = i;
+            socket.emit('updatePlayerId', i);
+          }
         }
       }
+
+      var name = userNames.getGuestName(clientnum);
+
+    } else {
+
+      var clientInfo = new Object();
+      clientInfo.id = socket.id;
+      clientInfo.num = elementPos;
+      var idAdded = true;
+      var clientnum = elementPos;
+
+      socket.emit('updatePlayerId', elementPos);
+
     }
 
-    var name = userNames.getGuestName(clientnum);
+    console.log("after idadd: " + idAdded.toString());
+    console.log(userid.length);
 
   }
-
-  console.log("after idadd: " + idAdded.toString());
-  console.log(userid.length);
-
-
   // inital connection update game
 
   allmoney = [];
@@ -142,7 +157,6 @@ io.on('connection', function (socket) {
   returnbetarray.money = allmoney;
   returnbetarray.bet = allbet;
   returnbetarray.turnbet = allturnbet;
-
 
 
   socket.emit('updateGame', returnarray);
