@@ -22,13 +22,18 @@ class GameUsers extends React.Component {
                   ${this.props.money[i]}
                 </div>
                 <div>
-                  {this.props.hand[i] != null &&
+                  {this.props.hand[i] != (null || undefined) &&
 
                     this.props.hand[i].map((card) => {
                       return (
                         <span className='playercards' key={card}>{this.props.playerid == i || !this.props.gameinprogress ? <img className='playercardsimage' src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
                       );
                     })
+                  }
+
+                  {this.props.hand[i] == (null || undefined) &&
+                  <span className='playercards'> </span>
+                  
                   }
                   <br />
                   <span className='betamount'>Bet: ${this.props.bet[i]}</span>
@@ -356,7 +361,7 @@ class Game extends React.Component {
           <br />
 
           <div className='bigplayercardscontainer'>
-            {this.state.hand[this.state.playerid] != null &&
+            {this.state.hand[this.state.playerid] != (null || undefined) &&
               this.state.hand[this.state.playerid].map((card) => {
                 return (
                   <div key={'bigplayercards: ' + card}>
@@ -365,12 +370,15 @@ class Game extends React.Component {
                 );
               })
             }
+            {this.state.hand[this.state.playerid] == (null || undefined) && 
+            <span className='bigplayercards'> </span>
+            }
           </div>
           <br />
           <br />
           <div className='cardsleft'>
 
-            Cards Left in Deck: {this.state.deck != null &&
+            Cards Left in Deck: {this.state.deck != (null || undefined) &&
               this.state.deck.length}
           </div>
 
