@@ -144,7 +144,7 @@ class Game extends React.Component {
 
     })
 
-    clearInterval(doInterval);
+    clearInterval(this.doInterval);
 
     var doInterval = setInterval(this.timer, 1000);
 
@@ -152,7 +152,7 @@ class Game extends React.Component {
 
   timer() {
 
-    if (this.state.timeout > -3) {
+    if (this.state.timeout > 0) {
       var temptimeout = this.state.timeout - 1;
       this.setState({
         timeout: temptimeout
