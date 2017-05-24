@@ -64,7 +64,7 @@ class MessageList extends React.Component {
             <div className='messages' ref={(div) => {
                 this.messageList = div;
             }}>
-                <h2> Conversation: </h2>
+                
                 {
                     this.props.messages.map((message, i) => {
                         return (

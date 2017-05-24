@@ -199,7 +199,7 @@ class Game extends React.Component {
     } else {
       refgameinprogress = false;
     }
-    console.log(phasedata.turnnum);
+   
     this.setState({
 
       phase: phasedata.phase,
@@ -244,7 +244,7 @@ class Game extends React.Component {
 
 
   updateGame(gamedata) {
-    console.log(gamedata)
+  
     if (gamedata.length == 0) {
 
     } else {
@@ -333,7 +333,7 @@ class Game extends React.Component {
         */
     return (
       <div className='gamecontainer'>
-        <h1>Poker Game</h1>
+        <div className='titletext'><span><strong>Poker Game</strong></span> -- {this.state.phase == "waitingtostart" ? "Waiting to Start" : (this.state.phase == "preflop" ? "Pre-flop" : (this.state.phase == "Flop" ? "Flop" : (this.state.phase == "turn" ? "Turn" : (this.state.phase == "river" ? "River" : ""))))}</div>
         <br />
         Turn Time: {this.state.timeout > 0 ? this.state.timeout : 0} <br />
         <GameUsers
