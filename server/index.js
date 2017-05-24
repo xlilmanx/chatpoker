@@ -540,8 +540,6 @@ var updateGame = (function () {
 
     if ((gamedata.turnnum == betraisedplayer && !betraised) || (gamedata.turnnum == betraisedplayer && gamedata.numplayers == 1)) {
 
-      console.log('dealer call: ' + userid[gamedata.turnnum].bet + " - " + gamedata.currentbet);
-
       console.log('equal n');
 
       if (gamedata.phase == "preflop") {
