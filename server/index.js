@@ -505,32 +505,34 @@ var updateGame = (function () {
   };
 
   var fold = function (n) {
-    if (userid[n] != null) {
-      if (gamedata.currentbet > userid[n].bet) {
-        console.log('fold: ' + n);
-        userid[n].cards = [];
-        returnarray.hand[n] = [];
-        io.emit('updateGame', returnarray);
-        io.emit('send:message', {
-          user: "APPLICATION BOT",
-          text: userid[n].name + " has folded."
-        });
-        endturn(n);
-      } else if (gamedata.currentbet == userid[n].bet) {
-        endturn(n);
-        io.emit('send:message', {
-          user: "APPLICATION BOT",
-          text: userid[n].name + " has called/checked the current bet at $" + gamedata.currentbet + "."
-        });
+    if (gameinprogress) {
+      if (userid[n] != null) {
+        if (gamedata.currentbet > userid[n].bet) {
+          console.log('fold: ' + n);
+          userid[n].cards = [];
+          returnarray.hand[n] = [];
+          io.emit('updateGame', returnarray);
+          io.emit('send:message', {
+            user: "APPLICATION BOT",
+            text: userid[n].name + " has folded."
+          });
+          endturn(n);
+        } else if (gamedata.currentbet == userid[n].bet) {
+          endturn(n);
+          io.emit('send:message', {
+            user: "APPLICATION BOT",
+            text: userid[n].name + " has called/checked the current bet at $" + gamedata.currentbet + "."
+          });
+        } else {
+          endturn(n);
+          io.emit('send:message', {
+            user: "APPLICATION BOT",
+            text: userid[n].name + " has raised the current bet to $" + gamedata.currentbet + "."
+          });
+        }
       } else {
         endturn(n);
-        io.emit('send:message', {
-          user: "APPLICATION BOT",
-          text: userid[n].name + " has raised the current bet to $" + gamedata.currentbet + "."
-        });
       }
-    } else {
-      endturn(n);
     }
   };
 
