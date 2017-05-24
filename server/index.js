@@ -290,7 +290,7 @@ io.on('connection', function (socket) {
       updateGame.gamedatacards();
       gameinprogress = true;
       allowbet = true;
-      clearInterval(timeoutfunction);
+      clearTimeout(timeoutfunction);
       timeoutfunction = setTimeout(updateGame.ontimeout, 10000);
       io.emit('updateTimeout', 10);
 
@@ -299,9 +299,7 @@ io.on('connection', function (socket) {
 
   socket.on('dealfield', function () {
 
-
     updateGame.dealfield(clientnum);
-
 
   });
 
@@ -507,12 +505,30 @@ var updateGame = (function () {
   };
 
   var fold = function (n) {
-    if (gamedata.currentbet > userid[n].bet) {
-      console.log('fold: ' + n);
-      userid[n].cards = [];
-      returnarray.hand[n] = [];
-      io.emit('updateGame', returnarray);
-      endturn(n);
+    if (userid[n] != null) {
+      if (gamedata.currentbet > userid[n].bet) {
+        console.log('fold: ' + n);
+        userid[n].cards = [];
+        returnarray.hand[n] = [];
+        io.emit('updateGame', returnarray);
+        io.emit('send:message', {
+          user: "APPLICATION BOT",
+          text: userid[n].name + " has folded."
+        });
+        endturn(n);
+      } else if (gamedata.currentbet == userid[n].bet) {
+        endturn(n);
+        io.emit('send:message', {
+          user: "APPLICATION BOT",
+          text: userid[n].name + " has called/checked the current bet at $" + gamedata.currentbet + "."
+        });
+      } else {
+        endturn(n);
+        io.emit('send:message', {
+          user: "APPLICATION BOT",
+          text: userid[n].name + " has raised the current bet to $" + gamedata.currentbet + "."
+        });
+      }
     } else {
       endturn(n);
     }
@@ -557,7 +573,7 @@ var updateGame = (function () {
         handdealt = false;
         gamedata.phase = "waitingtostart";
         io.emit('updatePhase', gamedata);
-        clearInterval(timeoutfunction);
+        clearTimeout(timeoutfunction);
         io.emit('updateTimeout', 0);
       }
       console.log('nope error ' + n + ' not player: ' + bigblindplayer)
@@ -578,7 +594,7 @@ var updateGame = (function () {
     }
     if (gameinprogress) {
       console.log('settimeout');
-      clearInterval(timeoutfunction);
+      clearTimeout(timeoutfunction);
       timeoutfunction = setTimeout(ontimeout, 10000);
       io.emit('updateTimeout', 10);
     }
@@ -652,7 +668,7 @@ var updateGame = (function () {
       allowbet = true;
       io.emit('updatePhase', gamedata);
       gamedatacards();
-      clearInterval(timeoutfunction);
+      clearTimeout(timeoutfunction);
       timeoutfunction = setTimeout(ontimeout, 10000);
       io.emit('updateTimeout', 10);
     }
