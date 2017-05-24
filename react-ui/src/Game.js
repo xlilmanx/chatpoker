@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 
+
 class GameUsers extends React.Component {
   render() {
     return (
@@ -26,7 +27,7 @@ class GameUsers extends React.Component {
 
                     this.props.hand[i].map((card) => {
                       return (
-                        <span className='playercards' key={card}>{this.props.playerid == i ? card : 'X'}</span>
+                        <span className='playercards' key={card}>{this.props.playerid == i ? <img className='playercardsimage' src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
                       );
                     })
                   }
@@ -104,7 +105,8 @@ class Game extends React.Component {
       isturn: false,
       dealhand: false,
       dealfield: false,
-      gameinprogress: false
+      gameinprogress: false,
+      timeout: 0
 
     };
     this.updatePhase = this.updatePhase.bind(this);
@@ -118,6 +120,8 @@ class Game extends React.Component {
     this.updatePlayerId = this.updatePlayerId.bind(this);
     this.toggleDealHand = this.toggleDealHand.bind(this);
     this.toggleDealField = this.toggleDealField.bind(this);
+    this.updateTimeout = this.updateTimeout.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
@@ -128,8 +132,36 @@ class Game extends React.Component {
     this.props.socket.on('updatePlayerId', this.updatePlayerId);
     this.props.socket.on('toggleDealHand', this.toggleDealHand);
     this.props.socket.on('toggleDealField', this.toggleDealField);
+    this.props.socket.on('updateTimeout', this.updateTimeout);
 
   }
+
+  updateTimeout(n) {
+
+    this.setState({
+
+      timeout: n
+
+    })
+
+    clearInterval(doInterval);
+
+    var doInterval = setInterval(this.timer, 1000);
+
+  }
+
+  timer() {
+
+    if (this.state.timeout > -3) {
+      var temptimeout = this.state.timeout - 1;
+      this.setState({
+        timeout: temptimeout
+      })
+    } else {
+      clearInterval(this.doInterval);
+    }
+  }
+
 
   updatePlayerId(playerid) {
 
@@ -281,7 +313,7 @@ class Game extends React.Component {
       var fieldhtml = this.state.field.map(function (card) {
         return (
           <div key={'field: ' + card}>
-            <span className="fieldcards" key={card}>{card}</span>
+            <span className="fieldcards" key={card}><img className='fieldcardsimage' src={'/cards/' + card + '.png'} /></span>
             <span className="spacer">&nbsp;</span>
           </div>
         );
@@ -298,6 +330,8 @@ class Game extends React.Component {
     return (
       <div className='gamecontainer'>
         <h1>Poker Game</h1>
+        <br />
+        Turn Time: {this.state.timeout > 0 ? this.state.timeout : 0} <br />
         <GameUsers
           users={this.props.users}
           hand={this.state.hand}
@@ -326,7 +360,7 @@ class Game extends React.Component {
               this.state.hand[this.state.playerid].map((card) => {
                 return (
                   <div key={'bigplayercards: ' + card}>
-                    <span className='bigplayercards' key={'big ' + card}>{card}</span>
+                    <span className='bigplayercards' key={'big ' + card}><img className='bigplayercardsimage' src={'/cards/' + card + '.png'} /></span>
                     <span className="spacer">&nbsp;</span></div>
                 );
               })

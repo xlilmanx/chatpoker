@@ -63,6 +63,8 @@ var smallblindplayer = -1;
 var betraised = false;
 var betraisedplayer = -1;
 var allowbet = false;
+var timeouttime = 10000;
+var timeoutfunction;
 
 io.on('connection', function (socket) {
 
@@ -195,31 +197,9 @@ io.on('connection', function (socket) {
 
   socket.on('fold', function () {
 
-    if (gamedata.currentbet > userid[clientnum].bet) {
-      console.log('fold: ' + clientnum);
-      userid[clientnum].cards = [];
-      returnarray.hand[clientnum] = [];
-      io.emit('updateGame', returnarray);
-      updateGame.endturn(clientnum);
-/*
-      var numplayersingame = 0;
+    updateGame.fold(clientnum);
 
-      for (i = 0; i < userid.length; i++) {
-        if (userid[i] != null) {
-          if (userid[i].cards.length != 0) {
-            numplayersingame = numplayersingame + 1;
-          }
-        }
-      }
-      console.log('numplayersingame: ' + numplayersingame);
-      if (numplayersingame == 1) {
-        updateGame.winner();
-      } else {
-        updateGame.endturn(clientnum);
-      }
-  */  } else {
-      updateGame.endturn(clientnum);
-    }
+
   });
 
 
@@ -297,7 +277,6 @@ io.on('connection', function (socket) {
         }
       }
 
-
       userid[smallblindplayer].money = userid[smallblindplayer].money - smallblind;
       userid[smallblindplayer].bet = userid[smallblindplayer].bet + smallblind;
       userid[bigblindplayer].money = userid[bigblindplayer].money - bigblind;
@@ -311,80 +290,19 @@ io.on('connection', function (socket) {
       updateGame.gamedatacards();
       gameinprogress = true;
       allowbet = true;
+      clearInterval(timeoutfunction);
+      timeoutfunction = setTimeout(updateGame.ontimeout, 10000);
+      io.emit('updateTimeout', 10);
 
     }
   });
 
   socket.on('dealfield', function () {
 
-    if (gamedata.dealernum == clientnum) {
-      gameinprogress = true;
 
-      if (gamedata.phase == "preflop") {
+    updateGame.dealfield(clientnum);
 
-        for (i = 0; i < 3; i++) {
-          deckarr = deck;
-          num1 = Math.floor(Math.random() * (deckarr.length - 1));
-          card1 = deckarr[num1];
-          deckarr.splice(num1, 1);
 
-          fieldarr = field;
-          fieldarr.push(card1);
-
-          field = fieldarr;
-          deck = deckarr;
-        }
-
-        gamedata.phase = "flop";
-      }
-
-      else {
-
-        deckarr = deck;
-        num1 = Math.floor(Math.random() * (deckarr.length - 1));
-        card1 = deckarr[num1];
-        deckarr.splice(num1, 1);
-
-        fieldarr = field;
-        fieldarr.push(card1);
-
-        field = fieldarr;
-        deck = deckarr;
-
-        if (gamedata.phase == "flop") {
-          gamedata.phase = "turn";
-        } else {
-          gamedata.phase = "river";
-        }
-      }
-      console.log('dealfield');
-      io.emit('toggleDealField', 0);
-
-      gamedata.turnnum = (gamedata.dealernum + 1) % userid.length;
-      if (userid[gamedata.turnnum] == null) {
-        for (i = 0; i < userid.length; i++) {
-          gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
-          if (userid[gamedata.turnnum] != null) {
-            if (userid[gamedata.turnnum].cards.length != 0) {
-              break;
-            }
-          }
-        }
-      } else if (userid[gamedata.turnnum].cards.length == 0) {
-        for (i = 0; i < userid.length; i++) {
-          gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
-          if (userid[gamedata.turnnum] != null) {
-            if (userid[gamedata.turnnum].cards.length != 0) {
-              break;
-            }
-          }
-        }
-      }
-      betraised = false;
-      allowbet = true;
-      io.emit('updatePhase', gamedata);
-      updateGame.gamedatacards();
-    }
   });
 
 
@@ -523,6 +441,7 @@ io.on('connection', function (socket) {
     if (userid.length == 0) {
 
       gamedata.phase = "waitingtostart";
+      gameinprogress = false;
 
     }
 
@@ -587,6 +506,18 @@ var updateGame = (function () {
     io.emit('updateGame', returnarray);
   };
 
+  var fold = function (n) {
+    if (gamedata.currentbet > userid[n].bet) {
+      console.log('fold: ' + n);
+      userid[n].cards = [];
+      returnarray.hand[n] = [];
+      io.emit('updateGame', returnarray);
+      endturn(n);
+    } else {
+      endturn(n);
+    }
+  };
+
   var endturn = function (n) {
 
     console.log('did end turn client: ' + n);
@@ -619,15 +550,15 @@ var updateGame = (function () {
         allowbet = false;
         console.log('checkwinner');
         /*          if (field.length >= 5) {
-        
-         
-        
+
                   }*/
         updateGame.winner();
         gameinprogress = false;
         handdealt = false;
         gamedata.phase = "waitingtostart";
         io.emit('updatePhase', gamedata);
+        clearInterval(timeoutfunction);
+        io.emit('updateTimeout', 0);
       }
       console.log('nope error ' + n + ' not player: ' + bigblindplayer)
     } else {
@@ -643,7 +574,121 @@ var updateGame = (function () {
       betraised = false;
       console.log('nexturn: ' + gamedata.turnnum);
       io.emit('updatePhase', gamedata);
+
     }
+    if (gameinprogress) {
+      console.log('settimeout');
+      clearInterval(timeoutfunction);
+      timeoutfunction = setTimeout(ontimeout, 10000);
+      io.emit('updateTimeout', 10);
+    }
+  };
+
+  var dealfield = function (n) {
+    if (gamedata.dealernum == n) {
+      gameinprogress = true;
+
+      if (gamedata.phase == "preflop") {
+
+        for (i = 0; i < 3; i++) {
+          deckarr = deck;
+          num1 = Math.floor(Math.random() * (deckarr.length - 1));
+          card1 = deckarr[num1];
+          deckarr.splice(num1, 1);
+
+          fieldarr = field;
+          fieldarr.push(card1);
+
+          field = fieldarr;
+          deck = deckarr;
+        }
+
+        gamedata.phase = "flop";
+      }
+
+      else {
+
+        deckarr = deck;
+        num1 = Math.floor(Math.random() * (deckarr.length - 1));
+        card1 = deckarr[num1];
+        deckarr.splice(num1, 1);
+
+        fieldarr = field;
+        fieldarr.push(card1);
+
+        field = fieldarr;
+        deck = deckarr;
+
+        if (gamedata.phase == "flop") {
+          gamedata.phase = "turn";
+        } else {
+          gamedata.phase = "river";
+        }
+      }
+      console.log('dealfield');
+      io.emit('toggleDealField', 0);
+
+      gamedata.turnnum = (gamedata.dealernum + 1) % userid.length;
+      if (userid[gamedata.turnnum] == null) {
+        for (i = 0; i < userid.length; i++) {
+          gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+          if (userid[gamedata.turnnum] != null) {
+            if (userid[gamedata.turnnum].cards.length != 0) {
+              break;
+            }
+          }
+        }
+      } else if (userid[gamedata.turnnum].cards.length == 0) {
+        for (i = 0; i < userid.length; i++) {
+          gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
+          if (userid[gamedata.turnnum] != null) {
+            if (userid[gamedata.turnnum].cards.length != 0) {
+              break;
+            }
+          }
+        }
+      }
+      betraised = false;
+      allowbet = true;
+      io.emit('updatePhase', gamedata);
+      gamedatacards();
+      clearInterval(timeoutfunction);
+      timeoutfunction = setTimeout(ontimeout, 10000);
+      io.emit('updateTimeout', 10);
+    }
+  };
+
+  var ontimeout = function () {
+    if (!allowbet) {
+
+      if (gamedata.phase == "preflop") {
+
+        console.log('preflop end');
+        dealfield(gamedata.turnnum);
+
+      } else if (gamedata.phase == "flop") {
+
+        dealfield(gamedata.turnnum);
+
+      } else if (gamedata.phase == "turn") {
+
+        dealfield(gamedata.turnnum);
+
+      } else if (gamedata.phase == "river") {
+        allowbet = false;
+        console.log('checkwinner');
+        updateGame.winner();
+        gameinprogress = false;
+        handdealt = false;
+        gamedata.phase = "waitingtostart";
+        io.emit('updatePhase', gamedata);
+      }
+    } else {
+
+      fold(gamedata.turnnum);
+
+    }
+
   };
 
   var winner = function () {
@@ -755,7 +800,10 @@ var updateGame = (function () {
     bets: bets,
     gamedatacards: gamedatacards,
     winner: winner,
-    endturn: endturn
+    endturn: endturn,
+    dealfield: dealfield,
+    fold: fold,
+    ontimeout: ontimeout
   };
 
 }());
