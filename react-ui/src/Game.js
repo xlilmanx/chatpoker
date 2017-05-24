@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 
-
 class GameUsers extends React.Component {
   render() {
     return (
@@ -27,7 +26,7 @@ class GameUsers extends React.Component {
 
                     this.props.hand[i].map((card) => {
                       return (
-                        <span className='playercards' key={card}>{this.props.playerid == i ? <img className='playercardsimage' src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
+                        <span className='playercards' key={card}>{this.props.playerid == i || !this.props.gameinprogress ? <img className='playercardsimage' src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
                       );
                     })
                   }
@@ -340,6 +339,7 @@ class Game extends React.Component {
           dealer={this.state.dealer}
           turn={this.state.turn}
           playerid={this.state.playerid}
+          gameinprogress={this.state.gameinprogress}
         />
         <div className='fieldarea'>
           <div className='fieldcardcontainer'>{fieldhtml}
