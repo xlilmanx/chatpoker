@@ -54,7 +54,7 @@ var allmoney = [];
 var allbet = [];
 var allturbet = [];
 var allstatus = [];
-var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0 };
+var winner = { id: 0, name: new Object(), hand: new Object(), totalwon: 0, winninghand: [] };
 // waitingtostart, preflop, flop, turn, river
 var gamedata = { phase: "waitingtostart", currentbet: 0, dealernum: -1, turnnum: 0, numplayers: 0 };
 var smallblind = 1;
@@ -242,6 +242,8 @@ io.on('connection', function (socket) {
       allhand = [];
       gamedata.numplayers = 0;
       betiscalled = false;
+      winner.winninghand = [];
+      io.emit('updateWinningHand', winner.winninghand)
 
       for (i = 0; i < userid.length; i++) {
 
@@ -598,7 +600,7 @@ var updateGame = (function () {
           userid[n].turnstatus = "Call";
         }
 
-        if (gamedata.currentbet > userid[n].bet) {
+        if (gamedata.currentbet > userid[n].bet && gamedata.numplayers > 1) {
 
           userid[n].cards = [];
           returnarray.hand[n] = [];
@@ -613,27 +615,29 @@ var updateGame = (function () {
           endturn(n);
         } else if (gamedata.currentbet == userid[n].bet && (betraisedplayer != n || betiscalled)) {
           userid[n].didbet = true;
-          endturn(n);
           betiscalled = true;
           if (userid[n].turnstatus == "Call") {
             io.emit('send:message', {
               user: "APPLICATION BOT",
               text: userid[n].name + " has called the current bet at $" + gamedata.currentbet + "."
             });
+            endturn(n);
           } else {
             io.emit('send:message', {
               user: "APPLICATION BOT",
               text: userid[n].name + " has checked the current bet at $" + gamedata.currentbet + "."
             });
+            endturn(n);
           }
 
         } else {
+          if (gamedata.numplayers > 1) {
+            io.emit('send:message', {
+              user: "APPLICATION BOT",
+              text: userid[n].name + " has raised the current bet to $" + gamedata.currentbet + "."
+            });
+          }
           endturn(n);
-          io.emit('send:message', {
-            user: "APPLICATION BOT",
-            text: userid[n].name + " has raised the current bet to $" + gamedata.currentbet + "."
-          });
-
 
           /*          if (((gamedata.turnnum == betraisedplayer && !betraised) || gamedata.numplayers == 1)) {
           
@@ -669,7 +673,7 @@ var updateGame = (function () {
     }
 
 
-    if ((everyonebet) || gamedata.numplayers == 1) {
+    if ((everyonebet) || gamedata.numplayers <= 1) {
 
       if (gamedata.numplayers == 1) {
 
@@ -964,6 +968,11 @@ var updateGame = (function () {
       winner.idname = winner.id.name;
       winner.hand = results[0][0].description;
       winner.totalwon = 0;
+      winner.winninghand = [];
+      var tempwinninghand = results[0][0].playingCards;
+      for (i = 0; i < tempwinninghand.length; i++) {
+        winner.winninghand[i] = tempwinninghand[i].rank.concat(tempwinninghand[i].suit);
+      }
 
       //handle bet after match end
       for (i = 0; i < userid.length; i++) {
@@ -980,13 +989,18 @@ var updateGame = (function () {
       });
 
       bets();
+      io.emit('updateWinningHand', winner.winninghand)
     } if (winnerarray.length == 1) {
 
       winner.id = userid[winnerarray[0]];
       winner.idname = winner.id.name;
       winner.hand = Ranker.getHand(winner.id.cards, field);
       winner.totalwon = 0;
-
+      winner.winninghand = [];
+      var tempwinninghand = winner.hand.playingCards;
+      for (i = 0; i < tempwinninghand.length; i++) {
+        winner.winninghand[i] = tempwinninghand[i].rank.concat(tempwinninghand[i].suit);
+      }
 
       //handle bet after match end
       for (i = 0; i < userid.length; i++) {
@@ -1001,7 +1015,7 @@ var updateGame = (function () {
         user: "APPLICATION BOT",
         text: winner.idname + " has won $" + winner.totalwon + " with " + winner.hand.description + "!"
       });
-
+      io.emit('updateWinningHand', winner.winninghand)
       bets();
 
     }

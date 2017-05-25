@@ -28,7 +28,7 @@ class GameUsers extends React.Component {
 
                     this.props.hand[i].map((card) => {
                       return (
-                        <span className='playercards' key={card}>{this.props.playerid == i || !this.props.gameinprogress ? <img className='playercardsimage' src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
+                        <span className='playercards' key={card}>{this.props.playerid == i || !this.props.gameinprogress ? <img className={this.props.winninghand.indexOf(card) > -1 ? 'playercardsimagehighlight' : 'playercardsimage'} src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
                       );
                     })
                   }
@@ -88,6 +88,26 @@ class Deck extends React.Component {
   }
 }
 */
+class Field extends React.Component {
+
+  render() {
+    return (
+      <div>
+        {this.props.field != (null || undefined) &&
+
+          this.props.field.map((card) => {
+            return (
+              <div key={'field: ' + card}>
+                <span className="fieldcards" key={card}><img className={this.props.winninghand.indexOf(card) > -1 ? 'fieldcardsimagehighlight' : 'fieldcardsimage'} src={'/cards/' + card + '.png'} /></span>
+                <span className="spacer">&nbsp;</span>
+              </div>);
+          })
+        }
+      </div>
+    );
+  }
+}
+
 class Game extends React.Component {
   constructor() {
     super();
@@ -113,7 +133,8 @@ class Game extends React.Component {
       gameinprogress: false,
       timeout: 0,
       status: "",
-      turnbet: 0
+      turnbet: 0,
+      winninghand: ['', '', '', '', '']
 
     };
     this.updatePhase = this.updatePhase.bind(this);
@@ -129,6 +150,7 @@ class Game extends React.Component {
     this.toggleDealField = this.toggleDealField.bind(this);
     this.updateTimeout = this.updateTimeout.bind(this);
     this.timer = this.timer.bind(this);
+    this.updateWinningHand = this.updateWinningHand.bind(this);
   }
 
   componentDidMount() {
@@ -140,7 +162,7 @@ class Game extends React.Component {
     this.props.socket.on('toggleDealHand', this.toggleDealHand);
     this.props.socket.on('toggleDealField', this.toggleDealField);
     this.props.socket.on('updateTimeout', this.updateTimeout);
-
+    this.props.socket.on('updateWinningHand', this.updateWinningHand);
   }
 
   updateTimeout(n) {
@@ -177,6 +199,18 @@ class Game extends React.Component {
       playerid: playerid
 
     })
+
+  }
+
+  updateWinningHand(data) {
+
+    this.setState({
+
+      winninghand: data
+
+    })
+
+    console.log(this.state.winninghand);
 
   }
 
@@ -318,16 +352,7 @@ class Game extends React.Component {
           return <span className="card" key={card}>{card}</span>;
         });
     */
-    if (this.state.field != null) {
-      var fieldhtml = this.state.field.map(function (card) {
-        return (
-          <div key={'field: ' + card}>
-            <span className="fieldcards" key={card}><img className='fieldcardsimage' src={'/cards/' + card + '.png'} /></span>
-            <span className="spacer">&nbsp;</span>
-          </div>
-        );
-      });
-    }
+
 
     /*
         if (this.state.deck != null) {
@@ -335,6 +360,9 @@ class Game extends React.Component {
             return <span className="card" key={card}>{card}</span>;
           });
         }
+
+
+        {this.state.winninghand.indexOf(card) > -1 ? 'fieldcardsimagehighlight' : 'fieldcardsimage'}
         */
     return (
       <div className='gamecontainer'>
@@ -351,9 +379,14 @@ class Game extends React.Component {
           playerid={this.state.playerid}
           gameinprogress={this.state.gameinprogress}
           status={this.state.status}
+          winninghand={this.state.winninghand}
         />
         <div className='fieldarea'>
-          <div className='fieldcardcontainer'>{fieldhtml}
+          <div className='fieldcardcontainer'>
+            <Field
+              field={this.state.field}
+              winninghand={this.state.winninghand}
+            />
           </div>
           <div className='dealbuttons'>
             <button className="button" disabled={this.state.gameinprogress} onClick={this.handleDealHand}>Deal Hand</button>
