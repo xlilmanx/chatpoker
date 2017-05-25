@@ -9,9 +9,9 @@ class GameUsers extends React.Component {
         {
           this.props.users.map((user, i) => {
             return (
-              <div className={this.props.turn == i ? 'gameusercontainerturn' : 'gameusercontainer'} key={'user' + i}>
+              <div className={this.props.turn == i && this.props.gameinprogress ? 'gameusercontainerturn' : 'gameusercontainer'} key={'user' + i}>
                 <div className='dealerturn'>
-                  <strong><span className={this.props.dealer == i && this.props.gameinprogress ? 'dealerturnvisible' : 'dealerturnhidden'}> Dealer
+                  <strong><span className={this.props.dealer == i ? 'dealerturnvisible' : 'dealerturnhidden'}> Dealer
                   </span>
                     <span className={this.props.turn == i ? 'dealerturnvisible' : 'dealerturnhidden'}>
                       Turn
