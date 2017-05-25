@@ -81,6 +81,7 @@ io.on('connection', function (socket) {
   clientInfo.bet = 0;
   clientInfo.turnbet = 0;
   clientInfo.isingame = false;
+  clientInfo.didbet = false;
   var idAdded = false;
   var clientnum = -1;
 
@@ -163,8 +164,9 @@ io.on('connection', function (socket) {
         for (var i = 0; i < userid.length; ++i) {
           var c = userid[i];
 
-          if (c.id == socket.id) {
 
+          if (c.id == socket.id) {
+            userid[i].didbet = true;
             userid[i].money = userid[i].money - data;
             userid[i].bet = userid[i].bet + data;
             userid[i].turnbet = userid[i].turnbet + data;
@@ -176,6 +178,14 @@ io.on('connection', function (socket) {
               betraised = true;
               betiscalled = false;
               betraisedplayer = i;
+
+              for (j = 0; j < userid.length; j++) {
+                if (userid[j] != null) {
+                  if (i != j) {
+                    userid[j].didbet = false;
+                  }
+                }
+              }
 
 
             }
@@ -233,6 +243,7 @@ io.on('connection', function (socket) {
           deck = deckarr;
           gamedata.numplayers = gamedata.numplayers + 1;
           userid[i].isingame = true;
+          userid[i].didbet = false;
         }
       }
 
@@ -262,9 +273,12 @@ io.on('connection', function (socket) {
         for (i = 0; i < userid.length; i++) {
           bigblindplayer = (bigblindplayer + 1) % userid.length;
           if (userid[bigblindplayer] != null) {
+            userid[bigblindplayer].didbet = false;
             break;
           }
         }
+      } else {
+        userid[bigblindplayer].didbet = false;
       }
 
       gamedata.turnnum = (bigblindplayer + 1) % userid.length;
@@ -360,7 +374,7 @@ io.on('connection', function (socket) {
           delete returnbetarray.money[i];
           delete returnbetarray.turnbet[i];
           if (i == gamedata.dealernum) {
-            for (i = 0; i < userid.length; i++) {
+            for (j = 0; j < userid.length; j++) {
               gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
               if (userid[gamedata.dealernum] != null) {
                 break;
@@ -368,7 +382,7 @@ io.on('connection', function (socket) {
             }
           }
           if (i == gamedata.turnnum) {
-            for (i = 0; i < userid.length; i++) {
+            for (j = 0; j < userid.length; j++) {
               gamedata.turnnum = (gamedata.turnnum + 1) % userid.length;
               if (userid[gamedata.turnnum] != null) {
                 if (userid[gamedata.turnnum].cards.length != 0) {
@@ -378,7 +392,7 @@ io.on('connection', function (socket) {
             }
           }
           if (i == betraisedplayer) {
-            for (i = userid.length; i > 0; i--) {
+            for (j = userid.length; j > 0; j--) {
               betraisedplayer = (betraisedplayer - 1) % userid.length;
               if (userid[betraisedplayer] != null) {
                 break;
@@ -527,7 +541,7 @@ var updateGame = (function () {
           returnarray.hand[n] = [];
           userid[n].isingame = false;
           gamedata.numplayers = gamedata.numplayers - 1;
-          console.log(gamedata.numplayers);
+          userid[n].didbet = true;
           io.emit('updateGame', returnarray);
           io.emit('send:message', {
             user: "APPLICATION BOT",
@@ -535,6 +549,7 @@ var updateGame = (function () {
           });
           endturn(n);
         } else if (gamedata.currentbet == userid[n].bet && (betraisedplayer != n || betiscalled)) {
+          userid[n].didbet = true;
           endturn(n);
           betiscalled = true;
           if (gameinprogress) {
@@ -569,7 +584,23 @@ var updateGame = (function () {
 
   var endturn = function (n) {
 
-    if ((gamedata.turnnum == betraisedplayer && !betraised) || gamedata.numplayers == 1) {
+    var everyonebet = false;
+    for (i = 0; i < userid.length; i++) {
+
+      if (userid[i] != null) {
+        if (userid[i].isingame == true) {
+          if (userid[i].didbet == true) {
+            everyonebet = true;
+          } else {
+            everyonebet = false;
+            break;
+          }
+        }
+      }
+    }
+
+
+    if ((everyonebet) || gamedata.numplayers == 1) {
 
       if (gamedata.numplayers == 1) {
 
@@ -620,9 +651,6 @@ var updateGame = (function () {
       } else if (gamedata.phase == "river") {
         allowbet = false;
 
-        /*          if (field.length >= 5) {
-
-                  }*/
         winner();
         gameinprogress = false;
         handdealt = false;
@@ -719,6 +747,11 @@ var updateGame = (function () {
           }
         }
       }
+      for (i = 0; i < userid.length; i++) {
+        if (userid[i] != null) {
+          userid[i].didbet = false;
+        }
+      }
       betraised = false;
       allowbet = true;
       io.emit('updatePhase', gamedata);
@@ -734,7 +767,6 @@ var updateGame = (function () {
       if (!allowbet) {
 
         if (gamedata.phase == "preflop") {
-
 
           dealfield(gamedata.turnnum);
 
