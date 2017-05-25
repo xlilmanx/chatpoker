@@ -9,7 +9,7 @@ class GameUsers extends React.Component {
         {
           this.props.users.map((user, i) => {
             return (
-              <div className='gameusercontainer' key={'user' + i}>
+              <div className={this.props.turn == i ? 'gameusercontainerturn' : 'gameusercontainer'} key={'user' + i}>
                 <div className='dealerturn'>
                   <strong><span className={this.props.dealer == i ? 'dealerturnvisible' : 'dealerturnhidden'}> Dealer
                   </span>
@@ -59,9 +59,9 @@ class Betting extends React.Component {
         <div className='bettingbutton'>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
-          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call/Check</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress || (this.props.playerbet >= this.props.currentbet)} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call</button>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
-          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleFold()}>{this.props.playerbet >= this.props.currentbet ? 'End Turn' : 'Fold'}</button>
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleFold()}>{this.props.playerbet >= this.props.currentbet ? (this.props.turnbet == 0 ? 'Check' : 'End Turn') : 'Fold'}</button>
         </div>
       </div>
 
@@ -112,7 +112,8 @@ class Game extends React.Component {
       dealfield: false,
       gameinprogress: false,
       timeout: 0,
-      status: ""
+      status: "",
+      turnbet: 0
 
     };
     this.updatePhase = this.updatePhase.bind(this);
@@ -271,7 +272,8 @@ class Game extends React.Component {
       this.setState({
         money: betdata.money,
         bet: betdata.bet,
-        status: betdata.turnstatus
+        status: betdata.turnstatus,
+        turnbet: betdata.turnbet
       });
 
     }
@@ -396,6 +398,7 @@ class Game extends React.Component {
           playerbet={this.state.bet[this.state.playerid]}
           dealfield={this.state.dealfield}
           gameinprogress={this.state.gameinprogress}
+          turnbet={this.state.turnbet[this.state.playerid]}
         />
       </div>
 

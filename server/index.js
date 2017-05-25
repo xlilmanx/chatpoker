@@ -271,7 +271,6 @@ io.on('connection', function (socket) {
             userid[i].didbet = false;
             userid[i].turnbet = 0;
             userid[i].turnstatus = "";
-            userid[i].turnstatus = "";
           }
         }
       }
@@ -431,7 +430,7 @@ io.on('connection', function (socket) {
           delete returnbetarray.turnbet[i];
           if (i == gamedata.dealernum) {
             clearTimeout(timeoutfunction);
-            timeoutfunction = setTimeout(ontimeout, 10000);
+            timeoutfunction = setTimeout(updateGame.ontimeout, 10000);
             io.emit('updateTimeout', 10);
             for (j = 0; j < userid.length; j++) {
               gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
@@ -820,18 +819,16 @@ var updateGame = (function () {
       for (i = 0; i < userid.length; i++) {
         if (userid[i] != null) {
           userid[i].didbet = false;
-        }
-      }
-      for (i = 0; i < userid.length; i++) {
-
-        if (userid[i] != null) {
+          userid[i].turnstatus = "";
           userid[i].turnbet = 0;
         }
       }
+
       betraised = false;
       allowbet = true;
       io.emit('updatePhase', gamedata);
       gamedatacards();
+      updateGame.bets();
       clearTimeout(timeoutfunction);
       timeoutfunction = setTimeout(ontimeout, 10000);
       io.emit('updateTimeout', 10);
