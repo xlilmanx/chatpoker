@@ -14,8 +14,11 @@
 		}
 
 		.chatapp {
-			height: 100%;
-			width: 100%;
+			position: absolute;
+			right: 0px;
+			bottom: 0px;
+			height: 30vh;
+			width: 800px;
 		}
 
 		.titletext {
@@ -51,14 +54,16 @@
 
 		.messages {
 			margin-bottom: 10px;
+			height: calc(100% - 40px);
 			overflow: auto;
 			display: block;
-			height: 300px;
 		}
 
 		.message_form {
+			position: relative;
 			margin-left: 15px;
 			margin-right: 220px;
+			bottom: 0px;
 		}
 
 		.messageforminput {
@@ -112,10 +117,9 @@
 			padding-bottom: 10px;
 			padding-right: 10px;
 			overflow: hidden;
-			border-style: solid;
-			border-width: 3px;
-			border-color: #6ab5d8;
-			border-radius: 1px;
+			outline-style: solid;
+			outline-width: 3px;
+			outline-color: #6ab5d8;
 		}
 
 		.gameuser {
@@ -146,7 +150,7 @@
 		.playercardsimagehighlight {
 			width: 40px;
 			margin-top: -10px;
-			border: red medium solid;
+			outline: red medium solid;
 		}
 
 		.fieldcardsimage {
@@ -155,7 +159,7 @@
 
 		.fieldcardsimagehighlight {
 			width: 100px;
-			border: red medium solid;
+			outline: red medium solid;
 		}
 
 
@@ -193,7 +197,7 @@
 		}
 
 		.fieldcardcontainer {
-			height: 110px;
+			height: 175px;
 			padding-left: 35px;
 		}
 

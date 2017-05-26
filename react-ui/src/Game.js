@@ -41,7 +41,7 @@ class GameUsers extends React.Component {
                   <span className='betamount'>Bet: ${this.props.bet[i]}
                   </span>
                 </div>
-              </div>
+              </div> 
             );
           })}
       </div>
@@ -94,7 +94,6 @@ class Field extends React.Component {
     return (
       <div>
         {this.props.field != (null || undefined) &&
-
           this.props.field.map((card) => {
             return (
               <div key={'field: ' + card}>
@@ -209,8 +208,6 @@ class Game extends React.Component {
       winninghand: data
 
     })
-
-    console.log(this.state.winninghand);
 
   }
 
