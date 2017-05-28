@@ -8,29 +8,37 @@
 			font-family: 'Helvetica', sans-serif;
 		}
 
+		body {
+			background: #d4d6db;
+			margin: 0;
+			padding: 0;
+		}
+
 		.appcontainer {
 			width: 100%;
 			height: 100%;
+			margin: 0;
+			padding: 0;
 		}
 
 		.chatapp {
-			/*			position: absolute;*/
+			position: absolute;
 			right: 0px;
-			bottom: 0px;
-			/*			height: 30vh;*/
-			width: 1000px;
+			top: 0px;
+			width: 300px;
+			height: 100vh;
+			margin: 0;
+			padding: 0;
 		}
 
 		.titletext {
-
-			width: 600px;
+			width: 900px;
 			display: inline-block;
 			font-size: 150%;
 			padding-bottom: 20px;
 		}
 
 		.titletext span {
-
 			font-size: 200%;
 		}
 
@@ -49,26 +57,45 @@
 		}
 
 		.right-panel {
+			position: absolute;
 			float: right;
+			right: 300px;
+			top: 0px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.messagescontainer {
+			margin: 0px;
+			padding: 0px;
+			background: #8b8d91;
+			height: 100%;
+			outline: 5px solid #6d6e72;
 		}
 
 		.messages {
-			margin-bottom: 10px;
-			/*			height: calc(100% - 40px);*/
-			height: 250px;
+			top: 0px;
+			padding-top: 10px;
+			height: calc(100% - 85px);
+			width: 300px;
+			/*height: 250px;*/
 			overflow: auto;
 			display: block;
+			word-wrap: break-word;
 		}
 
 		.message_form {
-/*			position: relative;*/
-			margin-left: 15px;
-			margin-right: 220px;
-			/*			bottom: 0px;*/
+			position: absolute;
+			bottom: 10px;
+			margin-left: 10px;
 		}
 
 		.messageforminput {
-			width: 100%;
+			width: 275px;
+			height: 50px;
+			bottom: 0px;
+			word-wrap: break-word;
+			word-break: break-all;
 		}
 
 		.change_name_form {
@@ -76,7 +103,11 @@
 		}
 
 		.gamecontainer {
-			width: 100%;
+			position: absolute;
+			width: 1125px;
+			height: 100%;
+			top: 0;
+			left: 0;
 		}
 
 		.gameuserlist {
@@ -129,10 +160,13 @@
 			overflow: hidden;
 		}
 
-		.playercards {
+		.usercards {
 			/* border: 1px solid black; */
 			padding: 3px;
 			text-align: center;
+			height: 60px;
+			width: 105px;
+			margin: auto;
 			/*margin-top: 10px;*/
 		}
 
@@ -140,46 +174,431 @@
 			/* border: 1px solid black; */
 			padding: 3px;
 			text-align: center;
+			height: 46px;
 			/*margin-top: 10px;*/
 		}
 
 		.playercardsimage {
 			width: 40px;
-			margin-top: -10px;
+			margin: 5px;
 		}
 
 		.playercardsimagehighlight {
 			width: 40px;
-			margin-top: -10px;
+			margin: 5px;
 			outline: red medium solid;
+		}
+
+		.usercontainer0 {
+			position: absolute;
+			left: 400px;
+			top: 100px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer1 {
+			position: absolute;
+			left: 625px;
+			top: 100px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer2 {
+			position: absolute;
+			left: 850px;
+			top: 100px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer3 {
+			position: absolute;
+			left: 1075px;
+			top: 200px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer4 {
+			position: absolute;
+			left: 1075px;
+			top: 400px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer5 {
+			position: absolute;
+			left: 850px;
+			top: 500px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer6 {
+			position: absolute;
+			left: 625px;
+			top: 500px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer7 {
+			position: absolute;
+			left: 400px;
+			top: 500px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer8 {
+			position: absolute;
+			left: 175px;
+			top: 400px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.usercontainer9 {
+			position: absolute;
+			left: 175px;
+			top: 200px;
+			width: 150px;
+			height: 300px;
+			text-align: center
+		}
+
+		.userbet0 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			top: 130px;
+			margin: auto;
+		}
+
+		.userbet1 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			top: 130px;
+			margin: auto;
+		}
+
+		.userbet2 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			top: 130px;
+			margin: auto;
+		}
+
+		.userbet3 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			left: -130px;
+			margin: auto;
+		}
+
+		.userbet4 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			left: -130px;
+			top: 50px;
+			margin: auto;
+		}
+
+		.userbet5 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			top: -30px;
+			margin: auto;
+		}
+
+		.userbet6 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			top: -30px;
+			margin: auto;
+		}
+
+		.userbet7 {
+			color: white;
+			clear: both;
+			position: absolute;
+			width: 150px;
+			top: -30px;
+			margin: auto;
+		}
+
+		.userbet8 {
+			color: white;
+			clear: both;
+			position: absolute;
+			right: -70px;
+			top: 50px;
+			margin: auto;
+		}
+
+		.userbet9 {
+			color: white;
+			clear: both;
+			position: absolute;
+			right: -70px;
+			margin: auto;
+		}
+
+		.userborder {
+			border-style: solid;
+			border-width: 2px;
+			border-radius: 5px;
+			border-color: black;
+		}
+
+		.userborderturn {
+			border-style: solid;
+			border-width: 2px;
+			border-radius: 5px;
+			border-color: blue;
+		}
+
+		.username {
+			background: white;
+			width: 100%;
+		}
+
+		.usermoney {
+			background: #464749;
+			width: 100%;
+			color: white;
+		}
+
+		.userstatus {
+			width: 100px;
+			margin: auto;
+			border-left: 2px solid black;
+			border-bottom: 2px solid black;
+			border-right: 2px solid black;
+			border-radius: 5px;
+			border-color: black;
+			background: #929599;
+		}
+
+		.playingtable {
+			position: absolute;
+			left: 250px;
+			top: 150px;
+			width: 800px;
+		}
+
+		.circleleftinner {
+			position: absolute;
+			width: 400px;
+			height: 400px;
+			top: 25px;
+			left: 25px;
+			background: #409943;
+			-moz-border-radius: 200px;
+			-webkit-border-radius: 200px;
+			border-radius: 200px;
+			z-index: -1;
+		}
+
+		.rectangleinner {
+			position: absolute;
+			width: 450px;
+			height: 400px;
+			background: #409943;
+			top: 25px;
+			left: 225px;
+			z-index: -1;
+		}
+
+		.circlerightinner {
+			position: absolute;
+			width: 400px;
+			height: 400px;
+			left: 475px;
+			top: 25px;
+			background: #409943;
+			-moz-border-radius: 200px;
+			-webkit-border-radius: 200px;
+			border-radius: 200px;
+			z-index: -1;
+		}
+
+		.circleleftouter {
+			position: absolute;
+			width: 450px;
+			height: 450px;
+			left: 0px;
+			background: #685020;
+			-moz-border-radius: 225px;
+			-webkit-border-radius: 225px;
+			border-radius: 225px;
+			z-index: -5;
+		}
+
+		.rectangleouter {
+			position: absolute;
+			width: 450px;
+			height: 450px;
+			background: #685020;
+			left: 225px;
+			z-index: -5;
+		}
+
+		.circlerightouter {
+			position: absolute;
+			width: 450px;
+			height: 450px;
+			left: 450px;
+			background: #685020;
+			-moz-border-radius: 225px;
+			-webkit-border-radius: 225px;
+			border-radius: 225px;
+			z-index: -5;
+		}
+
+		.fieldcurrentpot {
+			position: absolute;
+			color: white;
+			width: 875px;
+			text-align: center;
+			margin: 0 auto;
+			top: 140px;
+		}
+
+
+		.fieldcardsimage0 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 200px;
+		}
+
+		.fieldcardsimage1 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 300px;
+		}
+
+		.fieldcardsimage2 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 400px;
+		}
+
+		.fieldcardsimage3 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 500px;
+		}
+
+		.fieldcardsimage4 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 600px;
 		}
 
 		.fieldcardsimage {
-			width: 100px;
+			position: absolute;
+			width: 75px;
+			top: 175px;
 		}
 
 		.fieldcardsimagehighlight {
-			width: 100px;
+			position: absolute;
+			width: 75px;
+			top: 175px;
 			outline: red medium solid;
 		}
 
+		.fieldcardsimagehighlight0 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 200px;
+			outline: red medium solid;
+		}
+
+		.fieldcardsimagehighlight1 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 300px;
+			outline: red medium solid;
+		}
+
+		.fieldcardsimagehighlight2 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 400px;
+			outline: red medium solid;
+		}
+
+		.fieldcardsimagehighlight3 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 500px;
+			outline: red medium solid;
+		}
+
+		.fieldcardsimagehighlight4 {
+			position: absolute;
+			width: 75px;
+			top: 175px;
+			left: 600px;
+			outline: red medium solid;
+		}
 
 		.bigplayercardsimage {
 			width: 80px;
 		}
 
 		.bigplayercardscontainer {
-			clear: both;
+			position: absolute;
 			text-align: center;
-			padding-right: 50px;
-			padding-left: 270px;
+			background: #a0a2a5;
+			left: 1050px;
+			top: 650px;
+			width: 200px;
+			padding: 10px;
+			height: 130px;
 		}
 
 		.bigplayercards {
 			/*	border: 1px solid black;
 			padding: 20px;*/
 			text-align: center;
-			margin-top: 10px;
+			margin: 10px;
 			font-size: 200%;
 			float: left;
 		}
@@ -195,6 +614,7 @@
 			float: left;
 			padding-left: 60px;
 			width: 800px;
+			height: 600px;
 		}
 
 		.fieldcardcontainer {
@@ -212,7 +632,7 @@
 		}
 
 		.spacer {
-			padding: 20px;
+			padding: 10px;
 			text-align: center;
 			margin-top: 25px;
 			float: left;
@@ -220,20 +640,28 @@
 		}
 
 		.dealbuttons {
-			clear: both;
+			/*		clear: both;
 			padding-top: 75px;
+			padding-right: 50px;*/
+			position: absolute;
 			text-align: center;
-			padding-right: 50px;
+			left: 525px;
+			top: 650px;
 		}
 
 		.cardsleft {
-			clear: both;
+			position: absolute;
 			text-align: center;
-			padding-right: 50px;
+			left: 600px;
+			top: 720px;
 		}
 
 		.betting {
-			clear: both;
+			position: absolute;
+			text-align: center;
+			left: 175px;
+			top: 750px;
+			width: 1000px;
 		}
 
 		.button {
@@ -273,11 +701,9 @@
 
 	</div>
 
-	<!-- https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js 
-	<script src="https://code.jquery.com/jquery-1.11.1.js" type="text/javascript"></script>-->
+	<!-- https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js -->
+	<script src="https://code.jquery.com/jquery-1.11.1.js" type="text/javascript"></script>
 	<script src="/socket.io/socket.io.js" type="text/javascript"></script>
-
-
 
 
 </body>

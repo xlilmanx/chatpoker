@@ -10,7 +10,12 @@ class MainWrapper extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { users: [], messages: [], text: '' };
+        this.state = {
+            users: [],
+            messages: [],
+            text: '',
+            gamescale: 0
+        };
         this._initialize = this._initialize.bind(this);
         this._messageRecieve = this._messageRecieve.bind(this);
         this._userJoined = this._userJoined.bind(this);
@@ -18,7 +23,20 @@ class MainWrapper extends React.Component {
         this._userChangedName = this._userChangedName.bind(this);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
+    }
+
+    updateWindowDimensions() {
+        var scale = Math.min(
+            window.innerWidth / 1625,
+            window.innerHeight / 850
+        );
+        scale = Math.min(scale, 1);
+
+        console.log(scale);
+
+        this.setState({ gamescale: scale });
     }
 
     componentDidMount() {
@@ -27,6 +45,12 @@ class MainWrapper extends React.Component {
         socket.on('user:join', this._userJoined);
         socket.on('user:left', this._userLeft);
         socket.on('change:name', this._userChangedName);
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
     _initialize(data) {
@@ -58,7 +82,7 @@ class MainWrapper extends React.Component {
             text: name + ' Left'
         });
         this.setState({ users, messages });
-//        socket.emit('updateclientnumber');
+        //        socket.emit('updateclientnumber');
     }
 
     _userChangedName(data) {
@@ -94,20 +118,39 @@ class MainWrapper extends React.Component {
     }
 
     render() {
-        return (
-            <div className='appcontainer'>
-                <Game
-                    socket={socket}
-                    users={this.state.users} />
-                <ChatApp
-                    socket={socket}
-                    users={this.state.users}
-                    handleChangeName={this.handleChangeName}
-                    messages={this.state.messages}
-                    handleMessageSubmit={this.handleMessageSubmit}
-                    user={this.state.user} />
-            </div>
 
+        var csstransform = 'translate(0, 0) ' + 'scale(' + this.state.gamescale + ')';
+        var cssgame = {
+            transform: csstransform,
+            position: 'absolute',
+            top: 0,
+            left: 0
+        }
+        var csschat = {
+            transform: csstransform,
+            position: 'absolute',
+            top: 0,
+            right: 0
+        }
+
+        return (
+
+            <div className='appcontainer'>
+                <div style={cssgame}>
+                    <Game
+                        socket={socket}
+                        users={this.state.users} />
+                </div>
+                <div style={csschat}>
+                    <ChatApp
+                        socket={socket}
+                        users={this.state.users}
+                        handleChangeName={this.handleChangeName}
+                        messages={this.state.messages}
+                        handleMessageSubmit={this.handleMessageSubmit}
+                        user={this.state.user} />
+                </div>
+            </div>
         );
     }
 }

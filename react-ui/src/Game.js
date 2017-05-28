@@ -5,43 +5,38 @@ class GameUsers extends React.Component {
   render() {
     return (
       <div className='gameuserlist'>
-
         {
           this.props.users.map((user, i) => {
             return (
-              <div className={this.props.turn == i && this.props.gameinprogress ? 'gameusercontainerturn' : 'gameusercontainer'} key={'user' + i}>
-                <div className='dealerturn'>
-                  <strong><span className={this.props.dealer == i ? 'dealerturnvisible' : 'dealerturnhidden'}> Dealer
-                  </span>
-                    <span className={this.props.turn == i ? 'dealerturnvisible' : 'dealerturnhidden'}>
-                      Turn
-                  </span></strong>
-                </div>
-                <div className='gameuser'>
-                  <strong>{user}</strong> <br />
-                  ${this.props.money[i]}
-                  <br />
-                  <strong>{this.props.status[i]}</strong>
-                </div>
-                <div>
+              <div className={('usercontainer' + i)}>
+                <div className='usercards'>
                   {this.props.hand[i] != (null || undefined) &&
 
                     this.props.hand[i].map((card) => {
                       return (
-                        <span className='playercards' key={card}>{this.props.playerid == i || !this.props.gameinprogress ? <img className={this.props.winninghand.indexOf(card) > -1 ? 'playercardsimagehighlight' : 'playercardsimage'} src={'/cards/' + card + '.png'} /> : <img className='playercardsimage' src={'/cards/x.png'} />}</span>
+                        this.props.playerid == i || !this.props.gameinprogress ? <img className={this.props.winninghand.indexOf(card) > -1 ? 'playercardsimagehighlight' : 'playercardsimage'} src={'/cards/' + card + '.png'} key={card} /> : <img className='playercardsimage' src={'/cards/x.png'} key={card} />
                       );
                     })
                   }
-
                   {this.props.hand[i] == (null || undefined) &&
-                    <span className='playercards'> </span>
+                    <span className='usercards'> </span>
 
                   }
-                  <br />
-                  <span className='betamount'>Bet: ${this.props.bet[i]}
-                  </span>
                 </div>
-              </div> 
+                <div className={this.props.turn == i ? 'userborderturn' : 'userborder'}>
+                  <div className='username'>
+                    {user}
+                  </div>
+                  <div className='usermoney'>
+                    ${this.props.money[i]}
+                  </div>
+                </div>
+                <div className='userstatus'>
+                  {this.props.status[i]}
+                </div>
+                <div className={'userbet' + i}>${this.props.bet[i]}</div>
+              </div>
+
             );
           })}
       </div>
@@ -55,7 +50,7 @@ class Betting extends React.Component {
   render() {
     return (
       <div className='betting'>
-        <div>Betting -- Total Money: ${this.props.money}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Player Bet: ${this.props.playerbet}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Current Bet: ${this.props.currentbet}</div>
+        <div>Betting -- Total Money: ${this.props.money}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Player Bet: ${this.props.playerbet}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Current Pot: ${this.props.currentbet}</div>
         <div className='bettingbutton'>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(1)}>Bet $1</button>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(5)}>Bet $5</button>
@@ -73,18 +68,18 @@ class Betting extends React.Component {
 
 /*
 class Deck extends React.Component {
-  constructor() {
-    super();
+          constructor() {
+        super();
     this.state = {
-      value: null,
+          value: null,
     };
   }
   render() {
     return (
       <div className="deck">
-        Deck: <br />{this.props.deckhtml}
-      </div>
-    );
+          Deck: <br />{this.props.deckhtml}
+        </div>
+        );
   }
 }
 */
@@ -94,10 +89,10 @@ class Field extends React.Component {
     return (
       <div>
         {this.props.field != (null || undefined) &&
-          this.props.field.map((card) => {
+          this.props.field.map((card, i) => {
             return (
               <div key={'field: ' + card}>
-                <span className="fieldcards" key={card}><img className={this.props.winninghand.indexOf(card) > -1 ? 'fieldcardsimagehighlight' : 'fieldcardsimage'} src={'/cards/' + card + '.png'} /></span>
+                <div className={'fieldcards'} key={card}><img className={this.props.winninghand.indexOf(card) > -1 ? ('fieldcardsimagehighlight' + i) : ('fieldcardsimage' + i)} src={'/cards/' + card + '.png'} /></div>
                 <span className="spacer">&nbsp;</span>
               </div>);
           })
@@ -363,9 +358,11 @@ class Game extends React.Component {
         */
     return (
       <div className='gamecontainer'>
-        <div className='titletext'><span><strong>Poker Game</strong></span> -- {this.state.phase == "waitingtostart" ? "Waiting to Start" : (this.state.phase == "preflop" ? "Pre-flop" : (this.state.phase == "Flop" ? "Flop" : (this.state.phase == "turn" ? "Turn" : (this.state.phase == "river" ? "River" : ""))))}</div>
+        <div className='titletext'><span><strong>Poker Game</strong></span> -- {this.state.phase == "waitingtostart" ? "Waiting to Start" : (this.state.phase == "preflop" ? "Pre-flop" : (this.state.phase == "flop" ? "Flop" : (this.state.phase == "turn" ? "Turn" : (this.state.phase == "river" ? "River" : ""))))}
+          -- Turn Time: {this.state.timeout > 0 ? this.state.timeout : 0}
+        </div>
         <br />
-        Turn Time: {this.state.timeout > 0 ? this.state.timeout : 0} <br />
+        <br />
         <GameUsers
           users={this.props.users}
           hand={this.state.hand}
@@ -380,45 +377,55 @@ class Game extends React.Component {
         />
         <div className='fieldarea'>
           <div className='fieldcardcontainer'>
-            <Field
-              field={this.state.field}
-              winninghand={this.state.winninghand}
-            />
-          </div>
-          <div className='dealbuttons'>
-            <button className="button" disabled={this.state.gameinprogress} onClick={this.handleDealHand}>Deal Hand</button>
-            <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
+            <div className='playingtable'>
+              <div className='circleleftouter'></div>
+              <div className='rectangleouter'></div>
+              <div className='circlerightouter'></div>
+              <div className='circleleftinner'></div>
+              <div className='rectangleinner'></div>
+              <div className='circlerightinner'></div>
+              <div className='fieldcurrentpot'>Pot: ${this.state.currentbet}</div>
+              <Field
+                field={this.state.field}
+                winninghand={this.state.winninghand}
+              />
+            </div>
+
           </div>
 
-          {/*
+        </div>
+
+        <div className='dealbuttons'>
+          <button className="button" disabled={this.state.gameinprogress} onClick={this.handleDealHand}>Deal Hand</button>
+          <button className="button" disabled={!this.state.dealfield || !this.state.isdealer} onClick={this.handleDealField}>Deal Field</button>
+        </div>
+
+        {/*
           <br />playerid: {this.state.playerid} -- gameinprogress: {this.state.gameinprogress.toString()} -- {this.state.phase} -- turn: {this.state.turn} -- dealer: {this.state.dealer} -- isdealer: {this.state.isdealer.toString()}{this.state.dealfield.toString()} -- isturn: {this.state.isturn.toString()} -- currentbet: {this.state.currentbet}<br />
           */}
 
-          <br />
+        <br />
 
-          <div className='bigplayercardscontainer'>
-            {this.state.hand[this.state.playerid] != (null || undefined) &&
-              this.state.hand[this.state.playerid].map((card) => {
-                return (
-                  <div key={'bigplayercards: ' + card}>
-                    <span className='bigplayercards' key={'big ' + card}><img className='bigplayercardsimage' src={'/cards/' + card + '.png'} /></span>
-                    <span className="spacer">&nbsp;</span></div>
-                );
-              })
-            }
-            {this.state.hand[this.state.playerid] == (null || undefined) &&
-              <span className='bigplayercards'> </span>
-            }
-          </div>
-          <br />
-          <br />
-          <div className='cardsleft'>
+        <div className='bigplayercardscontainer'>
+          {this.state.hand[this.state.playerid] != (null || undefined) &&
+            this.state.hand[this.state.playerid].map((card) => {
+              return (
+                <div key={'bigplayercards: ' + card}>
+                  <span className='bigplayercards' key={'big ' + card}><img className='bigplayercardsimage' src={'/cards/' + card + '.png'} /></span>
+                </div>
+              );
+            })
+          }
+          {this.state.hand[this.state.playerid] == (null || undefined) &&
+            <span className='bigplayercards'> </span>
+          }
+        </div>
+        <div className='cardsleft'>
 
-            Cards Left in Deck: {this.state.deck != (null || undefined) &&
-              this.state.deck.length}
-          </div>
+          Cards Left in Deck: {this.state.deck != (null || undefined) &&
+            this.state.deck.length}
+        </div>
 
-        </div> <br />
         <Betting
           handleBet={this.handleBet}
           handleFold={this.handleFold}

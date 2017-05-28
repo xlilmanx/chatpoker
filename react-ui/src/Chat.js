@@ -64,7 +64,7 @@ class MessageList extends React.Component {
             <div className='messages' ref={(div) => {
                 this.messageList = div;
             }}>
-                
+
                 {
                     this.props.messages.map((message, i) => {
                         return (
@@ -102,18 +102,34 @@ class MessageForm extends React.Component {
         this.setState({ text: '' });
     }
 
+
+    handleEnter = (event) => {
+        if (event.key == 'Enter') {
+            event.preventDefault();
+            var message = {
+                user: this.props.user,
+                text: this.state.text
+            }
+            this.props.onMessageSubmit(message);
+            this.setState({ text: '' });
+        }
+    }
+
     changeHandler(e) {
         this.setState({ text: e.target.value });
     }
+
 
     render() {
         return (
             <div className='message_form'>
                 <form onSubmit={this.handleSubmit}>
-                    <input
+                    <textarea
+                        onKeyPress={this.handleEnter}
                         onChange={this.changeHandler}
                         value={this.state.text}
                         className='messageforminput'
+                        placeholder='Type chat here...'
                     />
                 </form>
             </div>
@@ -173,14 +189,15 @@ class ChatApp extends React.Component {
                     />
                 </div>
 
-                <MessageList
-                    messages={this.props.messages}
-                />
-                <MessageForm
-                    onMessageSubmit={this.props.handleMessageSubmit}
-                    user={this.props.user}
-                />
-
+                <div className='messagescontainer'>
+                    <MessageList
+                        messages={this.props.messages}
+                    />
+                    <MessageForm
+                        onMessageSubmit={this.props.handleMessageSubmit}
+                        user={this.props.user}
+                    />
+                </div>
             </div>
         );
     }
