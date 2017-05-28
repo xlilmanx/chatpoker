@@ -34,8 +34,6 @@ class MainWrapper extends React.Component {
         );
         scale = Math.min(scale, 1);
 
-        console.log(scale);
-
         this.setState({ gamescale: scale });
     }
 

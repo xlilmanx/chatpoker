@@ -8,7 +8,7 @@ class GameUsers extends React.Component {
         {
           this.props.users.map((user, i) => {
             return (
-              <div className={('usercontainer' + i)}>
+              <div className={('usercontainer' + i)} key={'user'+user}>
                 <div className='usercards'>
                   {this.props.hand[i] != (null || undefined) &&
 
