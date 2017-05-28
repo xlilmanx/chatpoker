@@ -125,7 +125,7 @@ class MainWrapper extends React.Component {
             left: 0
         }
         var csschat = {
-            transform: csstransform,
+            transform: 'translate(0, 0) ' + 'scale(' + this.state.gamescale + ', 1)',
             position: 'absolute',
             top: 0,
             right: 0

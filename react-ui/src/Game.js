@@ -8,7 +8,7 @@ class GameUsers extends React.Component {
         {
           this.props.users.map((user, i) => {
             return (
-              <div className={('usercontainer' + i)} key={'user'+user}>
+              <div className={('usercontainer' + i)} key={'user' + user}>
                 <div className='usercards'>
                   {this.props.hand[i] != (null || undefined) &&
 
@@ -34,7 +34,14 @@ class GameUsers extends React.Component {
                 <div className='userstatus'>
                   {this.props.status[i]}
                 </div>
-                <div className={'userbet' + i}>${this.props.bet[i]}</div>
+                <div className={'userbet' + i}>
+                  <div className={'dealerturncontainer'}>
+                    <div className={this.props.dealer == i ? 'dealerturnvisible' : 'dealerturnhidden'}>
+                      <strong>D</strong>
+                    </div>
+                  </div>
+                  ${this.props.bet[i]}
+                </div>
               </div>
 
             );
