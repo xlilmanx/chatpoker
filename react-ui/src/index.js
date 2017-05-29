@@ -14,9 +14,11 @@ class MainWrapper extends React.Component {
             users: [],
             messages: [],
             text: '',
-            gamescale: 0
+            gamescale: 0,
+            gameupdate: []
         };
         this._initialize = this._initialize.bind(this);
+        this._gameUpdateReceive = this._gameUpdateReceive.bind(this);
         this._messageRecieve = this._messageRecieve.bind(this);
         this._userJoined = this._userJoined.bind(this);
         this._userLeft = this._userLeft.bind(this);
@@ -43,6 +45,7 @@ class MainWrapper extends React.Component {
         socket.on('user:join', this._userJoined);
         socket.on('user:left', this._userLeft);
         socket.on('change:name', this._userChangedName);
+        socket.on('send:gameupdate', this._gameUpdateReceive);
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
     }
@@ -54,6 +57,13 @@ class MainWrapper extends React.Component {
     _initialize(data) {
         var { users, name } = data;
         this.setState({ users, user: name });
+    }
+
+    _gameUpdateReceive(message) {
+        var { gameupdate } = this.state;
+        gameupdate.push(message);
+        this.setState({ gameupdate });
+        console.log('asdf');
     }
 
     _messageRecieve(message) {
@@ -146,7 +156,8 @@ class MainWrapper extends React.Component {
                         handleChangeName={this.handleChangeName}
                         messages={this.state.messages}
                         handleMessageSubmit={this.handleMessageSubmit}
-                        user={this.state.user} />
+                        user={this.state.user}
+                        gameupdate={this.state.gameupdate} />
                 </div>
             </div>
         );

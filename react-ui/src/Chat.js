@@ -81,6 +81,41 @@ class MessageList extends React.Component {
     }
 }
 
+class GameUpdateList extends React.Component {
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        const scrollHeight = this.gameUpdateList.scrollHeight;
+        const height = this.gameUpdateList.clientHeight;
+        const maxScrollTop = scrollHeight - height;
+        this.gameUpdateList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
+
+    render() {
+        return (
+            <div className='gameupdates' ref={(div) => {
+                this.gameUpdateList = div;
+            }}>
+
+                {
+                    this.props.gameupdate.map((message, i) => {
+                        return (
+                            <Message
+                                key={i}
+                                user={message.user}
+                                text={message.text}
+                            />
+                        );
+                    })
+                }
+            </div>
+        );
+    }
+}
+
 
 class MessageForm extends React.Component {
 
@@ -164,6 +199,7 @@ class ChangeNameForm extends React.Component {
                 <h3> Change Name </h3>
                 <form onSubmit={this.handleSubmit}>
                     <input
+                        className='change_name_form_input'
                         onChange={this.onKey}
                         value={this.state.newName}
                     />
@@ -179,6 +215,7 @@ class ChatApp extends React.Component {
     render() {
         return (
             <div className='chatapp'>
+
                 <div className='right-panel'>
 
                     <UsersList
@@ -190,6 +227,9 @@ class ChatApp extends React.Component {
                 </div>
 
                 <div className='messagescontainer'>
+                    <GameUpdateList
+                        gameupdate={this.props.gameupdate}
+                    />
                     <MessageList
                         messages={this.props.messages}
                     />

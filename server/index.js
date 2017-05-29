@@ -609,7 +609,7 @@ var updateGame = (function () {
           gamedata.numplayers = gamedata.numplayers - 1;
           userid[n].didbet = true;
           io.emit('updateGame', returnarray);
-          io.emit('send:message', {
+          io.emit('send:gameupdate', {
             user: "APPLICATION BOT",
             text: userid[n].name + " has folded."
           });
@@ -618,13 +618,13 @@ var updateGame = (function () {
           userid[n].didbet = true;
           betiscalled = true;
           if (userid[n].turnstatus == "Call") {
-            io.emit('send:message', {
+            io.emit('send:gameupdate', {
               user: "APPLICATION BOT",
               text: userid[n].name + " has called the current bet at $" + gamedata.currentbet + "."
             });
             endturn(n);
           } else {
-            io.emit('send:message', {
+            io.emit('send:gameupdate', {
               user: "APPLICATION BOT",
               text: userid[n].name + " has checked the current bet at $" + gamedata.currentbet + "."
             });
@@ -633,7 +633,7 @@ var updateGame = (function () {
 
         } else {
           if (gamedata.numplayers > 1) {
-            io.emit('send:message', {
+            io.emit('send:gameupdate', {
               user: "APPLICATION BOT",
               text: userid[n].name + " has raised the current bet to $" + gamedata.currentbet + "."
             });
@@ -984,7 +984,7 @@ var updateGame = (function () {
         }
       }
 
-      io.emit('send:message', {
+      io.emit('send:gameupdate', {
         user: "APPLICATION BOT",
         text: winner.idname + " has won $" + winner.totalwon + " with " + winner.hand + "!"
       });
@@ -1012,7 +1012,7 @@ var updateGame = (function () {
         }
       }
 
-      io.emit('send:message', {
+      io.emit('send:gameupdate', {
         user: "APPLICATION BOT",
         text: winner.idname + " has won $" + winner.totalwon + " with " + winner.hand.description + "!"
       });
