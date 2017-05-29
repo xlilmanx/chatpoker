@@ -63,7 +63,6 @@ class MainWrapper extends React.Component {
         var { gameupdate } = this.state;
         gameupdate.push(message);
         this.setState({ gameupdate });
-        console.log('asdf');
     }
 
     _messageRecieve(message) {
