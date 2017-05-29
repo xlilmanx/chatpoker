@@ -70,12 +70,9 @@ class Betting extends React.Component {
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(Math.round(this.props.betSliderValue))}>Bet ${this.props.betSliderValue}</button>
         </div>
       </div>
-
     );
   }
 }
-
-
 
 /*
 class Deck extends React.Component {
@@ -94,6 +91,7 @@ class Deck extends React.Component {
   }
 }
 */
+
 class Field extends React.Component {
 
   render() {
@@ -372,7 +370,6 @@ class Game extends React.Component {
   }
 
   updateBet(betdata) {
-
 
     if (betdata.length == 0) {
 

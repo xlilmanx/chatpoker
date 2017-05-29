@@ -71,7 +71,7 @@ var endgamecheck = false;
 
 io.on('connection', function (socket) {
 
-  // game stuff
+  // Add client info array
 
   var clientInfo = new Object();
   clientInfo.id = socket.id;
@@ -87,6 +87,7 @@ io.on('connection', function (socket) {
   var idAdded = false;
   var clientnum = -1;
 
+  // Check if id already added
 
   if (idAdded == false) {
 
@@ -125,10 +126,8 @@ io.on('connection', function (socket) {
 
     var name = userNames.getGuestName(clientnum);
 
-
-
   }
-  // inital connection update game
+  // inital connection send all game variables
 
   allmoney = [];
   allbet = [];
@@ -172,6 +171,9 @@ io.on('connection', function (socket) {
           if (c != null) {
             if (c.id == socket.id) {
               userid[i].didbet = true;
+
+              // bet calculation if player has enough money to bet
+
               if (userid[i].money >= thisbetamount) {
                 userid[i].money = userid[i].money - thisbetamount;
               } else if (userid[i].money > 0) {
@@ -182,6 +184,8 @@ io.on('connection', function (socket) {
               }
               userid[i].bet = userid[i].bet + thisbetamount;
               userid[i].turnbet = userid[i].turnbet + thisbetamount;
+
+              // set raise if player bet is higher than current bet
 
               if (userid[i].bet > gamedata.currentbet) {
 
@@ -200,6 +204,8 @@ io.on('connection', function (socket) {
                   }
                 }
               }
+
+              // set fold,check,raise,call
 
               if (gamedata.currentbet > userid[i].bet) {
                 userid[i].turnstatus = "Fold";
@@ -227,7 +233,6 @@ io.on('connection', function (socket) {
 
     updateGame.fold(clientnum);
 
-
   });
 
 
@@ -239,6 +244,9 @@ io.on('connection', function (socket) {
         "5c", "5d", "5h", "5s", "6c", "6d", "6h", "6s", "7c", "7d", "7h", "7s", "8c", "8d", "8h", "8s",
         "9c", "9d", "9h", "9s", "Tc", "Td", "Th", "Ts", "Jc", "Jd", "Jh", "Js", "Qc", "Qd", "Qh", "Qs",
         "Kc", "Kd", "Kh", "Ks"];
+
+      // deal hand reset game variables
+
       allhand = [];
       gamedata.numplayers = 0;
       betiscalled = false;
@@ -278,6 +286,8 @@ io.on('connection', function (socket) {
       }
 
 
+      // pick next dealer
+
       for (i = 0; i < userid.length; i++) {
         gamedata.dealernum = (gamedata.dealernum + 1) % userid.length;
         if (userid[gamedata.dealernum] != null) {
@@ -286,6 +296,8 @@ io.on('connection', function (socket) {
           }
         }
       }
+
+      // small blind, big blind
 
       gamedata.phase = "preflop";
       gamedata.currentbet = bigblind;
@@ -335,7 +347,6 @@ io.on('connection', function (socket) {
       }
 
       userid[bigblindplayer].didbet = false;
-
 
       gamedata.turnnum = (bigblindplayer + 1) % userid.length;
       if (userid[gamedata.turnnum] == null) {
@@ -522,7 +533,6 @@ io.on('connection', function (socket) {
     }
 
 
-    //    io.emit('gameconnect', returnarray);
     io.emit('updateGame', returnarray);
     io.emit('updatePhase', gamedata);
     io.emit('updateBet', returnbetarray);
@@ -533,6 +543,8 @@ io.on('connection', function (socket) {
     });
     userNames.free(name);
   });
+
+  // update clientnumber when someone disconnects
 
   socket.on('updateclientnumber', function () {
 
