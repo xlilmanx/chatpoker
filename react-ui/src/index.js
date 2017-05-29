@@ -30,7 +30,7 @@ class MainWrapper extends React.Component {
     updateWindowDimensions() {
         var scale = Math.min(
             window.innerWidth / 1625,
-            window.innerHeight / 850
+            window.innerHeight / 910
         );
         scale = Math.min(scale, 1);
 

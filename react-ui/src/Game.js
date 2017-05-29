@@ -54,6 +54,7 @@ class GameUsers extends React.Component {
 
 
 class Betting extends React.Component {
+
   render() {
     return (
       <div className='betting'>
@@ -64,6 +65,9 @@ class Betting extends React.Component {
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress || (this.props.playerbet >= this.props.currentbet)} className="button" onClick={() => this.props.handleBet(Math.max(this.props.currentbet - this.props.playerbet), 0)}>Call</button>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(this.props.money)}>All In</button>
           <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleFold()}>{this.props.playerbet >= this.props.currentbet ? (this.props.turnbet == 0 ? 'Check' : 'End Turn') : 'Fold'}</button>
+          <br />
+          <input id='bettingSlider' disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} type='range' min='0' max={this.props.money} defaultValue='0' step='1' onChange={this.props.adjustBetSlider} />
+          <button disabled={!this.props.isturn || this.props.dealfield || !this.props.gameinprogress} className="button" onClick={() => this.props.handleBet(Math.round(this.props.betSliderValue))}>Bet ${this.props.betSliderValue}</button>
         </div>
       </div>
 
@@ -135,8 +139,15 @@ class Game extends React.Component {
       timeout: 0,
       status: "",
       turnbet: 0,
-      winninghand: ['', '', '', '', '']
-
+      winninghand: ['', '', '', '', ''],
+      timeoutbarstyle: {
+        position: 'absolute',
+        left: '0px',
+        height: '24px',
+        width: '400px',
+        zIndex: -5
+      },
+      betSliderValue: 0
     };
     this.updatePhase = this.updatePhase.bind(this);
     this.updateGame = this.updateGame.bind(this);
@@ -151,7 +162,9 @@ class Game extends React.Component {
     this.toggleDealField = this.toggleDealField.bind(this);
     this.updateTimeout = this.updateTimeout.bind(this);
     this.timer = this.timer.bind(this);
+    this.timeoutbar = this.timeoutbar.bind(this);
     this.updateWinningHand = this.updateWinningHand.bind(this);
+    this.adjustBetSlider = this.adjustBetSlider.bind(this);
   }
 
   componentDidMount() {
@@ -166,6 +179,14 @@ class Game extends React.Component {
     this.props.socket.on('updateWinningHand', this.updateWinningHand);
   }
 
+  adjustBetSlider(n) {
+
+    this.setState({
+      betSliderValue: n.target.value
+    });
+
+  }
+
   updateTimeout(n) {
 
     this.setState({
@@ -177,6 +198,56 @@ class Game extends React.Component {
     clearInterval(this.doInterval);
 
     this.doInterval = setInterval(this.timer, 1000);
+
+
+    var styleSheet = document.styleSheets[0];
+    var timeoutbar = n;
+
+    var keyframes =
+      `@keyframes timeoutbarstyle {
+    0%   {width: 400px; background: #4dc442;}
+    100%  {width: 0px; background: red;}
+}`;
+
+    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+
+    var timeoutbarstyle = {
+      position: 'absolute',
+      left: '0px',
+      height: '24px',
+      width: '400px',
+      zIndex: -5
+    };
+
+    this.doTimeoutBar = setTimeout(this.timeoutbar, 10);
+
+    this.setState({
+
+      timeoutbarstyle: timeoutbarstyle
+
+    })
+
+  }
+
+  timeoutbar() {
+    var timeoutbarstyle = {
+      position: 'absolute',
+      left: '0px',
+      height: '24px',
+      width: '400px',
+      zIndex: -5,
+      animationName: 'timeoutbarstyle',
+      animationTimingFunction: 'linear',
+      animationDuration: this.state.timeout + 's',
+      animationIterationCount: 1
+
+    };
+
+    this.setState({
+
+      timeoutbarstyle: timeoutbarstyle
+
+    })
 
   }
 
@@ -220,6 +291,11 @@ class Game extends React.Component {
       refisturn = true;
     } else {
       refisturn = false;
+      this.setState({
+        betSliderValue: 0
+      });
+
+      document.getElementById("bettingSlider").value = "0";
     }
 
     var refisdealer = false;
@@ -335,12 +411,24 @@ class Game extends React.Component {
   handleBet(amount) {
 
     this.props.socket.emit('dobet', amount);
+    this.setState({
+      betSliderValue: 0
+    });
+
+    document.getElementById("bettingSlider").value = "0";
+
 
   }
 
   handleFold() {
 
     this.props.socket.emit('fold');
+    this.setState({
+      betSliderValue: 0
+    });
+
+    document.getElementById("bettingSlider").value = "0";
+
 
   }
 
@@ -359,14 +447,23 @@ class Game extends React.Component {
             return <span className="card" key={card}>{card}</span>;
           });
         }
-
-
+  
+  
         {this.state.winninghand.indexOf(card) > -1 ? 'fieldcardsimagehighlight' : 'fieldcardsimage'}
         */
+
+
+
     return (
       <div className='gamecontainer'>
         <div className='titletext'><span><strong>Poker Game</strong></span> -- {this.state.phase == "waitingtostart" ? "Waiting to Start" : (this.state.phase == "preflop" ? "Pre-flop" : (this.state.phase == "flop" ? "Flop" : (this.state.phase == "turn" ? "Turn" : (this.state.phase == "river" ? "River" : ""))))}
-          -- Turn Time: {this.state.timeout > 0 ? this.state.timeout : 0}
+          &nbsp;--  <div className='timeout'>
+
+            <div style={this.state.timeoutbarstyle}>
+
+            </div>
+            Turn Time: {this.state.timeout > 0 ? this.state.timeout : 0}
+          </div>
         </div>
         <br />
         <br />
@@ -435,6 +532,7 @@ class Game extends React.Component {
 
         <Betting
           handleBet={this.handleBet}
+          adjustBetSlider={this.adjustBetSlider}
           handleFold={this.handleFold}
           money={this.state.money[this.state.playerid]}
           isturn={this.state.isturn}
@@ -443,6 +541,7 @@ class Game extends React.Component {
           dealfield={this.state.dealfield}
           gameinprogress={this.state.gameinprogress}
           turnbet={this.state.turnbet[this.state.playerid]}
+          betSliderValue={this.state.betSliderValue}
         />
       </div>
 

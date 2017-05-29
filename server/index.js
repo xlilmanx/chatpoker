@@ -162,6 +162,7 @@ io.on('connection', function (socket) {
   socket.on('dobet', function (data) {
 
     var thisbetamount = data;
+    console.log(thisbetamount);
 
     if (allowbet) {
 
