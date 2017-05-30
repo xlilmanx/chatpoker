@@ -13,7 +13,7 @@ var Ranker = require('handranker');
 // pg
 
 var pg = require('pg');
-var cs = process.env.DATABASE_URL || "postgres://postgres:asdf00gh@localhost:5432/pokerchat";
+var cs = process.env.DATABASE_URL;
 
 pg.defaults.ssl = true;
 pg.connect(cs, function (err, client, done) {
