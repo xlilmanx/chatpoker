@@ -19,12 +19,6 @@ pg.defaults.ssl = true;
 pg.connect(cs, function (err, client) {
   if (err) throw err;
   console.log('Connected to postgres! Getting schemas...');
-
-  client
-    .query('SELECT table_schema,table_name FROM information_schema.tables;')
-    .on('row', function (row) {
-      console.log(JSON.stringify(row));
-    });
 });
 
 
@@ -88,6 +82,7 @@ var allowbet = false;
 var timeouttime = 10000;
 var timeoutfunction;
 var endgamecheck = false;
+var cardstats = [];
 
 io.on('connection', function (socket) {
 
@@ -171,6 +166,7 @@ io.on('connection', function (socket) {
   io.emit('updateGame', returnarray);
   io.emit('updatePhase', gamedata);
   io.emit('updateBet', returnbetarray);
+  updatedb.updatetable();
 
   // update bets
 
@@ -1147,6 +1143,7 @@ var updatedb = (function () {
     } else if (descrip.includes("high")) {
       highcard();
     }
+    updatetable();
   };
 
   var royalflush = function (req, res) {
@@ -1249,9 +1246,88 @@ var updatedb = (function () {
     });
   };
 
+  var updatetable = function () {
 
+    pg.connect(cs, function (err, client, done) {
+
+      /*    var query = 'SELECT count FROM stats WHERE id=1';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=2';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=3';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+    
+          })
+          var query = 'SELECT count FROM stats WHERE id=4';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=5';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=6';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=7';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=8';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            console.log(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats WHERE id=9';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            data.push(result);
+            console.log(result);
+            done();
+          })
+          var query = 'SELECT count FROM stats';
+          client.query(query, function (err, result) {
+            if (err) throw err;
+            result.on('row', function (row) {
+              data.push(row.count);
+              console.log(row);
+            });
+            done();
+          })*/
+      var query = client.query('SELECT id, count FROM stats');
+      query.on('row', function (row, result) {
+        cardstats[row.id - 1] = row.count;
+      });
+      io.emit('updatestats', cardstats);
+    });
+
+
+  };
 
   return {
     doupdatedb: doupdatedb,
+    updatetable: updatetable
   };
 }());

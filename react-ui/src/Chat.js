@@ -223,7 +223,20 @@ class ChatApp extends React.Component {
                     />
                     <ChangeNameForm
                         onChangeName={this.props.handleChangeName}
-                    />
+                    /><br />
+                    <div>
+                        <strong>Stats</strong><br />
+                        Royal Flush: {this.props.stats[0]}<br />
+                        Straight Flush: {this.props.stats[1]}<br />
+                        Four of a Kind: {this.props.stats[2]}<br />
+                        Full House: {this.props.stats[3]}<br />
+                        Flush: {this.props.stats[4]}<br />
+                        Straight: {this.props.stats[5]}<br />
+                        Three of a Kind: {this.props.stats[6]}<br />
+                        Two Pairs: {this.props.stats[7]}<br />
+                        Pair: {this.props.stats[8]}<br />
+                        High Card: {this.props.stats[9]}<br />
+                    </div>
                 </div>
 
                 <div className='messagescontainer'>

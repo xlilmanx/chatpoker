@@ -15,7 +15,8 @@ class MainWrapper extends React.Component {
             messages: [],
             text: '',
             gamescale: 0,
-            gameupdate: []
+            gameupdate: [],
+            stats: []
         };
         this._initialize = this._initialize.bind(this);
         this._gameUpdateReceive = this._gameUpdateReceive.bind(this);
@@ -26,7 +27,13 @@ class MainWrapper extends React.Component {
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.updateStats = this.updateStats.bind(this);
 
+    }
+
+    updateStats(data) {
+        this.setState({ stats: data });
+        console.log(data);
     }
 
     updateWindowDimensions() {
@@ -46,6 +53,7 @@ class MainWrapper extends React.Component {
         socket.on('user:left', this._userLeft);
         socket.on('change:name', this._userChangedName);
         socket.on('send:gameupdate', this._gameUpdateReceive);
+        socket.on('updatestats', this.updateStats);
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
     }
@@ -139,13 +147,15 @@ class MainWrapper extends React.Component {
             right: 0
         }
 
+
         return (
 
             <div className='appcontainer'>
                 <div style={cssgame}>
                     <Game
                         socket={socket}
-                        users={this.state.users} />
+                        users={this.state.users} 
+                        />
                 </div>
                 <div style={csschat}>
                     <ChatApp
@@ -155,7 +165,9 @@ class MainWrapper extends React.Component {
                         messages={this.state.messages}
                         handleMessageSubmit={this.handleMessageSubmit}
                         user={this.state.user}
-                        gameupdate={this.state.gameupdate} />
+                        gameupdate={this.state.gameupdate} 
+                        stats={this.state.stats}
+                        />
                 </div>
             </div>
         );
