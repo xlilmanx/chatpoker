@@ -10,6 +10,26 @@ var useronline = 0;
 
 var Ranker = require('handranker');
 
+// pg
+
+var pg = require('pg');
+var cs = process.env.DATABASE_URL || "postgres://postgres:asdf00gh@localhost:5432/pokerchat";
+
+pg.defaults.ssl = true;
+pg.connect(cs, function (err, client) {
+  if (err) throw err;
+  console.log('Connected to postgres! Getting schemas...');
+
+  client
+    .query('SELECT table_schema,table_name FROM information_schema.tables;')
+    .on('row', function (row) {
+      console.log(JSON.stringify(row));
+    });
+});
+
+
+
+
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
@@ -1001,6 +1021,7 @@ var updateGame = (function () {
       });
 
       bets();
+      updatedb.doupdatedb(winner.hand);
       io.emit('updateWinningHand', winner.winninghand)
     } if (winnerarray.length == 1) {
 
@@ -1029,6 +1050,7 @@ var updateGame = (function () {
       });
       io.emit('updateWinningHand', winner.winninghand)
       bets();
+      updatedb.doupdatedb(winner.hand.description);
 
     }
   };
@@ -1098,5 +1120,138 @@ var userNames = (function () {
     free: free,
     get: get,
     getGuestName: getGuestName
+  };
+}());
+
+var updatedb = (function () {
+
+  var doupdatedb = function (descrip) {
+    if (descrip.includes("royal flush")) {
+      royalflush();
+    } else if (descrip.includes("straight flush")) {
+      straightflush();
+    } else if (descrip.includes("four of a kind")) {
+      fourofakind();
+    } else if (descrip.includes("full house")) {
+      fullhouse();
+    } else if (descrip.includes("flush")) {
+      flush();
+    } else if (descrip.includes("straight")) {
+      straight();
+    } else if (descrip.includes("three of a kind")) {
+      threeofakind();
+    } else if (descrip.includes("two pair")) {
+      twopairs();
+    } else if (descrip.includes("pair")) {
+      pair();
+    } else if (descrip.includes("high")) {
+      highcard();
+    }
+  };
+
+  var royalflush = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=1';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var straightflush = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=2';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var fourofakind = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=3';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var fullhouse = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=4';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var flush = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=5';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var straight = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=6';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var threeofakind = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=7';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var twopairs = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=8';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var pair = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=9';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+  var highcard = function (req, res) {
+    pg.connect(cs, function (err, client, done) {
+      var query = 'UPDATE stats SET count=(count + 1) WHERE id=10';
+      client.query(query, function (err, result) {
+        if (err) throw err;
+        done();
+      })
+    });
+  };
+
+
+
+  return {
+    doupdatedb: doupdatedb,
   };
 }());
