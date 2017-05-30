@@ -16,12 +16,11 @@ var pg = require('pg');
 var cs = process.env.DATABASE_URL || "postgres://postgres:asdf00gh@localhost:5432/pokerchat";
 
 pg.defaults.ssl = true;
-pg.connect(cs, function (err, client) {
+pg.connect(cs, function (err, client, done) {
   if (err) throw err;
   console.log('Connected to postgres! Getting schemas...');
+  done();
 });
-
-
 
 
 // Priority serve any static files.
@@ -1321,6 +1320,7 @@ var updatedb = (function () {
         cardstats[row.id - 1] = row.count;
       });
       io.emit('updatestats', cardstats);
+      done();
     });
 
 
